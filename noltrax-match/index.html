@@ -17,6 +17,7 @@
     <input id="homeTeam" placeholder="Home Team">
     <input id="awayTeam" placeholder="Away Team">
     <input id="analyst" placeholder="Analyst Name">
+    <input id="analyzedTeam" placeholder="Team Being Analyzed">
   </div>
   <button id="saveBtn" onclick="saveSession()">Save Session</button>
 </header>
@@ -30,8 +31,10 @@
 
   <!-- VIDEO PANEL KANAN -->
   <div id="videoPanel">
-    <input id="videoUrl" placeholder="Paste YouTube URL">
-    <button id="loadVideoBtn" onclick="loadVideo()">Load Video</button>
+    <div id="videoInput">
+      <input id="videoUrl" placeholder="Paste YouTube URL">
+      <button id="loadVideoBtn" onclick="loadVideo()">Load Video</button>
+    </div>
     <div id="player">
       <span>▶</span>
     </div>
@@ -43,6 +46,7 @@
       <button onclick="tagEvent('Cross')">Cross</button>
       <button onclick="tagEvent('Shot')">Shot</button>
     </div>
+    <button id="addTagBtn" onclick="addCustomTag()">+ Add Tag</button>
   </div>
 </div>
 
