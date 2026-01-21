@@ -1,14 +1,14 @@
 /* GLOBAL */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #F9F9F9;
+  background-color: #F4F6F8;
   color: #1C1C1E;
   margin: 15px;
 }
 
-h1 {
+header h1 {
+  font-size: 32px;
   font-weight: 600;
-  font-size: 28px;
   margin-bottom: 15px;
 }
 
@@ -20,7 +20,7 @@ h1 {
 }
 
 #metadata input {
-  padding: 10px 12px;
+  padding: 10px 14px;
   border-radius: 12px;
   border: 1px solid #CCC;
   flex: 1 1 150px;
@@ -28,10 +28,29 @@ h1 {
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
+/* SAVE BUTTON */
+#saveBtn {
+  background-color: #007AFF;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 10px;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+#saveBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
 /* CONTAINER */
 #container {
   display: flex;
   gap: 20px;
+  margin-top: 20px;
 }
 
 /* LOG PANEL KIRI */
@@ -48,8 +67,8 @@ h1 {
 
 #logPanel li {
   background-color: #fff;
-  margin-bottom: 10px;
-  padding: 12px;
+  margin-bottom: 12px;
+  padding: 14px;
   border-radius: 16px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   transition: transform 0.1s ease;
@@ -76,6 +95,22 @@ h1 {
   align-items: center;
 }
 
+#videoPanel input, #videoPanel button {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #CCC;
+  margin-bottom: 10px;
+  background-color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+#videoPanel button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
 #player {
   width: 100%;
   height: 360px;
@@ -84,6 +119,7 @@ h1 {
   overflow: hidden;
   position: relative;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 12px;
 }
 
 #player span {
@@ -98,10 +134,9 @@ h1 {
 
 /* TAG BUTTONS */
 #tags {
-  margin-top: 12px;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
 }
 
 #tags button {
@@ -119,26 +154,8 @@ h1 {
   box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
-/* TAG COLORS PASTEL / iOS */
-#tags button:nth-child(1) { background-color: #5AC8FA; } /* biru pastel */
-#tags button:nth-child(2) { background-color: #FF9500; } /* oranye */
-#tags button:nth-child(3) { background-color: #34C759; } /* hijau */
-#tags button:nth-child(4) { background-color: #AF52DE; } /* ungu */
-
-/* SAVE BUTTON */
-button#saveBtn {
-  background-color: #007AFF;
-  color: white;
-  padding: 12px 18px;
-  border-radius: 16px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  margin-bottom: 10px;
-  transition: transform 0.1s ease, box-shadow 0.2s ease;
-}
-
-button#saveBtn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-}
+/* Tag colors (soft modern gradient feel) */
+#tags button:nth-child(1) { background: linear-gradient(90deg,#42A5F5,#478DE0); }
+#tags button:nth-child(2) { background: linear-gradient(90deg,#FFCA28,#FFC107); }
+#tags button:nth-child(3) { background: linear-gradient(90deg,#34C759,#28A745); }
+#tags button:nth-child(4) { background: linear-gradient(90deg,#AF52DE,#9B27B0); }
