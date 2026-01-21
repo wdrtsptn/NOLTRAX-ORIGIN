@@ -155,14 +155,32 @@ header h1 {
   margin-bottom: 10px;
 }
 
-#tags button {
-  padding: 10px 16px;
+/* Semua tombol tag default & custom */
+#tags button,
+#addTagBtn {
+  flex: 0 0 120px;       /* Lebar tetap 120px */
+  height: 40px;          /* Tinggi tetap 40px */
+  padding: 0;            
   border: none;
   border-radius: 14px;
   cursor: pointer;
   font-weight: 500;
   color: white;
+  text-align: center;
+  white-space: nowrap;    
+  overflow: hidden;      
+  text-overflow: ellipsis; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+/* Hover effect */
+#tags button:hover,
+#addTagBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
 /* Tag default gradients */
@@ -171,19 +189,7 @@ header h1 {
 #tags button:nth-child(3) { background: linear-gradient(90deg,#34C759,#28A745); }
 #tags button:nth-child(4) { background: linear-gradient(90deg,#AF52DE,#9B27B0); }
 
-/* ADD TAG BUTTON */
+/* Add Tag button gradient */
 #addTagBtn {
-  padding: 10px 16px;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  font-weight: 500;
-  color: white;
   background: linear-gradient(90deg,#FF6B6B,#FF4757);
-  transition: transform 0.1s ease, box-shadow 0.2s ease;
-}
-
-#addTagBtn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
