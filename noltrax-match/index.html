@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Noltrax Match</title>
-  <link rel="stylesheet" href="match.css">
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="match.js" defer></script>
 </head>
 <body>
 
@@ -26,7 +27,7 @@
   <input id="videoUrl" placeholder="YouTube URL">
   <button onclick="loadVideo()">Load Video</button>
   <br><br>
-  <iframe id="player" width="640" height="360" allowfullscreen></iframe>
+  <div id="player"></div>
 </section>
 
 <hr>
@@ -41,11 +42,10 @@
 <hr>
 
 <!-- LOG -->
-<section>
+<section id="eventLog">
   <h3>Event Log</h3>
   <ul id="log"></ul>
 </section>
 
-<script src="match.js"></script>
 </body>
 </html>
