@@ -1,11 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Noltrax Match</title>
 </head>
 <body>
+
   <h1>Noltrax Match</h1>
-  <p>Work in progress</p>
+
+  <input id="ytlink" type="text" placeholder="Paste YouTube link di sini">
+  <button onclick="loadVideo()">Load Video</button>
+
+  <div id="player" style="margin-top:20px;"></div>
+
+  <h3>Quick Tag (TEST)</h3>
+  <button onclick="addTag('Build-up')">Build-up</button>
+  <button onclick="addTag('Pressing')">Pressing</button>
+
+  <ul id="log"></ul>
+
   <a href="../index.html">Back to Origin</a>
+
+<script>
+  let player;
+
+  function loadVideo() {
+    const url = document.getElementById("ytlink").value;
+    const videoId = url.split("v=")[1];
+    player = new YT.Player('player', {
+      height: '360',
+      width: '640',
+      videoId: videoId
+    });
+  }
+
+  function addTag(tag) {
+    if (!player) return;
+    const time = Math.floor(player.getCurrentTime());
+    const li = document.createElement("li");
+    li.textContent = time + "s - " + tag;
+    document.getElementById("log").appendChild(li);
+  }
+</script>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+
 </body>
 </html>
