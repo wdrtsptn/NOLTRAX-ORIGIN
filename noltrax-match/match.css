@@ -95,19 +95,34 @@ header h1 {
   align-items: center;
 }
 
-#videoPanel input, #videoPanel button {
+#videoInput {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#videoPanel input {
+  flex: 1;
   padding: 10px 14px;
   border-radius: 12px;
   border: 1px solid #CCC;
-  margin-bottom: 10px;
-  background-color: #fff;
   font-weight: 500;
+}
+
+#videoPanel button {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+  background-color: #007AFF;
+  color: white;
   cursor: pointer;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  font-weight: 600;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
 }
 
 #videoPanel button:hover {
-  transform: scale(1.03);
+  transform: scale(1.05);
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
@@ -137,6 +152,7 @@ header h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  margin-bottom: 10px;
 }
 
 #tags button {
@@ -149,13 +165,25 @@ header h1 {
   transition: transform 0.1s ease, box-shadow 0.2s ease;
 }
 
-#tags button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-}
-
-/* Tag colors (soft modern gradient feel) */
+/* Tag default gradients */
 #tags button:nth-child(1) { background: linear-gradient(90deg,#42A5F5,#478DE0); }
 #tags button:nth-child(2) { background: linear-gradient(90deg,#FFCA28,#FFC107); }
 #tags button:nth-child(3) { background: linear-gradient(90deg,#34C759,#28A745); }
 #tags button:nth-child(4) { background: linear-gradient(90deg,#AF52DE,#9B27B0); }
+
+/* ADD TAG BUTTON */
+#addTagBtn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 500;
+  color: white;
+  background: linear-gradient(90deg,#FF6B6B,#FF4757);
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+#addTagBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
