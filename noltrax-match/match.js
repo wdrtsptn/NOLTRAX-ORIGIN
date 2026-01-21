@@ -58,3 +58,40 @@ function tagEvent(tag) {
 function onYouTubeIframeAPIReady() {
   console.log("YouTube API siap");
 }
+
+function saveSession() {
+  // ambil metadata
+  const metadata = {
+    matchName: document.getElementById("matchName").value,
+    matchDate: document.getElementById("matchDate").value,
+    homeTeam: document.getElementById("homeTeam").value,
+    awayTeam: document.getElementById("awayTeam").value,
+    analyst: document.getElementById("analyst").value
+  };
+
+  // ambil note dari input di log
+  const logElements = document.querySelectorAll("#log li");
+  const logData = [];
+  logElements.forEach((li, index) => {
+    const noteInput = li.querySelector(".noteInput");
+    events[index].note = noteInput ? noteInput.value : "";
+    logData.push(events[index]);
+  });
+
+  const sessionData = {
+    metadata,
+    events: logData
+  };
+
+  // convert ke JSON
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(sessionData, null, 2));
+  const dlAnchor = document.createElement('a');
+  dlAnchor.setAttribute("href", dataStr);
+  dlAnchor.setAttribute("download", `${metadata.matchName || "session"}.json`);
+  document.body.appendChild(dlAnchor); // perlu append dulu
+  dlAnchor.click();
+  dlAnchor.remove();
+
+  alert("Session saved!");
+  console.log(sessionData);
+}
