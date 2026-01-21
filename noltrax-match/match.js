@@ -20,7 +20,7 @@ function loadVideo() {
     // buat player pertama kali
     player = new YT.Player('player', {
       height: '360',
-      width: '640',
+      width: '100%',
       videoId: id,
       playerVars: {
         controls: 1,
@@ -42,13 +42,13 @@ function tagEvent(tag) {
   let ss = String(seconds % 60).padStart(2, "0");
   let timestamp = `${mm}:${ss}`;
 
-  const note = ""; // nanti bisa di-edit per event
-
-  const event = { timestamp, tag, note };
+  const event = { timestamp, tag, note: "" };
   events.push(event);
 
+  // buat log entry dengan input note editable
   const li = document.createElement("li");
-  li.textContent = `${timestamp} - ${tag}`;
+  li.innerHTML = `<strong>${timestamp} - ${tag}</strong><br>
+                  <input type="text" class="noteInput" placeholder="Add note...">`;
   document.getElementById("log").appendChild(li);
 
   console.log(events);
