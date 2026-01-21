@@ -2,13 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Noltrax Match</title>
+  <title>Noltrax Match v0.2</title>
   <script src="https://www.youtube.com/iframe_api"></script>
   <script src="match.js" defer></script>
+  <style>
+    body { font-family: sans-serif; display: flex; flex-direction: column; margin: 10px; }
+    #container { display: flex; gap: 20px; }
+    #logPanel { width: 40%; max-height: 500px; overflow-y: auto; border: 1px solid #ccc; padding: 5px; }
+    #videoPanel { width: 60%; display: flex; flex-direction: column; align-items: center; }
+    #tags { margin-top: 10px; }
+    #tags button { margin-right: 5px; margin-top: 5px; }
+    li { margin-bottom: 3px; }
+    input.noteInput { width: 90%; margin-top: 2px; }
+  </style>
 </head>
 <body>
 
-<h1>Noltrax Match</h1>
+<h1>Noltrax Match v0.2</h1>
 
 <!-- MATCH METADATA -->
 <section id="metadata">
@@ -22,30 +32,26 @@
 
 <hr>
 
-<!-- VIDEO -->
-<section id="video">
-  <input id="videoUrl" placeholder="YouTube URL">
-  <button onclick="loadVideo()">Load Video</button>
-  <br><br>
-  <div id="player"></div>
-</section>
+<div id="container">
+  <!-- LOG PANEL KIRI -->
+  <div id="logPanel">
+    <h3>Event Log</h3>
+    <ul id="log"></ul>
+  </div>
 
-<hr>
+  <!-- VIDEO PANEL KANAN -->
+  <div id="videoPanel">
+    <input id="videoUrl" placeholder="YouTube URL">
+    <button onclick="loadVideo()">Load Video</button>
+    <div id="player" style="margin-top:10px;"></div>
 
-<!-- QUICK TAG -->
-<section id="tags">
-  <h3>Quick Tag</h3>
-  <button onclick="tagEvent('Build-up')">Build-up</button>
-  <button onclick="tagEvent('Pressing')">Pressing</button>
-</section>
-
-<hr>
-
-<!-- LOG -->
-<section id="eventLog">
-  <h3>Event Log</h3>
-  <ul id="log"></ul>
-</section>
+    <!-- QUICK TAG BUTTONS -->
+    <div id="tags">
+      <button onclick="tagEvent('Build-up')">Build-up</button>
+      <button onclick="tagEvent('Pressing')">Pressing</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
