@@ -1,66 +1,58 @@
 let player;
 let events = [];
 
-// ------------------- VIDEO LOADING -------------------
-function extractVideoId(url) {
-  const regExp = /(?:v=|\/)([0-9A-Za-z_-]{11})/;
-  const match = url.match(regExp);
+// ------------------ YOUTUBE API ------------------
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('player', {
+    height: '360',
+    width: '100%',
+    videoId: '', // kosong dulu
+    events: {
+      'onReady': onPlayerReady
+    }
+  });
+}
+
+function onPlayerReady(event) {
+  // player siap
+}
+
+// ------------------ LOAD VIDEO ------------------
+function loadVideo() {
+  const url = document.getElementById('videoUrl').value;
+  const videoId = extractVideoID(url);
+  if(videoId && player) {
+    player.loadVideoById(videoId);
+  }
+}
+
+function extractVideoID(url) {
+  const regex = /(?:youtube\.com\/.*v=|youtu\.be\/)([^&]+)/;
+  const match = url.match(regex);
   return match ? match[1] : null;
 }
 
-function loadVideo() {
-  const url = document.getElementById("videoUrl").value;
-  const id = extractVideoId(url);
-  if (!id) {
-    alert("Link YouTube tidak valid");
-    return;
-  }
+// ------------------ TAG EVENT ------------------
+function tagEvent(tagName) {
+  if(!player) return;
+  const currentTime = Math.floor(player.getCurrentTime());
+  const li = document.createElement('li');
 
-  if (!player) {
-    // buat player pertama kali
-    player = new YT.Player('player', {
-      height: '360',
-      width: '100%',
-      videoId: id,
-      playerVars: {
-        controls: 1,
-        autoplay: 1
-      },
-    });
-  } else {
-    // load video baru
-    player.loadVideoById(id);
-  }
+  li.innerHTML = `<strong>${tagName}</strong> <span>${formatTime(currentTime)}</span><br>
+                  <input class="noteInput" placeholder="Add note...">`;
+  document.getElementById('log').appendChild(li);
+
+  events.push({tag: tagName, time: currentTime, note: ''});
 }
 
-// ------------------- TAGGING -------------------
-function tagEvent(tag) {
-  if (!player || typeof player.getCurrentTime !== "function") return;
-
-  let seconds = Math.floor(player.getCurrentTime());
-  let mm = String(Math.floor(seconds / 60)).padStart(2, "0");
-  let ss = String(seconds % 60).padStart(2, "0");
-  let timestamp = `${mm}:${ss}`;
-
-  const event = { timestamp, tag, note: "" };
-  events.push(event);
-
-  // buat log entry dengan input note editable
-  const li = document.createElement("li");
-  li.innerHTML = `<strong>${timestamp} - ${tag}</strong><br>
-                  <input type="text" class="noteInput" placeholder="Add note...">`;
-  document.getElementById("log").appendChild(li);
-
-  console.log(events);
+function formatTime(sec) {
+  const m = Math.floor(sec/60);
+  const s = sec%60;
+  return `${m}:${s.toString().padStart(2,'0')}`;
 }
 
-// ------------------- YOUTUBE API READY -------------------
-function onYouTubeIframeAPIReady() {
-  console.log("YouTube API siap");
-}
-
+// ------------------ SAVE SESSION ------------------
 function saveSession() {
-  // ambil metadata
   const metadata = {
     matchName: document.getElementById("matchName").value,
     matchDate: document.getElementById("matchDate").value,
@@ -69,7 +61,6 @@ function saveSession() {
     analyst: document.getElementById("analyst").value
   };
 
-  // ambil note dari input di log
   const logElements = document.querySelectorAll("#log li");
   const logData = [];
   logElements.forEach((li, index) => {
@@ -78,17 +69,12 @@ function saveSession() {
     logData.push(events[index]);
   });
 
-  const sessionData = {
-    metadata,
-    events: logData
-  };
-
-  // convert ke JSON
+  const sessionData = { metadata, events: logData };
   const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(sessionData, null, 2));
   const dlAnchor = document.createElement('a');
   dlAnchor.setAttribute("href", dataStr);
   dlAnchor.setAttribute("download", `${metadata.matchName || "session"}.json`);
-  document.body.appendChild(dlAnchor); // perlu append dulu
+  document.body.appendChild(dlAnchor);
   dlAnchor.click();
   dlAnchor.remove();
 
