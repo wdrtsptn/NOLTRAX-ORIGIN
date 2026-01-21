@@ -2,37 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Noltrax Match v0.2</title>
+  <title>Noltrax Match – Modern Dashboard</title>
   <script src="https://www.youtube.com/iframe_api"></script>
   <link rel="stylesheet" href="match.css">
   <script src="match.js" defer></script>
-  <style>
-    body { font-family: sans-serif; display: flex; flex-direction: column; margin: 10px; }
-    #container { display: flex; gap: 20px; }
-    #logPanel { width: 40%; max-height: 500px; overflow-y: auto; border: 1px solid #ccc; padding: 5px; }
-    #videoPanel { width: 60%; display: flex; flex-direction: column; align-items: center; }
-    #tags { margin-top: 10px; }
-    #tags button { margin-right: 5px; margin-top: 5px; }
-    li { margin-bottom: 3px; }
-    input.noteInput { width: 90%; margin-top: 2px; }
-  </style>
 </head>
 <body>
 
-<h1>Noltrax Match v0.2</h1>
+<header>
+  <h1>Noltrax Match</h1>
+  <div id="metadata">
+    <input id="matchName" placeholder="Match Name">
+    <input id="matchDate" type="date">
+    <input id="homeTeam" placeholder="Home Team">
+    <input id="awayTeam" placeholder="Away Team">
+    <input id="analyst" placeholder="Analyst Name">
+  </div>
+  <button id="saveBtn" onclick="saveSession()">Save Session</button>
+</header>
 
-<!-- MATCH METADATA -->
-<section id="metadata">
-  <h3>Match Info</h3>
-  <input id="matchName" placeholder="Match name (Persib vs Persija)">
-  <input id="matchDate" type="date">
-  <input id="homeTeam" placeholder="Home team">
-  <input id="awayTeam" placeholder="Away team">
-  <input id="analyst" placeholder="Analyst name">
-</section>
-
-<hr>
-<button onclick="saveSession()">Save Session</button>
 <div id="container">
   <!-- LOG PANEL KIRI -->
   <div id="logPanel">
@@ -42,17 +30,18 @@
 
   <!-- VIDEO PANEL KANAN -->
   <div id="videoPanel">
-    <input id="videoUrl" placeholder="YouTube URL">
-    <button onclick="loadVideo()">Load Video</button>
-    <div id="player" style="width:100%; height:360px; background-color:#000; position:relative;">
-  <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-               color:white; font-size:48px; opacity:0.3;">▶</span>
+    <input id="videoUrl" placeholder="Paste YouTube URL">
+    <button id="loadVideoBtn" onclick="loadVideo()">Load Video</button>
+    <div id="player">
+      <span>▶</span>
     </div>
 
     <!-- QUICK TAG BUTTONS -->
     <div id="tags">
       <button onclick="tagEvent('Build-up')">Build-up</button>
       <button onclick="tagEvent('Pressing')">Pressing</button>
+      <button onclick="tagEvent('Cross')">Cross</button>
+      <button onclick="tagEvent('Shot')">Shot</button>
     </div>
   </div>
 </div>
