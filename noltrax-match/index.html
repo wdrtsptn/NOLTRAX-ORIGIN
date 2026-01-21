@@ -3,51 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <title>Noltrax Match</title>
+  <link rel="stylesheet" href="match.css">
 </head>
 <body>
 
 <h1>Noltrax Match</h1>
 
-<input id="ytlink" type="text" placeholder="Paste YouTube link">
-<button onclick="loadVideo()">Load Video</button>
+<!-- MATCH METADATA -->
+<section id="metadata">
+  <h3>Match Info</h3>
+  <input id="matchName" placeholder="Match name (Persib vs Persija)">
+  <input id="matchDate" type="date">
+  <input id="homeTeam" placeholder="Home team">
+  <input id="awayTeam" placeholder="Away team">
+  <input id="analyst" placeholder="Analyst name">
+</section>
 
-<div id="video" style="margin-top:20px;"></div>
+<hr>
 
-<h3>Quick Tag (TEST)</h3>
-<button onclick="addTag('Build-up')">Build-up</button>
-<button onclick="addTag('Pressing')">Pressing</button>
+<!-- VIDEO -->
+<section id="video">
+  <input id="videoUrl" placeholder="YouTube URL">
+  <button onclick="loadVideo()">Load Video</button>
+  <br><br>
+  <iframe id="player" width="640" height="360" allowfullscreen></iframe>
+</section>
 
-<ul id="log"></ul>
+<hr>
 
-<a href="../index.html">Back to Origin</a>
+<!-- QUICK TAG -->
+<section id="tags">
+  <h3>Quick Tag</h3>
+  <button onclick="tagEvent('Build-up')">Build-up</button>
+  <button onclick="tagEvent('Pressing')">Pressing</button>
+</section>
 
-<script>
-function extractVideoId(url) {
-  const regExp = /(?:v=|\/)([0-9A-Za-z_-]{11})/;
-  const match = url.match(regExp);
-  return match ? match[1] : null;
-}
+<hr>
 
-function loadVideo() {
-  const url = document.getElementById("ytlink").value;
-  const id = extractVideoId(url);
-  if (!id) {
-    alert("Link YouTube tidak valid");
-    return;
-  }
-  document.getElementById("video").innerHTML =
-    `<iframe width="100%" height="315"
-     src="https://www.youtube.com/embed/${id}"
-     frameborder="0"
-     allowfullscreen></iframe>`;
-}
+<!-- LOG -->
+<section>
+  <h3>Event Log</h3>
+  <ul id="log"></ul>
+</section>
 
-function addTag(tag) {
-  const li = document.createElement("li");
-  li.textContent = tag;
-  document.getElementById("log").appendChild(li);
-}
-</script>
-
+<script src="match.js"></script>
 </body>
 </html>
