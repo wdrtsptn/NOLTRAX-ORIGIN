@@ -8,41 +8,71 @@ function onYouTubeIframeAPIReady() {
     height: '360',
     width: '100%',
     videoId: '', // kosong dulu
-    events: { 'onReady': onPlayerReady }
+    events: { 
+      'onReady': onPlayerReady,
+      'onError': onPlayerError
+    }
   });
 }
 
 function onPlayerReady(event) {
-  // player siap
+  console.log("Player ready!");
+}
+
+function onPlayerError(event) {
+  alert("Video cannot be loaded. It may be private, blocked, or embedding disabled.");
 }
 
 // ------------------ LOAD VIDEO ------------------
+function extractVideoID(url) {
+  try {
+    const urlObj = new URL(url);
+    if(urlObj.hostname.includes("youtu.be")) {
+      return urlObj.pathname.slice(1); // youtu.be/VIDEOID
+    }
+    if(urlObj.hostname.includes("youtube.com")) {
+      return urlObj.searchParams.get("v");
+    }
+  } catch(e) {
+    console.error("Invalid URL", e);
+  }
+  return null;
+}
+
 function loadVideo() {
   const url = document.getElementById('videoUrl').value;
   const videoId = extractVideoID(url);
-  if(videoId && player) player.loadVideoById(videoId);
-}
+  if(!videoId) {
+    alert("Invalid YouTube URL");
+    return;
+  }
 
-function extractVideoID(url) {
-  const regex = /(?:youtube\.com\/.*v=|youtu\.be\/)([^&]+)/;
-  const match = url.match(regex);
-  return match ? match[1] : null;
+  if(player && typeof player.loadVideoById === "function") {
+    player.loadVideoById(videoId);
+  } else {
+    alert("Player not ready yet, please try again.");
+  }
 }
 
 // ------------------ TAG EVENT ------------------
-function tagEvent(tagName) {
+function tagEvent(tagName, liElement = null) {
   if(!player) return;
   const currentTime = Math.floor(player.getCurrentTime());
-  const li = document.createElement('li');
+  
+  // Buat li baru kalau ga dikasih
+  let li;
+  if(liElement) {
+    li = liElement;
+  } else {
+    li = document.createElement('li');
+    li.innerHTML = `<strong contenteditable="true">${tagName}</strong> <span>${formatTime(currentTime)}</span><br>
+                    <input class="noteInput" placeholder="Add note...">`;
 
-  li.innerHTML = `<strong>${tagName}</strong> <span>${formatTime(currentTime)}</span><br>
-                  <input class="noteInput" placeholder="Add note...">`;
+    const logList = document.getElementById('log');
+    logList.insertBefore(li, logList.firstChild);
 
-  // Log terbaru di atas
-  const logList = document.getElementById('log');
-  logList.insertBefore(li, logList.firstChild);
-
-  events.unshift({tag: tagName, time: currentTime, note: ''});
+    events.unshift({tag: tagName, time: currentTime, note: ''});
+  }
 }
 
 // ------------------ ADD CUSTOM TAG ------------------
@@ -94,6 +124,8 @@ function saveSession() {
   const logData = [];
   logElements.forEach((li, index) => {
     const noteInput = li.querySelector(".noteInput");
+    const tagElement = li.querySelector("strong");
+    if(tagElement) events[index].tag = tagElement.textContent; // update tag jika diedit
     events[index].note = noteInput ? noteInput.value : "";
     logData.push(events[index]);
   });
