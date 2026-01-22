@@ -86,22 +86,25 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
   justify-content: center; 
 }
 
-/* FIX TAGS BUTTONS */
+/* FIX TAGS BUTTONS - UKURAN SAMA RATA SEMUA */
 #tags { 
-  display: flex; 
-  flex-wrap: wrap; 
+  display: grid; 
+  grid-template-columns: repeat(4, 1fr); /* Maksa 4 kolom lebar sama */
   gap: 8px; 
 }
 #tags button {
-  padding: 10px 14px; 
+  width: 100%;
+  padding: 10px 2px; 
   border-radius: 10px; 
   border: 1px solid rgba(255,255,255,0.2);
   background: rgba(255,255,255,0.05); 
   color: white; 
   cursor: pointer; 
-  font-size: 12px;
-  flex: 1 1 auto; 
+  font-size: 11px; /* Dikecilin biar teks panjang gak tumpuk */
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* STRATEGY BOARD */
@@ -164,7 +167,7 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
 .pitch-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; cursor: crosshair; }
 .player-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
 
-/* NOTES GRID - FIXED 2 COLUMNS */
+/* NOTES GRID - TETEP 2 KOLOM SESUAI REQUES */
 .notes-grid { 
   display: grid; 
   grid-template-columns: repeat(2, 1fr); 
@@ -187,5 +190,7 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
 }
 
 @media (max-width: 600px) {
-  .notes-grid { grid-template-columns: 1fr; } /* Jadi 1 kolom cuma pas di HP kecil banget */
-}
+  #tags { grid-template-columns: repeat(2, 1fr); }
+  .notes-grid { grid-template-columns: 1fr; }
+  }
+  
