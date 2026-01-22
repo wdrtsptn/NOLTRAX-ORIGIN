@@ -14,8 +14,8 @@ body {
 
   background:
     linear-gradient(
-      rgba(10, 15, 30, 0.75),
-      rgba(10, 15, 30, 0.9)
+      rgba(10, 15, 30, 0.35),
+      rgba(10, 15, 30, 0.5)
     ),
     url("20260122_100603.jpg");
 
