@@ -1,266 +1,75 @@
-/* RESET */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* BODY */
+/* RESET & GLOBAL */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: #ffffff;
   padding: 32px;
-
-  background:
-    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.3)),
-    url("20260122_100603.jpg");
-
+  background: linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.3)), url("20260122_100603.jpg");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 }
 
-/* HEADER */
-header {
-  max-width: 1200px;
-  margin: 0 auto 24px auto;
-}
-
-header h1 {
-  font-size: 34px;
-  margin-bottom: 16px;
-}
-
-/* METADATA GLASS */
+/* HEADER & METADATA */
+header { max-width: 1200px; margin: 0 auto 24px auto; }
 #metadata {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 18px;
-  border-radius: 18px;
-
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(255,255,255,0.15);
-  margin-bottom: 16px;
+  display: flex; flex-wrap: wrap; gap: 12px; padding: 18px; border-radius: 18px;
+  background: rgba(255,255,255,0.08); backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.15); margin-bottom: 16px;
 }
-
 #metadata input {
-  flex: 1 1 160px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: none;
-  background: rgba(255,255,255,0.15);
-  color: white;
+  flex: 1 1 160px; padding: 10px 14px; border-radius: 12px; border: none;
+  background: rgba(255,255,255,0.15); color: white;
 }
-
-#metadata input::placeholder {
-  color: rgba(255,255,255,0.6);
-}
-
-/* SAVE BUTTON */
 #saveBtn {
-  background: #1e90ff;
-  color: white;
-  padding: 12px 20px;
-  border-radius: 14px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
+  background: #1e90ff; color: white; padding: 12px 20px; border-radius: 14px;
+  border: none; font-weight: 600; cursor: pointer;
 }
 
-#saveBtn:hover {
-  background: #3aa0ff;
-}
-
-/* MAIN CONTAINER */
+/* CONTAINER ATAS (Log & Video Sejajar) */
 #container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  gap: 24px;
+  max-width: 1200px; margin: 0 auto;
+  display: flex; gap: 24px;
 }
+#logPanel { width: 40%; max-height: 600px; padding: 18px; border-radius: 18px; background: rgba(255,255,255,0.08); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.15); overflow-y: auto; }
+#videoPanel { width: 60%; padding: 18px; border-radius: 18px; background: rgba(255,255,255,0.08); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.15); }
 
-/* LOG PANEL */
-#logPanel {
-  width: 40%;
-  max-height: 600px;
-  padding: 18px;
-  border-radius: 18px;
-  overflow-y: auto;
-
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(255,255,255,0.15);
-}
-
-#logPanel h3 {
-  margin-bottom: 14px;
-}
-
-#logPanel li {
-  background: rgba(0,0,0,0.35);
-  padding: 12px;
-  border-radius: 12px;
-  margin-bottom: 10px;
-}
-
-/* VIDEO PANEL */
-#videoPanel {
-  width: 60%;
-  padding: 18px;
-  border-radius: 18px;
-
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(255,255,255,0.15);
-}
-
-#videoInput {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-#videoPanel input {
-  flex: 1;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: none;
-  background: rgba(255,255,255,0.15);
-  color: white;
-}
-
-#videoPanel button {
-  padding: 10px 16px;
-  border-radius: 12px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  background: rgba(255,255,255,0.15);
-  color: white;
-}
-
-/* PLAYER */
-#player {
-  width: 100%;
-  height: 360px;
-  background: black;
-  border-radius: 16px;
-  margin-bottom: 16px;
-  position: relative;
-}
-
-/* TAG BUTTONS */
-#tags {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-}
-
-#tags button {
-  height: 44px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.25);
-  background: rgba(255,255,255,0.08);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background .2s ease, transform .15s ease;
-}
-
-/* HOVER → BIRU TERANG */
-#tags button:hover {
-  background: #1e90ff;
-  transform: translateY(-2px);
-}
-
-/* STRATEGY BOARD STYLING */
+/* STRATEGY BOARD (DI BAWAH CONTAINER) */
 #strategyBoard {
-  max-width: 1200px;
-  margin: 32px auto;
-  padding: 24px;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 18px;
+  max-width: 1200px; margin: 32px auto; padding: 24px;
+  background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 18px;
+  display: block; /* MAKSA TURUN KE BAWAH */
+  clear: both;
 }
 
-.top-row {
-  display: flex;
-  gap: 24px;
-  margin-bottom: 24px;
-}
-
+.top-row { display: flex; gap: 24px; margin-bottom: 24px; }
 .squad-table { width: 40%; }
-.pitch-area { 
-  width: 60%; 
-  display: flex; 
-  flex-direction: column; 
-  gap: 12px; 
-}
+.pitch-area { width: 60%; display: flex; flex-direction: column; gap: 12px; }
 
-/* Table Input Styling */
+/* FIX WARNA PUTIH DI TABEL & INPUT */
 .squad-table table { width: 100%; border-collapse: collapse; }
 .squad-table input {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  color: white;
-  padding: 8px;
-  border-radius: 6px;
+  width: 100%; background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  color: white !important; padding: 8px; border-radius: 6px;
 }
-.sub-row { font-size: 12px; font-weight: bold; color: #1e90ff; text-align: center; }
+.sub-row { font-size: 12px; font-weight: bold; color: #1e90ff; text-align: center; height: 35px; }
 
-/* Pitch Styling */
-.pitch-container {
-  position: relative;
-  height: 200px;
-  background: rgba(0,0,0,0.3);
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
-}
-.pitch-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
-.pitch-label {
-  position: absolute;
-  background: rgba(30, 144, 255, 0.8);
-  border: none;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  width: 60px;
-  font-weight: bold;
-}
-.q1, .q3 { top: 10px; left: 10px; }
-.q2, .q4 { top: 10px; right: 10px; }
+/* LAPANGAN & NOTES */
+.pitch-container { position: relative; height: 200px; background: rgba(0,0,0,0.3); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+.pitch-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; }
+.pitch-label { position: absolute; background: #1e90ff !important; border: none; color: white; padding: 4px; border-radius: 4px; width: 50px; text-align: center; font-weight: bold; }
+.q1, .q3 { top: 10px; left: 10px; } .q2, .q4 { top: 10px; right: 10px; }
 
-/* Notes Grid Styling */
-.notes-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-}
-.note-item {
-  display: flex;
-  flex-direction: column;
-  background: rgba(0, 0, 0, 0.25);
-  padding: 12px;
-  border-radius: 12px;
-  border-left: 4px solid #1e90ff;
-}
-.note-item span {
-  font-size: 11px;
-  font-weight: bold;
-  margin-bottom: 8px;
-  color: #1e90ff;
-}
-.note-item textarea {
-  background: transparent;
-  border: none;
-  color: white;
-  resize: none;
-  height: 80px;
-  font-family: inherit;
-}
+.notes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.note-item { background: rgba(0, 0, 0, 0.25); padding: 12px; border-radius: 12px; border-left: 4px solid #1e90ff; }
+.note-item span { font-size: 11px; font-weight: bold; color: #1e90ff; display: block; margin-bottom: 5px; }
+.note-item textarea { background: transparent; border: none; color: white; resize: none; width: 100%; height: 70px; outline: none; }
 
+/* PLAYER & TAGS */
+#player { width: 100%; height: 360px; background: black; border-radius: 16px; margin-bottom: 16px; position: relative; }
+#tags { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+#tags button { height: 44px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.08); color: white; font-weight: 600; cursor: pointer; transition: 0.2s; }
+#tags button:hover { background: #1e90ff; transform: translateY(-2px); }
+       
