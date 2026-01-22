@@ -8,63 +8,106 @@
 /* BODY */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  min-height: 100vh;
   color: #ffffff;
-  padding: 48px 24px;
-
   background:
-    linear-gradient(
-      rgba(0, 0, 0, 0.5),
-      rgba(0, 0, 0, 0.25)
-    ),
+    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.35)),
     url("20260122_100603.jpg");
-
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed; /* BG DIEM */
 }
 
 /* HERO */
 .hero {
-  max-width: 900px;
-  margin: 0 auto 24px auto;
-  text-align: left;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.hero-inner {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.hero h2 {
+  font-size: 18px;
+  opacity: 0.85;
+  margin-bottom: 6px;
 }
 
 .hero h1 {
-  font-size: 44px;
-  font-weight: 700;
-  margin-bottom: 12px;
+  font-size: 48px;
+  margin-bottom: 36px;
   letter-spacing: -0.5px;
 }
 
-.hero-desc {
-  font-size: 16px;
-  line-height: 1.7;
-  opacity: 0.9;
-  max-width: 720px;
+/* NAV CARDS */
+.nav-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+/* GLASS CARD */
+.glass-card {
+  text-decoration: none;
+  color: white;
+  padding: 32px;
+  border-radius: 12px; /* LEBIH KOTAK */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: all 0.25s ease;
+}
+
+.glass-card h2 {
+  font-size: 22px; /* TULISAN GEDE */
+  margin-bottom: 12px;
+}
+
+.glass-card span {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* HOVER BIRU */
+.glass-card:hover {
+  background: #1e5eff;
+  border-color: #1e5eff;
+  transform: translateY(-6px);
+}
+
+.glass-card:hover span {
+  color: #ffffff;
 }
 
 /* INTRO */
 .intro {
   max-width: 900px;
-  margin: 0 auto 48px auto;
+  margin: 0 auto;
+  padding: 80px 24px 48px;
 }
 
 .intro p {
   font-size: 15px;
   line-height: 1.8;
-  opacity: 0.8;
-  max-width: 760px;
+  opacity: 0.85;
+  margin-bottom: 18px;
 }
 
-/* PRODUCT EXPLANATION */
+/* PRODUCTS */
 .products {
   max-width: 900px;
-  margin: 0 auto 56px auto;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
+  margin: 0 auto;
+  padding: 0 24px 64px;
+}
+
+.product {
+  margin-bottom: 32px;
 }
 
 .product h2 {
@@ -76,55 +119,13 @@ body {
   font-size: 15px;
   line-height: 1.8;
   opacity: 0.85;
-  max-width: 760px;
 }
 
-/* NAV CARDS */
-.nav-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
-  max-width: 1100px;
-  margin: 0 auto 64px auto;
-}
-
-/* GLASS CARD */
-.glass-card {
-  text-decoration: none;
-  color: white;
-  padding: 28px;
-  border-radius: 18px;
-
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.glass-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
-}
-
-.glass-card h2 {
-  font-size: 20px;
-  margin-bottom: 14px;
-}
-
-.glass-card span {
-  font-size: 14px;
-  font-weight: 600;
-  color: #7aa7ff;
-}
-
-/* WHY SECTION */
+/* WHY */
 .why {
   max-width: 900px;
   margin: 0 auto;
+  padding: 0 24px 80px;
 }
 
 .why h3 {
@@ -142,29 +143,26 @@ body {
   opacity: 0.85;
 }
 
+/* FOOTER */
+#footer {
+  background: #ffffff;
+  color: #000000;
+  text-align: center;
+  padding: 28px 16px;
+}
+
+#footer h2 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+#footer p {
+  font-size: 13px;
+}
+
 /* MOBILE */
 @media (max-width: 480px) {
-  body {
-    padding: 32px 18px;
-  }
-
   .hero h1 {
-    font-size: 34px;
+    font-size: 36px;
   }
-
-  .hero-desc {
-    font-size: 15px;
-  }
-
-  /* footer*/
-#footer {
-  background-color: #ffffff;
-  color: 000000;
-  text-align: center;
-}
-
-#footer h2,
-#footer p {
-  color: #000000 !important;
-}
 }
