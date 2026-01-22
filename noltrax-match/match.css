@@ -1,9 +1,14 @@
 /* GLOBAL RESET */
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: #ffffff;
-  padding: 32px;
+  padding: 20px;
   background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.4)), url("20260122_100603.jpg");
   background-size: cover;
   background-position: center;
@@ -27,31 +32,94 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
 }
 
 /* CONTAINER ATAS */
-#container { max-width: 1200px; margin: 0 auto; display: flex; gap: 24px; }
+#container { 
+  max-width: 1200px; 
+  margin: 0 auto; 
+  display: flex; 
+  flex-wrap: wrap; /* Supaya mobile gak tumpuk paksa */
+  gap: 24px; 
+}
+
 #logPanel, #videoPanel {
   padding: 18px; border-radius: 18px;
   background: rgba(255,255,255,0.08); backdrop-filter: blur(14px);
   border: 1px solid rgba(255,255,255,0.15);
 }
-#logPanel { width: 40%; max-height: 600px; overflow-y: auto; }
-#videoPanel { width: 60%; }
 
-/* STRATEGY BOARD - TRANSPARENT PARENT */
-#strategyBoard {
-  max-width: 1200px; margin: 32px auto;
-  background: none; border: none; /* Hapus card besar */
+#logPanel { flex: 1 1 350px; max-height: 600px; overflow-y: auto; }
+#videoPanel { flex: 2 1 500px; }
+
+/* FIX VIDEO INPUT & URL */
+#videoInput { 
+  display: flex; 
+  gap: 8px; 
+  margin-bottom: 12px; 
+  width: 100%;
+}
+#videoInput input { 
+  flex: 1; 
+  padding: 10px 14px; 
+  border-radius: 10px; 
+  border: none; 
+  background: rgba(255,255,255,0.1); 
+  color: white; 
+  outline: none;
+}
+#loadVideoBtn { 
+  padding: 10px 16px; 
+  border-radius: 10px; 
+  border: none; 
+  background: #444; 
+  color: white; 
+  cursor: pointer; 
+  font-weight: bold;
 }
 
-.top-row { display: flex; gap: 24px; align-items: stretch; margin-bottom: 24px; }
+#player { 
+  width: 100%; 
+  aspect-ratio: 16 / 9; /* Biar responsif ngikutin video */
+  background: #000; 
+  border-radius: 12px; 
+  margin-bottom: 16px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
 
-/* MODULAR GLASS FOR SQUAD */
+/* FIX TAGS BUTTONS (BIAR RAPI GAK BERANTAKAN) */
+#tags { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 8px; 
+}
+#tags button {
+  padding: 10px 14px; 
+  border-radius: 10px; 
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.05); 
+  color: white; 
+  cursor: pointer; 
+  font-size: 12px;
+  flex: 1 1 auto; /* Tombol fleksibel lebarnya */
+  text-align: center;
+}
+
+/* STRATEGY BOARD (MODULAR FLOATING GLASS) */
+#strategyBoard {
+  max-width: 1200px; margin: 32px auto;
+  display: block; clear: both;
+}
+.top-row { display: flex; flex-wrap: wrap; gap: 24px; margin-bottom: 24px; align-items: stretch; }
+
+/* SQUAD TABLE */
 .squad-table { 
-  width: 40%; 
+  flex: 1 1 400px;
   background: rgba(255,255,255,0.08); backdrop-filter: blur(14px);
   border: 1px solid rgba(255,255,255,0.15); border-radius: 18px;
   padding: 18px;
 }
 .squad-table table { width: 100%; border-collapse: separate; border-spacing: 0 4px; }
+
 .squad-table th {
   text-align: left; font-size: 11px; padding: 12px; text-transform: uppercase;
   background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.1);
@@ -59,46 +127,58 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
 }
 .squad-table th:first-child { border-radius: 8px 0 0 8px; }
 .squad-table th:last-child { border-radius: 0 8px 8px 0; }
+
 .squad-table input {
   width: 100%; background: rgba(255, 255, 255, 0.05) !important;
   border: 1px solid rgba(255,255,255,0.1) !important;
   color: white !important; padding: 8px; border-radius: 6px; outline: none;
 }
 .sub-row td { 
-  background: rgba(255, 255, 255, 0.12); padding: 12px; font-weight: bold; border-radius: 8px; font-size: 11px;
+  background: rgba(255, 255, 255, 0.12); padding: 12px; font-weight: bold; border-radius: 8px; font-size: 11px; color: white;
 }
 
-/* PITCH AREA LAYERS */
-.pitch-area { width: 60%; display: flex; flex-direction: column; gap: 12px; }
+/* PITCH AREA (BIAR SEJAJAR TABEL) */
+.pitch-area { 
+  flex: 1 1 500px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 12px;
+}
+
 .pitch-container { 
-  position: relative; flex: 1; 
+  position: relative; 
+  flex: 1; /* Biar narik tinggi sejajar tabel */
+  min-height: 300px;
   background: rgba(255,255,255,0.08); backdrop-filter: blur(14px);
   border: 1px solid rgba(255,255,255,0.15); border-radius: 18px;
-  overflow: hidden; display: flex; align-items: center; justify-content: center;
+  overflow: hidden; 
+  display: flex; align-items: center; justify-content: center;
 }
-.pitch-img { width: 100%; height: 100%; object-fit: contain; padding: 15px; filter: invert(1); mix-blend-mode: screen; opacity: 0.6; pointer-events: none; }
+
+.pitch-img { 
+  width: 100%; height: 100%; object-fit: contain; padding: 15px; 
+  filter: invert(1); mix-blend-mode: screen; opacity: 0.6; 
+  pointer-events: none; /* Biar gak ganggu canvas */
+}
 
 /* CANVAS & PLAYER LAYER */
 .pitch-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; cursor: crosshair; }
 .player-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
 
-/* PLAYER TOKEN (LINGKARAN NOMOR) */
-.player-token {
-  position: absolute; width: 28px; height: 28px; background: #1e90ff; color: white;
-  border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: bold; border: 2px solid white; pointer-events: auto;
-  cursor: move; transform: translate(-50%, -50%);
-}
-
-/* NOTES MODULAR GLASS */
-.notes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+/* NOTES GRID */
+.notes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
 .note-item { 
   background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 18px; padding: 15px;
 }
-.note-item span { font-size: 11px; font-weight: bold; display: block; margin-bottom: 8px; letter-spacing: 1px; }
-.note-item textarea { background: transparent; border: none; color: white; resize: none; width: 100%; height: 70px; outline: none; }
+.note-item span { font-size: 11px; font-weight: bold; color: white; display: block; margin-bottom: 8px; letter-spacing: 1px; }
+.note-item textarea { 
+  background: transparent; border: none; color: white; resize: none; width: 100%; height: 70px; outline: none; font-size: 13px;
+}
 
-/* TAGS BUTTONS */
-#tags button { padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; cursor: pointer; }
-    
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  #container { flex-direction: column; }
+  .top-row { flex-direction: column; }
+  .squad-table, .pitch-area { width: 100%; }
+}
