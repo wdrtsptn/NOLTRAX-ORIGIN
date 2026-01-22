@@ -156,3 +156,15 @@ body {
     font-size: 15px;
   }
 }
+
+/* footer*/
+#footer {
+  background-color: #ffffff;
+  color: 000000;
+  text-align: center;
+}
+
+#footer h2,
+#footer p {
+  color: #000000 !important;
+}
