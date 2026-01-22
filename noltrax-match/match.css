@@ -36,7 +36,7 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
   max-width: 1200px; 
   margin: 0 auto; 
   display: flex; 
-  flex-wrap: wrap; /* Supaya mobile gak tumpuk paksa */
+  flex-wrap: wrap; 
   gap: 24px; 
 }
 
@@ -77,7 +77,7 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
 
 #player { 
   width: 100%; 
-  aspect-ratio: 16 / 9; /* Biar responsif ngikutin video */
+  aspect-ratio: 16 / 9; 
   background: #000; 
   border-radius: 12px; 
   margin-bottom: 16px; 
@@ -86,7 +86,7 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
   justify-content: center; 
 }
 
-/* FIX TAGS BUTTONS (BIAR RAPI GAK BERANTAKAN) */
+/* FIX TAGS BUTTONS */
 #tags { 
   display: flex; 
   flex-wrap: wrap; 
@@ -100,11 +100,11 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
   color: white; 
   cursor: pointer; 
   font-size: 12px;
-  flex: 1 1 auto; /* Tombol fleksibel lebarnya */
+  flex: 1 1 auto; 
   text-align: center;
 }
 
-/* STRATEGY BOARD (MODULAR FLOATING GLASS) */
+/* STRATEGY BOARD */
 #strategyBoard {
   max-width: 1200px; margin: 32px auto;
   display: block; clear: both;
@@ -137,7 +137,7 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
   background: rgba(255, 255, 255, 0.12); padding: 12px; font-weight: bold; border-radius: 8px; font-size: 11px; color: white;
 }
 
-/* PITCH AREA (BIAR SEJAJAR TABEL) */
+/* PITCH AREA */
 .pitch-area { 
   flex: 1 1 500px; 
   display: flex; 
@@ -147,7 +147,7 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
 
 .pitch-container { 
   position: relative; 
-  flex: 1; /* Biar narik tinggi sejajar tabel */
+  flex: 1; 
   min-height: 300px;
   background: rgba(255,255,255,0.08); backdrop-filter: blur(14px);
   border: 1px solid rgba(255,255,255,0.15); border-radius: 18px;
@@ -158,15 +158,18 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
 .pitch-img { 
   width: 100%; height: 100%; object-fit: contain; padding: 15px; 
   filter: invert(1); mix-blend-mode: screen; opacity: 0.6; 
-  pointer-events: none; /* Biar gak ganggu canvas */
+  pointer-events: none; 
 }
 
-/* CANVAS & PLAYER LAYER */
 .pitch-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; cursor: crosshair; }
 .player-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
 
-/* NOTES GRID */
-.notes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+/* NOTES GRID - FIXED 2 COLUMNS */
+.notes-grid { 
+  display: grid; 
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 16px; 
+}
 .note-item { 
   background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 18px; padding: 15px;
@@ -181,4 +184,8 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
   #container { flex-direction: column; }
   .top-row { flex-direction: column; }
   .squad-table, .pitch-area { width: 100%; }
+}
+
+@media (max-width: 600px) {
+  .notes-grid { grid-template-columns: 1fr; } /* Jadi 1 kolom cuma pas di HP kecil banget */
 }
