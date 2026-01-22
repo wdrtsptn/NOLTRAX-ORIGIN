@@ -155,9 +155,8 @@ body {
   .hero-desc {
     font-size: 15px;
   }
-}
 
-/* footer*/
+  /* footer*/
 #footer {
   background-color: #ffffff;
   color: 000000;
@@ -167,4 +166,5 @@ body {
 #footer h2,
 #footer p {
   color: #000000 !important;
+}
 }
