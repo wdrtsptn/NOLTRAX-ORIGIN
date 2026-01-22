@@ -1,195 +1,176 @@
-/* GLOBAL */
+/* RESET */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* BODY */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #F4F6F8;
-  color: #1C1C1E;
-  margin: 15px;
+  color: #ffffff;
+  padding: 32px;
+
+  background:
+    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.3)),
+    url("bg-match.jpg");
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* HEADER */
+header {
+  max-width: 1200px;
+  margin: 0 auto 24px auto;
 }
 
 header h1 {
-  font-size: 32px;
-  font-weight: 600;
-  margin-bottom: 15px;
+  font-size: 34px;
+  margin-bottom: 16px;
 }
 
+/* METADATA GLASS */
 #metadata {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 15px;
+  gap: 12px;
+  padding: 18px;
+  border-radius: 18px;
+
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.15);
+  margin-bottom: 16px;
 }
 
 #metadata input {
+  flex: 1 1 160px;
   padding: 10px 14px;
   border-radius: 12px;
-  border: 1px solid #CCC;
-  flex: 1 1 150px;
-  background-color: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border: none;
+  background: rgba(255,255,255,0.15);
+  color: white;
+}
+
+#metadata input::placeholder {
+  color: rgba(255,255,255,0.6);
 }
 
 /* SAVE BUTTON */
 #saveBtn {
-  background-color: #007AFF;
+  background: #1e90ff;
   color: white;
-  padding: 12px 18px;
-  border-radius: 16px;
+  padding: 12px 20px;
+  border-radius: 14px;
   border: none;
-  cursor: pointer;
   font-weight: 600;
-  margin-top: 10px;
-  transition: transform 0.1s ease, box-shadow 0.2s ease;
+  cursor: pointer;
 }
 
 #saveBtn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  background: #3aa0ff;
 }
 
-/* CONTAINER */
+/* MAIN CONTAINER */
 #container {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
-  gap: 20px;
-  margin-top: 20px;
+  gap: 24px;
 }
 
-/* LOG PANEL KIRI */
+/* LOG PANEL */
 #logPanel {
   width: 40%;
-  max-height: 550px;
+  max-height: 600px;
+  padding: 18px;
+  border-radius: 18px;
   overflow-y: auto;
+
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.15);
 }
 
-#logPanel ul {
-  list-style: none;
-  padding: 0;
+#logPanel h3 {
+  margin-bottom: 14px;
 }
 
 #logPanel li {
-  background-color: #fff;
-  margin-bottom: 12px;
-  padding: 14px;
-  border-radius: 16px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  transition: transform 0.1s ease;
+  background: rgba(0,0,0,0.35);
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
 }
 
-#logPanel li:hover {
-  transform: translateY(-1px);
-}
-
-.noteInput {
-  width: 95%;
-  margin-top: 6px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  border: 1px solid #CCC;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-}
-
-/* VIDEO PANEL KANAN */
+/* VIDEO PANEL */
 #videoPanel {
   width: 60%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 18px;
+  border-radius: 18px;
+
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.15);
 }
 
 #videoInput {
   display: flex;
   gap: 10px;
-  width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 #videoPanel input {
   flex: 1;
   padding: 10px 14px;
   border-radius: 12px;
-  border: 1px solid #CCC;
-  font-weight: 500;
+  border: none;
+  background: rgba(255,255,255,0.15);
+  color: white;
 }
 
 #videoPanel button {
-  padding: 10px 14px;
+  padding: 10px 16px;
   border-radius: 12px;
   border: none;
-  background-color: #007AFF;
-  color: white;
-  cursor: pointer;
   font-weight: 600;
-  transition: transform 0.1s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  background: rgba(255,255,255,0.15);
+  color: white;
 }
 
-#videoPanel button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
+/* PLAYER */
 #player {
   width: 100%;
   height: 360px;
-  background-color: #000;
+  background: black;
   border-radius: 16px;
-  overflow: hidden;
+  margin-bottom: 16px;
   position: relative;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  margin-bottom: 12px;
-}
-
-#player span {
-  position: absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  font-size:50px;
-  color:white;
-  opacity:0.25;
 }
 
 /* TAG BUTTONS */
 #tags {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 12px;
-  margin-bottom: 10px;
 }
 
-/* Semua tombol tag default & custom */
-#tags button,
-#addTagBtn {
-  flex: 0 0 120px;       /* Lebar tetap 120px */
-  height: 40px;          /* Tinggi tetap 40px */
-  padding: 0;            
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  font-weight: 500;
+#tags button {
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.08);
   color: white;
-  text-align: center;
-  white-space: nowrap;    
-  overflow: hidden;      
-  text-overflow: ellipsis; 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.1s ease, box-shadow 0.2s ease;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s ease, transform .15s ease;
 }
 
-/* Hover effect */
-#tags button:hover,
-#addTagBtn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-}
-
-/* Tag default gradients */
-#tags button:nth-child(1) { background: linear-gradient(90deg,#42A5F5,#478DE0); }
-#tags button:nth-child(2) { background: linear-gradient(90deg,#FFCA28,#FFC107); }
-#tags button:nth-child(3) { background: linear-gradient(90deg,#34C759,#28A745); }
-#tags button:nth-child(4) { background: linear-gradient(90deg,#AF52DE,#9B27B0); }
-
-/* Add Tag button gradient */
-#addTagBtn {
-  background: linear-gradient(90deg,#FF6B6B,#FF4757);
+/* HOVER → BIRU TERANG */
+#tags button:hover {
+  background: #1e90ff;
+  transform: translateY(-2px);
 }
