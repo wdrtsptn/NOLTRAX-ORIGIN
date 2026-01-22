@@ -1,10 +1,10 @@
-/* RESET & GLOBAL */
+/* GLOBAL RESET */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: #ffffff;
   padding: 32px;
-  background: linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.3)), url("20260122_100603.jpg");
+  background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.4)), url("20260122_100603.jpg");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -19,57 +19,81 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
 }
 #metadata input {
   flex: 1 1 160px; padding: 10px 14px; border-radius: 12px; border: none;
-  background: rgba(255,255,255,0.15); color: white;
+  background: rgba(255,255,255,0.15); color: white; outline: none;
 }
 #saveBtn {
-  background: #1e90ff; color: white; padding: 12px 20px; border-radius: 14px;
+  background: #1e90ff; color: white; padding: 12px 24px; border-radius: 14px;
   border: none; font-weight: 600; cursor: pointer;
 }
 
-/* CONTAINER ATAS (Log & Video Sejajar) */
+/* CONTAINER ATAS (Log & Video) */
 #container {
   max-width: 1200px; margin: 0 auto;
   display: flex; gap: 24px;
 }
-#logPanel { width: 40%; max-height: 600px; padding: 18px; border-radius: 18px; background: rgba(255,255,255,0.08); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.15); overflow-y: auto; }
-#videoPanel { width: 60%; padding: 18px; border-radius: 18px; background: rgba(255,255,255,0.08); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.15); }
+#logPanel {
+  width: 40%; max-height: 600px; padding: 18px; border-radius: 18px;
+  background: rgba(255,255,255,0.08); backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.15); overflow-y: auto;
+}
+#videoPanel {
+  width: 60%; padding: 18px; border-radius: 18px;
+  background: rgba(255,255,255,0.08); backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.15);
+}
 
-/* STRATEGY BOARD (DI BAWAH CONTAINER) */
+/* VIDEO PLAYER & TAGS */
+#videoInput { display: flex; gap: 8px; margin-bottom: 12px; }
+#videoInput input { flex: 1; padding: 8px 12px; border-radius: 8px; border: none; background: rgba(255,255,255,0.1); color: white; }
+#loadVideoBtn { padding: 8px 16px; border-radius: 8px; border: none; background: #444; color: white; cursor: pointer; }
+#player { width: 100%; height: 320px; background: #000; border-radius: 12px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; }
+#tags { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+#tags button {
+  padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.05); color: white; cursor: pointer; font-size: 12px;
+}
+
+/* STRATEGY BOARD (TEMA PUTIH BERSIH) */
 #strategyBoard {
   max-width: 1200px; margin: 32px auto; padding: 24px;
   background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 18px;
-  display: block; /* MAKSA TURUN KE BAWAH */
-  clear: both;
+  display: block; clear: both;
 }
-
 .top-row { display: flex; gap: 24px; margin-bottom: 24px; }
 .squad-table { width: 40%; }
 .pitch-area { width: 60%; display: flex; flex-direction: column; gap: 12px; }
 
-/* FIX WARNA PUTIH DI TABEL & INPUT */
+/* TABEL PEMAIN */
 .squad-table table { width: 100%; border-collapse: collapse; }
+.squad-table th { text-align: left; font-size: 12px; opacity: 0.7; padding-bottom: 8px; }
 .squad-table input {
-  width: 100%; background: rgba(255, 255, 255, 0.1) !important;
+  width: 100%; background: rgba(255, 255, 255, 0.05) !important;
   border: 1px solid rgba(255,255,255,0.1) !important;
-  color: white !important; padding: 8px; border-radius: 6px;
+  color: white !important; padding: 6px; border-radius: 4px; margin: 1px 0; outline: none;
 }
-.sub-row { font-size: 12px; font-weight: bold; color: #1e90ff; text-align: center; height: 35px; }
+.sub-row td { 
+  text-align: center; color: rgba(255,255,255,0.5) !important; 
+  font-size: 10px; font-weight: bold; letter-spacing: 2px; padding: 15px 0 10px 0; 
+}
 
-/* LAPANGAN & NOTES */
-.pitch-container { position: relative; height: 200px; background: rgba(0,0,0,0.3); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
-.pitch-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; }
-.pitch-label { position: absolute; background: #1e90ff !important; border: none; color: white; padding: 4px; border-radius: 4px; width: 50px; text-align: center; font-weight: bold; }
+/* PITCH STYLING */
+.pitch-container { position: relative; height: 180px; background: rgba(0,0,0,0.3); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+.pitch-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; }
+.pitch-label { 
+  position: absolute; background: rgba(255, 255, 255, 0.2) !important; 
+  backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.3) !important;
+  color: white !important; width: 50px; text-align: center; border-radius: 4px; padding: 3px; font-size: 10px; font-weight: bold;
+}
 .q1, .q3 { top: 10px; left: 10px; } .q2, .q4 { top: 10px; right: 10px; }
 
+/* NOTES GRID (CLEAN WHITE) */
 .notes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-.note-item { background: rgba(0, 0, 0, 0.25); padding: 12px; border-radius: 12px; border-left: 4px solid #1e90ff; }
-.note-item span { font-size: 11px; font-weight: bold; color: #1e90ff; display: block; margin-bottom: 5px; }
-.note-item textarea { background: transparent; border: none; color: white; resize: none; width: 100%; height: 70px; outline: none; }
-
-/* PLAYER & TAGS */
-#player { width: 100%; height: 360px; background: black; border-radius: 16px; margin-bottom: 16px; position: relative; }
-#tags { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-#tags button { height: 44px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.08); color: white; font-weight: 600; cursor: pointer; transition: 0.2s; }
-#tags button:hover { background: #1e90ff; transform: translateY(-2px); }
-       
+.note-item { 
+  background: rgba(255, 255, 255, 0.08) !important; padding: 15px; border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important; /* DISAMAIN SAMA PANEL LAIN */
+}
+.note-item span { font-size: 11px; font-weight: bold; color: white !important; opacity: 0.9; display: block; margin-bottom: 8px; letter-spacing: 1px; }
+.note-item textarea { 
+  background: transparent; border: none; color: white; resize: none; width: 100%; height: 70px; outline: none; font-size: 13px;
+}
