@@ -56,17 +56,23 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
 }
 .top-row { display: flex; gap: 24px; margin-bottom: 24px; }
 .squad-table { width: 40%; }
-.pitch-area { width: 60%; display: flex; flex-direction: column; gap: 12px; }
 
-/* SQUAD TABLE (Unified Glass Design) */
+/* PITCH AREA - SEJAJAR TABEL */
+.pitch-area { 
+  width: 60%; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 12px;
+  justify-content: space-between; /* Menarik kotak atas & bawah biar sejajar ujung tabel */
+}
+
+/* SQUAD TABLE */
 .squad-table table { width: 100%; border-collapse: separate; border-spacing: 0 4px; }
-
 .header-glass {
   text-align: left; font-size: 11px; padding: 12px; text-transform: uppercase;
   background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.1);
   color: #ffffff; letter-spacing: 1px;
 }
-/* Membulatkan sudut baris header */
 .header-glass:first-child { border-radius: 8px 0 0 8px; }
 .header-glass:last-child { border-radius: 0 8px 8px 0; }
 
@@ -75,28 +81,49 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
   border: 1px solid rgba(255,255,255,0.1) !important;
   color: white !important; padding: 8px; border-radius: 6px; outline: none;
 }
-/* Substitutes: White, Left-aligned, inside table flow */
 .sub-row td { 
   text-align: left; color: #ffffff !important; 
   font-size: 11px; font-weight: bold; letter-spacing: 2px; 
   padding: 15px 12px 10px 12px; 
 }
 
-/* PITCH STYLING */
-.pitch-container { position: relative; height: 180px; background: rgba(0,0,0,0.3); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); }
-.pitch-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; }
+/* PITCH CONTAINER - ANTI CROP */
+.pitch-container { 
+  position: relative; 
+  height: 250px; /* Tinggi disesuaikan biar pas sejajar sama tabel samping */
+  background: rgba(255,255,255,0.05); 
+  border-radius: 12px; 
+  overflow: hidden; 
+  border: 1px solid rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* GAMBAR VECTOR - ANTI CROP & GARIS PUTIH */
+.pitch-img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: contain; /* PENTING: Supaya gambar utuh gak kepotong */
+  padding: 10px; /* Jarak aman garis lapangan */
+  filter: invert(1); /* Balik garis hitam jadi putih */
+  mix-blend-mode: screen; /* Hilangkan background hitam hasil invert */
+  opacity: 0.8; 
+}
+
 .pitch-label { 
   position: absolute; background: rgba(255, 255, 255, 0.2) !important; 
   backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.3) !important;
   color: white !important; width: 50px; text-align: center; border-radius: 4px; padding: 4px; font-size: 10px; font-weight: bold;
+  z-index: 10;
 }
 .q1, .q3 { top: 10px; left: 10px; } .q2, .q4 { top: 10px; right: 10px; }
 
-/* NOTES GRID (NO BLUE) */
+/* NOTES GRID */
 .notes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 .note-item { 
   background: rgba(255, 255, 255, 0.08) !important; padding: 15px; border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Disamakan dengan panel log/video */
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 .note-item span { font-size: 11px; font-weight: bold; color: white !important; display: block; margin-bottom: 8px; letter-spacing: 1px; }
 .note-item textarea { 
