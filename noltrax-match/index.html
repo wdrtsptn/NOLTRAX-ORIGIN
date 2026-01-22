@@ -57,49 +57,53 @@
       <table>
         <thead>
           <tr>
-            <th class="glass-th" style="width: 45px;">No</th>
-            <th class="glass-th" style="width: 65px;">Pos</th>
-            <th class="glass-th">Name</th>
+            <th style="width: 45px;">No</th>
+            <th style="width: 65px;">Pos</th>
+            <th>Name</th>
           </tr>
         </thead>
-        <tbody>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+        <tbody id="squadBody">
+          <tr draggable="true" ondragstart="drag(event)">
+            <td><input type="text" class="player-no"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+          </tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
           
           <tr class="sub-row">
             <td colspan="3">SUBSTITUTES</td>
           </tr>
           
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="pitch-area">
-      <div class="pitch-container">
+      <div class="pitch-container" id="pitch1" ondrop="drop(event)" ondragover="allowDrop(event)">
         <img src="Untitled41_20260122170521.jpg" class="pitch-img">
-        <input type="text" class="pitch-label q1" placeholder="Q1">
-        <input type="text" class="pitch-label q2" placeholder="Q2">
+        <canvas class="pitch-canvas"></canvas>
+        <div class="player-layer"></div>
       </div>
-      <div class="pitch-container">
+      <div class="pitch-container" id="pitch2" ondrop="drop(event)" ondragover="allowDrop(event)">
         <img src="Untitled41_20260122170521.jpg" class="pitch-img">
-        <input type="text" class="pitch-label q3" placeholder="Q3">
-        <input type="text" class="pitch-label q4" placeholder="Q4">
+        <canvas class="pitch-canvas"></canvas>
+        <div class="player-layer"></div>
       </div>
     </div>
   </div>
