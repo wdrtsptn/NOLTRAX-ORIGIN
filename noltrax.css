@@ -10,14 +10,14 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   min-height: 100vh;
   color: #ffffff;
-  padding: 32px 20px;
+  padding: 48px 24px;
 
   background:
     linear-gradient(
-      rgba(0, 0, 0, 0.15),
-      rgba(0, 0, 0, 0.25)
+      rgba(10, 15, 30, 0.6),
+      rgba(10, 15, 30, 0.85)
     ),
-    url("20260122_100603.jpg");
+    url("bg.jpg");
 
   background-size: cover;
   background-position: center;
@@ -27,37 +27,72 @@ body {
 /* HERO */
 .hero {
   max-width: 900px;
-  margin: 0 auto 60px auto;
-  text-align: center;
+  margin: 0 auto 24px auto;
+  text-align: left;
 }
 
 .hero h1 {
-  font-size: 42px;
+  font-size: 44px;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   letter-spacing: -0.5px;
 }
 
-.hero p {
+.hero-desc {
   font-size: 16px;
   line-height: 1.7;
+  opacity: 0.9;
+  max-width: 720px;
+}
+
+/* INTRO */
+.intro {
+  max-width: 900px;
+  margin: 0 auto 48px auto;
+}
+
+.intro p {
+  font-size: 15px;
+  line-height: 1.8;
+  opacity: 0.8;
+  max-width: 760px;
+}
+
+/* PRODUCT EXPLANATION */
+.products {
+  max-width: 900px;
+  margin: 0 auto 56px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.product h2 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.product p {
+  font-size: 15px;
+  line-height: 1.8;
   opacity: 0.85;
+  max-width: 760px;
 }
 
 /* NAV CARDS */
 .nav-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 24px;
   max-width: 1100px;
-  margin: 0 auto;
+  margin: 0 auto 64px auto;
 }
 
 /* GLASS CARD */
 .glass-card {
   text-decoration: none;
   color: white;
-  padding: 24px;
+  padding: 28px;
   border-radius: 18px;
 
   background: rgba(255, 255, 255, 0.08);
@@ -75,17 +110,9 @@ body {
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
 }
 
-/* CARD TEXT */
 .glass-card h2 {
   font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.glass-card p {
-  font-size: 14px;
-  line-height: 1.6;
-  opacity: 0.85;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .glass-card span {
@@ -94,13 +121,38 @@ body {
   color: #7aa7ff;
 }
 
+/* WHY SECTION */
+.why {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.why h3 {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.why ul {
+  list-style: none;
+}
+
+.why li {
+  font-size: 14px;
+  line-height: 1.8;
+  opacity: 0.85;
+}
+
 /* MOBILE */
 @media (max-width: 480px) {
+  body {
+    padding: 32px 18px;
+  }
+
   .hero h1 {
     font-size: 34px;
   }
 
-  .hero p {
+  .hero-desc {
     font-size: 15px;
   }
 }
