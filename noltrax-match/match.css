@@ -36,104 +36,69 @@ header { max-width: 1200px; margin: 0 auto 24px auto; }
 #logPanel { width: 40%; max-height: 600px; overflow-y: auto; }
 #videoPanel { width: 60%; }
 
-/* VIDEO PLAYER & TAGS */
-#videoInput { display: flex; gap: 8px; margin-bottom: 12px; }
-#videoInput input { flex: 1; padding: 8px 12px; border-radius: 8px; border: none; background: rgba(255,255,255,0.1); color: white; }
-#loadVideoBtn { padding: 8px 16px; border-radius: 8px; border: none; background: #444; color: white; cursor: pointer; }
-#player { width: 100%; height: 320px; background: #000; border-radius: 12px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; }
-#tags { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-#tags button {
-  padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
-  background: rgba(255,255,255,0.05); color: white; cursor: pointer; font-size: 12px;
-}
-
-/* STRATEGY BOARD (FULL WHITE GLASS) */
+/* STRATEGY BOARD - TRANSPARENT PARENT */
 #strategyBoard {
-  max-width: 1200px; margin: 32px auto; padding: 24px;
-  background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 18px;
+  max-width: 1200px; margin: 32px auto;
+  background: none; border: none; /* Hapus card besar */
 }
 
-/* TOP ROW LAYOUT */
 .top-row { display: flex; gap: 24px; align-items: stretch; margin-bottom: 24px; }
 
-/* SQUAD TABLE - UNIFIED DESIGN */
-.squad-table { width: 40%; }
-.squad-table h3 { display: none; } /* Hapus teks Squad & Subs yang diluar */
-
+/* MODULAR GLASS FOR SQUAD */
+.squad-table { 
+  width: 40%; 
+  background: rgba(255,255,255,0.08); backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.15); border-radius: 18px;
+  padding: 18px;
+}
 .squad-table table { width: 100%; border-collapse: separate; border-spacing: 0 4px; }
-
-/* HEADER (No, Pos, Name) - Sekarang Masuk Box Glass */
-.squad-table th, .header-glass {
+.squad-table th {
   text-align: left; font-size: 11px; padding: 12px; text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.12) !important; 
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.1);
   color: #ffffff; letter-spacing: 1px;
 }
 .squad-table th:first-child { border-radius: 8px 0 0 8px; }
 .squad-table th:last-child { border-radius: 0 8px 8px 0; }
-
-/* INPUT PEMAIN */
 .squad-table input {
   width: 100%; background: rgba(255, 255, 255, 0.05) !important;
   border: 1px solid rgba(255,255,255,0.1) !important;
   color: white !important; padding: 8px; border-radius: 6px; outline: none;
 }
-
-/* SUBSTITUTES - Sekarang Masuk Box Glass & Putih */
 .sub-row td { 
-  text-align: left; color: #ffffff !important; 
-  font-size: 11px; font-weight: bold; letter-spacing: 2px; 
-  padding: 12px; 
-  background: rgba(255, 255, 255, 0.12) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12); padding: 12px; font-weight: bold; border-radius: 8px; font-size: 11px;
 }
 
-/* PITCH AREA - SEJAJAR OTOMATIS */
-.pitch-area { 
-  width: 60%; 
-  display: flex; 
-  flex-direction: column; 
-  gap: 12px;
-}
-
+/* PITCH AREA LAYERS */
+.pitch-area { width: 60%; display: flex; flex-direction: column; gap: 12px; }
 .pitch-container { 
-  position: relative; 
-  flex: 1; /* Ini yang bikin kotak lapangan narik tingginya sejajar tabel */
-  background: rgba(255,255,255,0.05); 
-  border-radius: 12px; 
-  overflow: hidden; 
-  border: 1px solid rgba(255,255,255,0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative; flex: 1; 
+  background: rgba(255,255,255,0.08); backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.15); border-radius: 18px;
+  overflow: hidden; display: flex; align-items: center; justify-content: center;
+}
+.pitch-img { width: 100%; height: 100%; object-fit: contain; padding: 15px; filter: invert(1); mix-blend-mode: screen; opacity: 0.6; pointer-events: none; }
+
+/* CANVAS & PLAYER LAYER */
+.pitch-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; cursor: crosshair; }
+.player-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
+
+/* PLAYER TOKEN (LINGKARAN NOMOR) */
+.player-token {
+  position: absolute; width: 28px; height: 28px; background: #1e90ff; color: white;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: bold; border: 2px solid white; pointer-events: auto;
+  cursor: move; transform: translate(-50%, -50%);
 }
 
-.pitch-img { 
-  width: 100%; 
-  height: 100%; 
-  object-fit: contain; /* Gambar utuh gak kepotong */
-  padding: 15px; 
-  filter: invert(1); 
-  mix-blend-mode: screen; 
-  opacity: 0.7; 
-}
-
-.pitch-label { 
-  position: absolute; background: rgba(255, 255, 255, 0.2) !important; 
-  backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.3) !important;
-  color: white !important; padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: bold;
-}
-.q1, .q3 { top: 12px; left: 12px; } .q2, .q4 { top: 12px; right: 12px; }
-
-/* NOTES GRID (NO BLUE) */
+/* NOTES MODULAR GLASS */
 .notes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 .note-item { 
-  background: rgba(255, 255, 255, 0.08) !important; padding: 15px; border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 18px; padding: 15px;
 }
-.note-item span { font-size: 11px; font-weight: bold; color: white !important; display: block; margin-bottom: 8px; letter-spacing: 1px; }
-.note-item textarea { 
-  background: transparent; border: none; color: white !important; resize: none; width: 100%; height: 70px; outline: none; font-size: 13px;
-}
+.note-item span { font-size: 11px; font-weight: bold; display: block; margin-bottom: 8px; letter-spacing: 1px; }
+.note-item textarea { background: transparent; border: none; color: white; resize: none; width: 100%; height: 70px; outline: none; }
+
+/* TAGS BUTTONS */
+#tags button { padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; cursor: pointer; }
+    
