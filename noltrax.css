@@ -1,168 +1,184 @@
-/* RESET */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* GLOBAL RESET */
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
 }
 
-/* BODY */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: #ffffff;
-  background:
-    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.35)),
-    url("20260122_100603.jpg");
+  padding: 20px;
+  background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.4)), url("20260122_100603.jpg");
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed; /* BG DIEM */
+  background-attachment: fixed;
 }
 
-/* HERO */
-.hero {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
+/* HEADER & METADATA */
+header { max-width: 1200px; margin: 0 auto 24px auto; }
+#metadata {
+  display: flex; flex-wrap: wrap; gap: 12px; padding: 18px; border-radius: 18px;
+  background: rgba(255,255,255,0.08); backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.15); margin-bottom: 16px;
+}
+#metadata input {
+  flex: 1 1 160px; padding: 10px 14px; border-radius: 12px; border: none;
+  background: rgba(255,255,255,0.15); color: white; outline: none;
+}
+#saveBtn {
+  background: #1e90ff; color: white; padding: 12px 24px; border-radius: 14px;
+  border: none; font-weight: 600; cursor: pointer;
 }
 
-.hero-inner {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 48px 24px;
+/* CONTAINER ATAS */
+#container { 
+  max-width: 1200px; 
+  margin: 0 auto; 
+  display: flex; 
+  flex-wrap: wrap; /* Supaya mobile gak tumpuk paksa */
+  gap: 24px; 
 }
 
-.hero h2 {
-  font-size: 18px;
-  opacity: 0.85;
-  margin-bottom: 6px;
-}
-
-.hero h1 {
-  font-size: 48px;
-  margin-bottom: 36px;
-  letter-spacing: -0.5px;
-}
-
-/* NAV CARDS */
-.nav-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
-}
-
-/* GLASS CARD */
-.glass-card {
-  text-decoration: none;
-  color: white;
-  padding: 32px;
-  border-radius: 12px; /* LEBIH KOTAK */
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px);
+#logPanel, #videoPanel {
+  padding: 18px; border-radius: 18px;
+  background: rgba(255,255,255,0.08); backdrop-filter: blur(14px);
   border: 1px solid rgba(255,255,255,0.15);
-  transition: all 0.25s ease;
 }
 
-.glass-card h2 {
-  font-size: 22px; /* TULISAN GEDE */
-  margin-bottom: 12px;
+#logPanel { flex: 1 1 350px; max-height: 600px; overflow-y: auto; }
+#videoPanel { flex: 2 1 500px; }
+
+/* FIX VIDEO INPUT & URL */
+#videoInput { 
+  display: flex; 
+  gap: 8px; 
+  margin-bottom: 12px; 
+  width: 100%;
+}
+#videoInput input { 
+  flex: 1; 
+  padding: 10px 14px; 
+  border-radius: 10px; 
+  border: none; 
+  background: rgba(255,255,255,0.1); 
+  color: white; 
+  outline: none;
+}
+#loadVideoBtn { 
+  padding: 10px 16px; 
+  border-radius: 10px; 
+  border: none; 
+  background: #444; 
+  color: white; 
+  cursor: pointer; 
+  font-weight: bold;
 }
 
-.glass-card span {
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+#player { 
+  width: 100%; 
+  aspect-ratio: 16 / 9; /* Biar responsif ngikutin video */
+  background: #000; 
+  border-radius: 12px; 
+  margin-bottom: 16px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
 }
 
-/* HOVER BIRU */
-.glass-card:hover {
-  background: #1e5eff;
-  border-color: #1e5eff;
-  transform: translateY(-6px);
+/* FIX TAGS BUTTONS (BIAR RAPI GAK BERANTAKAN) */
+#tags { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 8px; 
 }
-
-.glass-card:hover span {
-  color: #ffffff;
-}
-
-/* INTRO */
-.intro {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 80px 24px 48px;
-}
-
-.intro p {
-  font-size: 15px;
-  line-height: 1.8;
-  opacity: 0.85;
-  margin-bottom: 18px;
-}
-
-/* PRODUCTS */
-.products {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 24px 64px;
-}
-
-.product {
-  margin-bottom: 32px;
-}
-
-.product h2 {
-  font-size: 22px;
-  margin-bottom: 8px;
-}
-
-.product p {
-  font-size: 15px;
-  line-height: 1.8;
-  opacity: 0.85;
-}
-
-/* WHY */
-.why {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 24px 80px;
-}
-
-.why h3 {
-  font-size: 20px;
-  margin-bottom: 16px;
-}
-
-.why ul {
-  list-style: none;
-}
-
-.why li {
-  font-size: 14px;
-  line-height: 1.8;
-  opacity: 0.85;
-}
-
-/* FOOTER */
-#footer {
-  background: #ffffff;
-  color: #000000;
+#tags button {
+  padding: 10px 14px; 
+  border-radius: 10px; 
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.05); 
+  color: white; 
+  cursor: pointer; 
+  font-size: 12px;
+  flex: 1 1 auto; /* Tombol fleksibel lebarnya */
   text-align: center;
-  padding: 28px 16px;
 }
 
-#footer h2 {
-  font-size: 18px;
-  margin-bottom: 6px;
+/* STRATEGY BOARD (MODULAR FLOATING GLASS) */
+#strategyBoard {
+  max-width: 1200px; margin: 32px auto;
+  display: block; clear: both;
+}
+.top-row { display: flex; flex-wrap: wrap; gap: 24px; margin-bottom: 24px; align-items: stretch; }
+
+/* SQUAD TABLE */
+.squad-table { 
+  flex: 1 1 400px;
+  background: rgba(255,255,255,0.08); backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.15); border-radius: 18px;
+  padding: 18px;
+}
+.squad-table table { width: 100%; border-collapse: separate; border-spacing: 0 4px; }
+
+.squad-table th {
+  text-align: left; font-size: 11px; padding: 12px; text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff; letter-spacing: 1px;
+}
+.squad-table th:first-child { border-radius: 8px 0 0 8px; }
+.squad-table th:last-child { border-radius: 0 8px 8px 0; }
+
+.squad-table input {
+  width: 100%; background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  color: white !important; padding: 8px; border-radius: 6px; outline: none;
+}
+.sub-row td { 
+  background: rgba(255, 255, 255, 0.12); padding: 12px; font-weight: bold; border-radius: 8px; font-size: 11px; color: white;
 }
 
-#footer p {
-  font-size: 13px;
+/* PITCH AREA (BIAR SEJAJAR TABEL) */
+.pitch-area { 
+  flex: 1 1 500px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 12px;
 }
 
-/* MOBILE */
-@media (max-width: 480px) {
-  .hero h1 {
-    font-size: 36px;
+.pitch-container { 
+  position: relative; 
+  flex: 1; /* Biar narik tinggi sejajar tabel */
+  min-height: 300px;
+  background: rgba(255,255,255,0.08); backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.15); border-radius: 18px;
+  overflow: hidden; 
+  display: flex; align-items: center; justify-content: center;
+}
+
+.pitch-img { 
+  width: 100%; height: 100%; object-fit: contain; padding: 15px; 
+  filter: invert(1); mix-blend-mode: screen; opacity: 0.6; 
+  pointer-events: none; /* Biar gak ganggu canvas */
+}
+
+/* CANVAS & PLAYER LAYER */
+.pitch-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; cursor: crosshair; }
+.player-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
+
+/* NOTES GRID */
+.notes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.note-item { 
+  background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 18px; padding: 15px;
+}
+.note-item span { font-size: 11px; font-weight: bold; color: white; display: block; margin-bottom: 8px; letter-spacing: 1px; }
+.note-item textarea { 
+  background: transparent; border: none; color: white; resize: none; width: 100%; height: 70px; outline: none; font-size: 13px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  #container { flex-direction: column; }
+  .top-row { flex-direction: column; }
+  .squad-table, .pitch-area { width: 100%; }
   }
-}
