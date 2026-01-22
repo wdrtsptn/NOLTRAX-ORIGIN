@@ -174,3 +174,93 @@ header h1 {
   background: #1e90ff;
   transform: translateY(-2px);
 }
+
+/* STRATEGY BOARD STYLING */
+#strategyBoard {
+  max-width: 1200px;
+  margin: 32px auto;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 18px;
+}
+
+.top-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.squad-table { width: 40%; }
+.pitch-area { 
+  width: 60%; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 12px; 
+}
+
+/* Table Input Styling */
+.squad-table table { width: 100%; border-collapse: collapse; }
+.squad-table input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 8px;
+  border-radius: 6px;
+}
+.sub-row { font-size: 12px; font-weight: bold; color: #1e90ff; text-align: center; }
+
+/* Pitch Styling */
+.pitch-container {
+  position: relative;
+  height: 200px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.pitch-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
+.pitch-label {
+  position: absolute;
+  background: rgba(30, 144, 255, 0.8);
+  border: none;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  width: 60px;
+  font-weight: bold;
+}
+.q1, .q3 { top: 10px; left: 10px; }
+.q2, .q4 { top: 10px; right: 10px; }
+
+/* Notes Grid Styling */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.note-item {
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 12px;
+  border-radius: 12px;
+  border-left: 4px solid #1e90ff;
+}
+.note-item span {
+  font-size: 11px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #1e90ff;
+}
+.note-item textarea {
+  background: transparent;
+  border: none;
+  color: white;
+  resize: none;
+  height: 80px;
+  font-family: inherit;
+}
+
