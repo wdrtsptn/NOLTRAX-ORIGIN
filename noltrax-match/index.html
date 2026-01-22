@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Noltrax Match – Modern Dashboard</title>
   <script src="https://www.youtube.com/iframe_api"></script>
   <link rel="stylesheet" href="match.css">
+  <script src="match.js" defer></script>
 </head>
 <body>
 
@@ -18,17 +20,33 @@
     <input id="analyst" placeholder="Analyst Name">
     <input id="analyzedTeam" placeholder="Team Being Analyzed">
   </div>
-  <button id="saveBtn">Save Session</button>
+  <button id="saveBtn" onclick="saveSession()">Save Session</button>
 </header>
 
 <div id="container">
-  <div id="logPanel"><h3>Event Log</h3><ul id="log"></ul></div>
+  <div id="logPanel">
+    <h3>Event Log</h3>
+    <ul id="log"></ul>
+  </div>
+
   <div id="videoPanel">
-    <div id="videoInput"><input id="videoUrl" placeholder="Paste YouTube URL"><button>Load Video</button></div>
-    <div id="player"><span>▶</span></div>
+    <div id="videoInput">
+      <input id="videoUrl" placeholder="Paste YouTube URL">
+      <button id="loadVideoBtn" onclick="loadVideo()">Load Video</button>
+    </div>
+    <div id="player">
+      <span>▶</span>
+    </div>
+
     <div id="tags">
-      <button>Build-up</button><button>Pressing</button><button>Low Block</button><button>Counter</button>
-      <button>Cross</button><button>Shot</button><button>Set Piece</button><button>Transition</button>
+      <button onclick="tagEvent('Build-up')">Build-up</button>
+      <button onclick="tagEvent('Pressing')">Pressing</button>
+      <button onclick="tagEvent('Low Block')">Low Block</button>
+      <button onclick="tagEvent('Counter')">Counter</button>
+      <button onclick="tagEvent('Cross')">Cross</button>
+      <button onclick="tagEvent('Shot')">Shot</button>
+      <button onclick="tagEvent('Set Piece')">Set Piece</button>
+      <button onclick="tagEvent('Transition')">Transition</button>
     </div>
   </div>
 </div>
@@ -38,27 +56,37 @@
     <div class="squad-table">
       <h3>Squad & Subs</h3>
       <table>
+        <thead>
+          <tr>
+            <th style="width: 45px;">No</th>
+            <th style="width: 65px;">Pos</th>
+            <th>Name</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td><input type="text" placeholder="1"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text" placeholder="2"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text" placeholder="3"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text" placeholder="4"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text" placeholder="5"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text" placeholder="6"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text" placeholder="7"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text" placeholder="8"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text" placeholder="9"></td><td><input type="text"></td></tr>
-          <tr class="sub-row"><td colspan="2">SUBSTITUTES</td></tr>
-          <tr><td><input type="text" placeholder="S"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text" placeholder="S"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text" placeholder="S"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text" placeholder="S"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text" placeholder="S"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text" placeholder="S"></td><td><input type="text"></td></tr>
-          <tr><td><input type="text" placeholder="S"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr class="sub-row"><td colspan="3">SUBSTITUTES</td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
         </tbody>
       </table>
     </div>
+
     <div class="pitch-area">
       <div class="pitch-container">
         <img src="https://images.unsplash.com/photo-1556056504-5c7696c4c28d?q=80&w=2000" class="pitch-img">
@@ -72,16 +100,18 @@
       </div>
     </div>
   </div>
+
   <div class="notes-grid">
-    <div class="note-item"><span>COMPETE</span><textarea></textarea></div>
-    <div class="note-item"><span>COMPETE - NOTES</span><textarea></textarea></div>
-    <div class="note-item"><span>CONTROL</span><textarea></textarea></div>
-    <div class="note-item"><span>CONTROL - NOTES</span><textarea></textarea></div>
-    <div class="note-item"><span>CONCEPTS</span><textarea></textarea></div>
-    <div class="note-item"><span>CONCEPTS - NOTES</span><textarea></textarea></div>
-    <div class="note-item"><span>INDIVIDUAL TARGETS</span><textarea></textarea></div>
-    <div class="note-item"><span>INDIVIDUAL TARGETS - NOTES</span><textarea></textarea></div>
+    <div class="note-item"><span>COMPETE</span><textarea placeholder="Write here..."></textarea></div>
+    <div class="note-item"><span>COMPETE - NOTES</span><textarea placeholder="Write here..."></textarea></div>
+    <div class="note-item"><span>CONTROL</span><textarea placeholder="Write here..."></textarea></div>
+    <div class="note-item"><span>CONTROL - NOTES</span><textarea placeholder="Write here..."></textarea></div>
+    <div class="note-item"><span>CONCEPTS</span><textarea placeholder="Write here..."></textarea></div>
+    <div class="note-item"><span>CONCEPTS - NOTES</span><textarea placeholder="Write here..."></textarea></div>
+    <div class="note-item"><span>INDIVIDUAL TARGETS</span><textarea placeholder="Write here..."></textarea></div>
+    <div class="note-item"><span>INDIVIDUAL TARGETS - NOTES</span><textarea placeholder="Write here..."></textarea></div>
   </div>
 </div>
+
 </body>
 </html>
