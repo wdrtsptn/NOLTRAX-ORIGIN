@@ -1,179 +1,199 @@
 let player;
 let events = [];
+const MAX_TAGS = 6;
 
-// DRAWING DATA
+// Logic Drawing & Pitch Data
 let isDrawing = false;
 let startX, startY;
+let currentPitch = null;
+let pitchData = { pitch1: { arrows: [], players: [] }, pitch2: { arrows: [], players: [] } };
 
-let pitchData = {
-  pitch1: { arrows: [], players: [] },
-  pitch2: { arrows: [], players: [] }
-};
-
-/* ---------------- YOUTUBE API ---------------- */
+// ------------------ YOUTUBE API (TETEP SAMA) ------------------
 function onYouTubeIframeAPIReady() {
-  player = new YT.Player('player', {
-    height: '360',
-    width: '100%',
-    videoId: '',
-    events: { onReady: () => {}, onError: () => alert("Video error") }
-  });
+player = new YT.Player('player', {
+height: '360', width: '100%', videoId: '',
+events: { 'onReady': onPlayerReady, 'onError': onPlayerError }
+});
 }
+function onPlayerReady(event) { console.log("Player ready!"); }
+function onPlayerError(event) { alert("Video error / blocked."); }
 
 function extractVideoID(url) {
-  try {
-    const u = new URL(url);
-    if (u.hostname.includes("youtu.be")) return u.pathname.slice(1);
-    if (u.hostname.includes("youtube.com")) return u.searchParams.get("v");
-  } catch {}
-  return null;
+try {
+const urlObj = new URL(url);
+if(urlObj.hostname.includes("youtu.be")) return urlObj.pathname.slice(1);
+if(urlObj.hostname.includes("youtube.com")) return urlObj.searchParams.get("v");
+} catch(e) { console.error("Invalid URL", e); }
+return null;
 }
 
 function loadVideo() {
-  const id = extractVideoID(document.getElementById("videoUrl").value);
-  if (id && player) player.loadVideoById(id);
+const url = document.getElementById('videoUrl').value;
+const videoId = extractVideoID(url);
+if(videoId && player) player.loadVideoById(videoId);
+else alert("Invalid URL or Player not ready.");
 }
 
-/* ---------------- DRAG NUMBER → PITCH ---------------- */
-function allowDrop(ev) {
-  ev.preventDefault();
+// ------------------ TAG EVENT (TETEP SAMA) ------------------
+function tagEvent(tagName) {
+if(!player) return;
+const currentTime = Math.floor(player.getCurrentTime());
+const li = document.createElement('li');
+li.innerHTML = <strong contenteditable="true">${tagName}</strong> <span>${formatTime(currentTime)}</span><br>   <input class="noteInput" placeholder="Add note...">;
+const logList = document.getElementById('log');
+logList.insertBefore(li, logList.firstChild);
+events.unshift({tag: tagName, time: currentTime, note: ''});
 }
+
+function formatTime(sec) {
+const m = Math.floor(sec/60);
+const s = sec % 60;
+return ${m}:${s.toString().padStart(2,'0')};
+}
+
+// ------------------ DRAG & DROP NOMOR PEMAIN ------------------
+function allowDrop(ev) { ev.preventDefault(); }
 
 function drag(ev) {
-  ev.dataTransfer.setData("text/plain", ev.target.value || "?");
+const playerNo = ev.target.querySelector('.player-no').value;
+ev.dataTransfer.setData("text", playerNo || "?");
 }
 
 function drop(ev) {
-  ev.preventDefault();
+ev.preventDefault();
+const data = ev.dataTransfer.getData("text");
+const pitchId = ev.currentTarget.id;
+const rect = ev.currentTarget.getBoundingClientRect();
+const x = ((ev.clientX - rect.left) / rect.width) * 100; // Simpen dlm persen biar responsif
+const y = ((ev.clientY - rect.top) / rect.height) * 100;
 
-  const pitch = ev.currentTarget;
-  const pitchId = pitch.id;
-  const rect = pitch.getBoundingClientRect();
-
-  const x = ((ev.clientX - rect.left) / rect.width) * 100;
-  const y = ((ev.clientY - rect.top) / rect.height) * 100;
-
-  const number = ev.dataTransfer.getData("text/plain");
-  createPlayerToken(pitchId, number, x, y);
+createPlayerToken(pitchId, data, x, y);
 }
 
 function createPlayerToken(pitchId, number, x, y) {
-  const layer = document.querySelector(`#${pitchId} .player-layer`);
+const container = document.querySelector(#${pitchId} .player-layer);
+const token = document.createElement('div');
+token.className = 'player-token';
+token.style.left = x + "%";
+token.style.top = y + "%";
+token.innerText = number;
 
-  const token = document.createElement("div");
-  token.className = "player-token";
-  token.innerText = number;
-  token.style.left = `${x}%`;
-  token.style.top = `${y}%`;
-
-  enableTokenDrag(token, pitchId);
-
-  token.oncontextmenu = e => {
-    e.preventDefault();
-    token.remove();
-    updatePitchData();
-  };
-
-  layer.appendChild(token);
-  updatePitchData();
+// Klik kanan buat hapus nomor
+token.oncontextmenu = (e) => { e.preventDefault(); token.remove(); updatePitchData(); };
+container.appendChild(token);
+updatePitchData();
 }
 
-/* ---------------- DRAG TOKEN DI DALAM PITCH ---------------- */
-function enableTokenDrag(token, pitchId) {
-  token.addEventListener("mousedown", e => {
-    e.stopPropagation();
+// ------------------ DRAWING PANAH (CANVAS) ------------------
+document.querySelectorAll('.pitch-canvas').forEach(canvas => {
+const ctx = canvas.getContext('2d');
 
-    const pitch = token.parentElement;
-    const rect = pitch.getBoundingClientRect();
+// Resize canvas biar pas
+const resize = () => {
+canvas.width = canvas.offsetWidth;
+canvas.height = canvas.offsetHeight;
+redrawCanvas(canvas.parentElement.id);
+};
+window.addEventListener('resize', resize);
+setTimeout(resize, 100);
 
-    const move = ev => {
-      const x = ((ev.clientX - rect.left) / rect.width) * 100;
-      const y = ((ev.clientY - rect.top) / rect.height) * 100;
-      token.style.left = `${x}%`;
-      token.style.top = `${y}%`;
-    };
-
-    const up = () => {
-      document.removeEventListener("mousemove", move);
-      document.removeEventListener("mouseup", up);
-      updatePitchData();
-    };
-
-    document.addEventListener("mousemove", move);
-    document.addEventListener("mouseup", up);
-  });
-}
-
-/* ---------------- CANVAS PANAH (TIDAK DIUBAH) ---------------- */
-document.querySelectorAll(".pitch-canvas").forEach(canvas => {
-  const ctx = canvas.getContext("2d");
-
-  const resize = () => {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-    redrawCanvas(canvas.parentElement.id);
-  };
-  window.addEventListener("resize", resize);
-  setTimeout(resize, 100);
-
-  canvas.addEventListener("mousedown", e => {
-    isDrawing = true;
-    const r = canvas.getBoundingClientRect();
-    startX = e.clientX - r.left;
-    startY = e.clientY - r.top;
-  });
-
-  canvas.addEventListener("mousemove", e => {
-    if (!isDrawing) return;
-    const r = canvas.getBoundingClientRect();
-    redrawCanvas(canvas.parentElement.id);
-    drawArrow(ctx, startX, startY, e.clientX - r.left, e.clientY - r.top);
-  });
-
-  canvas.addEventListener("mouseup", e => {
-    if (!isDrawing) return;
-    isDrawing = false;
-    const r = canvas.getBoundingClientRect();
-    pitchData[canvas.parentElement.id].arrows.push({
-      startX,
-      startY,
-      endX: e.clientX - r.left,
-      endY: e.clientY - r.top
-    });
-  });
+canvas.addEventListener('mousedown', (e) => {
+isDrawing = true;
+const rect = canvas.getBoundingClientRect();
+startX = e.clientX - rect.left;
+startY = e.clientY - rect.top;
 });
 
-function drawArrow(ctx, x1, y1, x2, y2) {
-  const h = 10;
-  const a = Math.atan2(y2 - y1, x2 - x1);
-  ctx.strokeStyle = "#1e90ff";
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.moveTo(x1, y1);
-  ctx.lineTo(x2, y2);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(x2, y2);
-  ctx.lineTo(x2 - h * Math.cos(a - Math.PI / 6), y2 - h * Math.sin(a - Math.PI / 6));
-  ctx.moveTo(x2, y2);
-  ctx.lineTo(x2 - h * Math.cos(a + Math.PI / 6), y2 - h * Math.sin(a + Math.PI / 6));
-  ctx.stroke();
+canvas.addEventListener('mousemove', (e) => {
+if (!isDrawing) return;
+const rect = canvas.getBoundingClientRect();
+const currX = e.clientX - rect.left;
+const currY = e.clientY - rect.top;
+
+redrawCanvas(canvas.parentElement.id);  
+drawArrow(ctx, startX, startY, currX, currY);
+
+});
+
+canvas.addEventListener('mouseup', (e) => {
+if (!isDrawing) return;
+isDrawing = false;
+const rect = canvas.getBoundingClientRect();
+const endX = e.clientX - rect.left;
+const endY = e.clientY - rect.top;
+
+pitchData[canvas.parentElement.id].arrows.push({ startX, startY, endX, endY });
+
+});
+});
+
+function drawArrow(ctx, fromX, fromY, toX, toY) {
+const headlen = 10;
+const angle = Math.atan2(toY - fromY, toX - fromX);
+ctx.strokeStyle = "#1e90ff";
+ctx.lineWidth = 3;
+ctx.beginPath();
+ctx.moveTo(fromX, fromY);
+ctx.lineTo(toX, toY);
+ctx.stroke();
+ctx.beginPath();
+ctx.moveTo(toX, toY);
+ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+ctx.moveTo(toX, toY);
+ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+ctx.stroke();
 }
 
-function redrawCanvas(id) {
-  const canvas = document.querySelector(`#${id} .pitch-canvas`);
-  const ctx = canvas.getContext("2d");
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  pitchData[id].arrows.forEach(a => drawArrow(ctx, a.startX, a.startY, a.endX, a.endY));
+function redrawCanvas(pitchId) {
+const canvas = document.querySelector(#${pitchId} .pitch-canvas);
+const ctx = canvas.getContext('2d');
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+pitchData[pitchId].arrows.forEach(a => drawArrow(ctx, a.startX, a.startY, a.endX, a.endY));
 }
 
-/* ---------------- SYNC DATA ---------------- */
 function updatePitchData() {
-  ["pitch1", "pitch2"].forEach(id => {
-    pitchData[id].players = [...document.querySelectorAll(`#${id} .player-token`)].map(t => ({
-      no: t.innerText,
-      x: t.style.left,
-      y: t.style.top
-    }));
-  });
+// Logic buat sync elemen UI ke object pitchData sebelum save
+['pitch1', 'pitch2'].forEach(id => {
+const tokens = document.querySelectorAll(#${id} .player-token);
+pitchData[id].players = Array.from(tokens).map(t => ({
+no: t.innerText, x: t.style.left, y: t.style.top
+}));
+});
+}
+
+// ------------------ SAVE SESSION (UPDATED) ------------------
+function saveSession() {
+updatePitchData(); // Update data lapangan terbaru
+
+const metadata = {
+matchName: document.getElementById("matchName").value,
+matchDate: document.getElementById("matchDate").value,
+homeTeam: document.getElementById("homeTeam").value,
+awayTeam: document.getElementById("awayTeam").value,
+analyst: document.getElementById("analyst").value,
+analyzedTeam: document.getElementById("analyzedTeam").value
+};
+
+const logData = [];
+document.querySelectorAll("#log li").forEach((li, index) => {
+const note = li.querySelector(".noteInput").value;
+const tag = li.querySelector("strong").textContent;
+logData.push({ tag, time: events[index]?.time || 0, note });
+});
+
+const notes = {};
+document.querySelectorAll(".note-item").forEach(item => {
+const title = item.querySelector("span").innerText;
+notes[title] = item.querySelector("textarea").value;
+});
+
+const sessionData = { metadata, events: logData, pitchData, extraNotes: notes };
+
+const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(sessionData, null, 2));
+const dlAnchor = document.createElement('a');
+dlAnchor.setAttribute("href", dataStr);
+dlAnchor.setAttribute("download", ${metadata.matchName || "session"}.json);
+dlAnchor.click();
+
+alert("Session + Strategy Saved!");
 }
