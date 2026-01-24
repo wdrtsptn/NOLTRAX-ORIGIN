@@ -4,38 +4,72 @@ let isDrawing = false;
 let startX, startY;
 let pitchData = { pitch1: { arrows: [], players: [] }, pitch2: { arrows: [], players: [] } };
 
-// YOUTUBE API
+// --- 1. YOUTUBE API (FIXED LOGIC) ---
 function onYouTubeIframeAPIReady() {
   player = new YT.Player('player', {
-    height: '360', width: '100%', videoId: '',
-    events: { 'onReady': () => console.log("Player Ready") }
+    height: '360',
+    width: '100%',
+    videoId: '', // Kosong dulu
+    playerVars: {
+      'autoplay': 0,
+      'rel': 0,
+      'modestbranding': 1
+    },
+    events: {
+      'onReady': () => console.log("YouTube Player Ready"),
+      'onError': (e) => {
+        if (e.data === 101 || e.data === 150) {
+          alert("Video ini dilarang diputar di luar YouTube oleh pemiliknya (Embed Restricted).");
+        } else {
+          alert("Gagal memuat video. Pastikan URL benar.");
+        }
+      }
+    }
   });
 }
-function loadVideo() {
-  const url = document.getElementById('videoUrl').value;
-  let videoId = "";
-  if(url.includes("v=")) videoId = url.split("v=")[1].split("&")[0];
-  else videoId = url.split("/").pop();
-  if(videoId) player.loadVideoById(videoId);
+
+// Fungsi Ekstrak ID Video yang lebih sakti
+function extractVideoID(url) {
+  const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[7].length == 11) ? match[7] : null;
 }
 
-// EVENT LOGGING
+function loadVideo() {
+  const url = document.getElementById('videoUrl').value.trim();
+  if (!url) {
+    alert("Paste URL dulu, Bro!");
+    return;
+  }
+  
+  const videoId = extractVideoID(url);
+  
+  if (videoId && player && player.loadVideoById) {
+    player.loadVideoById(videoId);
+    console.log("Loading Video ID:", videoId);
+  } else {
+    alert("URL YouTube tidak valid atau sistem belum siap.");
+  }
+}
+
+// --- 2. EVENT LOGGING ---
 function tagEvent(tagName) {
-  if(!player) return;
+  if (!player || typeof player.getCurrentTime !== "function") return;
   const currentTime = Math.floor(player.getCurrentTime());
   const li = document.createElement('li');
   li.innerHTML = `<strong contenteditable="true">${tagName}</strong> <span>${formatTime(currentTime)}</span><br>
                   <input class="noteInput" placeholder="Add note...">`;
   document.getElementById('log').insertBefore(li, document.getElementById('log').firstChild);
-  events.unshift({tag: tagName, time: currentTime});
-}
-function formatTime(sec) {
-  const m = Math.floor(sec/60);
-  const s = sec % 60;
-  return `${m}:${s.toString().padStart(2,'0')}`;
+  events.unshift({ tag: tagName, time: currentTime });
 }
 
-// DRAG & DROP LOGIC (FIXED)
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+// --- 3. DRAG & DROP LOGIC ---
 function allowDrop(ev) { ev.preventDefault(); }
 
 function drag(ev) {
@@ -50,7 +84,6 @@ function drop(ev) {
   const pitchContainer = ev.currentTarget;
   const rect = pitchContainer.getBoundingClientRect();
 
-  // Koordinat presisi dalam persen
   const x = ((ev.clientX - rect.left) / rect.width) * 100;
   const y = ((ev.clientY - rect.top) / rect.height) * 100;
 
@@ -68,10 +101,14 @@ function createPlayerToken(pitchId, number, x, y) {
   container.appendChild(token);
 }
 
-// DRAWING PANAH (CANVAS)
+// --- 4. DRAWING PANAH ---
 document.querySelectorAll('.pitch-canvas').forEach(canvas => {
   const ctx = canvas.getContext('2d');
-  const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; redrawCanvas(canvas.parentElement.id); };
+  const resize = () => { 
+    canvas.width = canvas.offsetWidth; 
+    canvas.height = canvas.offsetHeight; 
+    redrawCanvas(canvas.parentElement.id); 
+  };
   window.addEventListener('resize', resize);
   setTimeout(resize, 200);
 
@@ -114,7 +151,7 @@ function redrawCanvas(pitchId) {
   pitchData[pitchId].arrows.forEach(a => drawArrow(ctx, a.startX, a.startY, a.endX, a.endY));
 }
 
-// SAVE SESSION
+// --- 5. SAVE SESSION ---
 function saveSession() {
   const metadata = {
     matchName: document.getElementById("matchName").value,
@@ -148,5 +185,4 @@ function saveSession() {
   a.href = URL.createObjectURL(blob);
   a.download = `${metadata.matchName || 'match'}.json`;
   a.click();
-}
-
+    }
