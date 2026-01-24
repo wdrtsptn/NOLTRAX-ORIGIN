@@ -185,4 +185,4 @@ function saveSession() {
   a.href = URL.createObjectURL(blob);
   a.download = `${metadata.matchName || 'match'}.json`;
   a.click();
-                 }
+}
