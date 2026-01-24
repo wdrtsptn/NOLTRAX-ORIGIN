@@ -1,18 +1,34 @@
-let player;
+Let player;
 let events = [];
 let isDrawing = false;
 let startX, startY;
 let pitchData = { pitch1: { arrows: [], players: [] }, pitch2: { arrows: [], players: [] } };
 
-// 1. YOUTUBE API
+// --- 1. YOUTUBE API (FIXED LOGIC) ---
 function onYouTubeIframeAPIReady() {
   player = new YT.Player('player', {
-    height: '360', width: '100%', videoId: '',
-    playerVars: { 'autoplay': 0, 'rel': 0, 'modestbranding': 1 },
-    events: { 'onReady': () => console.log("Player Ready") }
+    height: '360',
+    width: '100%',
+    videoId: '', // Kosong dulu
+    playerVars: {
+      'autoplay': 0,
+      'rel': 0,
+      'modestbranding': 1
+    },
+    events: {
+      'onReady': () => console.log("YouTube Player Ready"),
+      'onError': (e) => {
+        if (e.data === 101 || e.data === 150) {
+          alert("Video ini dilarang diputar di luar YouTube oleh pemiliknya (Embed Restricted).");
+        } else {
+          alert("Gagal memuat video. Pastikan URL benar.");
+        }
+      }
+    }
   });
 }
 
+// Fungsi Ekstrak ID Video yang lebih sakti
 function extractVideoID(url) {
   const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
   const match = url.match(regExp);
@@ -21,29 +37,30 @@ function extractVideoID(url) {
 
 function loadVideo() {
   const url = document.getElementById('videoUrl').value.trim();
+  if (!url) {
+    alert("Paste URL dulu, Bro!");
+    return;
+  }
+  
   const videoId = extractVideoID(url);
-  if (videoId && player) player.loadVideoById(videoId);
-  else alert("URL YouTube tidak valid!");
+  
+  if (videoId && player && player.loadVideoById) {
+    player.loadVideoById(videoId);
+    console.log("Loading Video ID:", videoId);
+  } else {
+    alert("URL YouTube tidak valid atau sistem belum siap.");
+  }
 }
 
-// 2. EVENT LOGGING (UPDATED HTML STRUCTURE FOR GLASS UI)
+// --- 2. EVENT LOGGING ---
 function tagEvent(tagName) {
   if (!player || typeof player.getCurrentTime !== "function") return;
   const currentTime = Math.floor(player.getCurrentTime());
-  const timeStr = formatTime(currentTime);
-  
   const li = document.createElement('li');
-  li.innerHTML = `
-    <div class="log-item-header">
-      <strong contenteditable="true">${tagName}</strong>
-      <span>${timeStr}</span>
-    </div>
-    <input class="noteInput" placeholder="Add note...">
-  `;
-  
-  const logPanel = document.getElementById('log');
-  logPanel.insertBefore(li, logPanel.firstChild);
-  events.unshift({ tag: tagName, time: timeStr });
+  li.innerHTML = `<strong contenteditable="true">${tagName}</strong> <span>${formatTime(currentTime)}</span><br>
+                  <input class="noteInput" placeholder="Add note...">`;
+  document.getElementById('log').insertBefore(li, document.getElementById('log').firstChild);
+  events.unshift({ tag: tagName, time: currentTime });
 }
 
 function formatTime(sec) {
@@ -52,21 +69,25 @@ function formatTime(sec) {
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
 
-// 3. DRAG & DROP
+// --- 3. DRAG & DROP LOGIC ---
 function allowDrop(ev) { ev.preventDefault(); }
 
 function drag(ev) {
   const noInput = ev.target.querySelector('.player-no');
-  ev.dataTransfer.setData("text", noInput ? noInput.value : "?");
+  const val = noInput ? noInput.value : "?";
+  ev.dataTransfer.setData("text", val);
 }
 
 function drop(ev) {
   ev.preventDefault();
   const val = ev.dataTransfer.getData("text");
-  const rect = ev.currentTarget.getBoundingClientRect();
+  const pitchContainer = ev.currentTarget;
+  const rect = pitchContainer.getBoundingClientRect();
+
   const x = ((ev.clientX - rect.left) / rect.width) * 100;
   const y = ((ev.clientY - rect.top) / rect.height) * 100;
-  createPlayerToken(ev.currentTarget.id, val, x, y);
+
+  createPlayerToken(pitchContainer.id, val, x, y);
 }
 
 function createPlayerToken(pitchId, number, x, y) {
@@ -80,10 +101,14 @@ function createPlayerToken(pitchId, number, x, y) {
   container.appendChild(token);
 }
 
-// 4. DRAWING PANAH
+// --- 4. DRAWING PANAH ---
 document.querySelectorAll('.pitch-canvas').forEach(canvas => {
   const ctx = canvas.getContext('2d');
-  const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; redrawCanvas(canvas.parentElement.id); };
+  const resize = () => { 
+    canvas.width = canvas.offsetWidth; 
+    canvas.height = canvas.offsetHeight; 
+    redrawCanvas(canvas.parentElement.id); 
+  };
   window.addEventListener('resize', resize);
   setTimeout(resize, 200);
 
@@ -126,7 +151,7 @@ function redrawCanvas(pitchId) {
   pitchData[pitchId].arrows.forEach(a => drawArrow(ctx, a.startX, a.startY, a.endX, a.endY));
 }
 
-// 5. SAVE SESSION
+// --- 5. SAVE SESSION ---
 function saveSession() {
   const metadata = {
     matchName: document.getElementById("matchName").value,
@@ -160,4 +185,4 @@ function saveSession() {
   a.href = URL.createObjectURL(blob);
   a.download = `${metadata.matchName || 'match'}.json`;
   a.click();
-}
+                 }
