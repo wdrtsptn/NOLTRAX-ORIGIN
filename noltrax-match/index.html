@@ -1,117 +1,116 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Noltrax Match – Modern Dashboard</title>
-  <script src="https://www.youtube.com/iframe_api"></script>
-  <link rel="stylesheet" href="match.css">
-  <script src="match.js" defer></script>
-</head>
-<body>
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Noltrax Match – Modern Dashboard</title>  
+  <script src="https://www.youtube.com/iframe_api"></script>  
+  <link rel="stylesheet" href="match.css">  
+  <script src="match.js" defer></script>  
+</head>  
+<body>  
 
-<header>
-  <h1>Noltrax Match</h1>
-  <div id="metadata">
-    <input id="matchName" placeholder="Match Name">
-    <input id="matchDate" type="date">
-    <input id="homeTeam" placeholder="Home Team">
-    <input id="awayTeam" placeholder="Away Team">
-    <input id="analyst" placeholder="Analyst Name">
-    <input id="analyzedTeam" placeholder="Team Being Analyzed">
-  </div>
-  <button id="saveBtn" onclick="saveSession()">Save Session</button>
-</header>
+<header>  
+  <h1>Noltrax Match</h1>  
+  <div id="metadata">  
+    <input id="matchName" placeholder="Match Name">  
+    <input id="matchDate" type="date">  
+    <input id="homeTeam" placeholder="Home Team">  
+    <input id="awayTeam" placeholder="Away Team">  
+    <input id="analyst" placeholder="Analyst Name">  
+    <input id="analyzedTeam" placeholder="Team Being Analyzed">  
+  </div>  
+  <button id="saveBtn" onclick="saveSession()">Save Session</button>  
+</header>  
 
-<div id="container">
-  <div id="logPanel">
-    <h3>Event Log</h3>
-    <ul id="log"></ul>
-  </div>
+<div id="container">  
+  <div id="logPanel">  
+    <h3>Event Log</h3>  
+    <ul id="log"></ul>  
+  </div>  
 
-  <div id="videoPanel">
-    <div id="videoInput">
-      <input id="videoUrl" placeholder="Paste YouTube URL">
-      <button id="loadVideoBtn" onclick="loadVideo()">Load Video</button>
-    </div>
-    <div id="player"></div>
+  <div id="videoPanel">  
+    <div id="videoInput">  
+      <input id="videoUrl" placeholder="Paste YouTube URL">  
+      <button id="loadVideoBtn" onclick="loadVideo()">Load Video</button>  
+    </div>  
+    <div id="player"></div>  
 
-    <div id="tags">
-      <button onclick="tagEvent('Build-up')">Build-up</button>
-      <button onclick="tagEvent('Pressing')">Pressing</button>
-      <button onclick="tagEvent('Low Block')">Low Block</button>
-      <button onclick="tagEvent('Counter')">Counter</button>
-      <button onclick="tagEvent('Cross')">Cross</button>
-      <button onclick="tagEvent('Shot')">Shot</button>
-      <button onclick="tagEvent('Set Piece')">Set Piece</button>
-      <button onclick="tagEvent('Transition')">Transition</button>
-    </div>
-  </div>
-</div>
+    <div id="tags">  
+      <button onclick="tagEvent('Build-up')">Build-up</button>  
+      <button onclick="tagEvent('Pressing')">Pressing</button>  
+      <button onclick="tagEvent('Low Block')">Low Block</button>  
+      <button onclick="tagEvent('Counter')">Counter</button>  
+      <button onclick="tagEvent('Cross')">Cross</button>  
+      <button onclick="tagEvent('Shot')">Shot</button>  
+      <button onclick="tagEvent('Set Piece')">Set Piece</button>  
+      <button onclick="tagEvent('Transition')">Transition</button>  
+    </div>  
+  </div>  
+</div>  
 
-<div id="strategyBoard">
-  <div class="top-row">
-    <div class="squad-table">
-      <table>
-        <thead>
-          <tr>
-            <th style="width: 45px;">No</th>
-            <th style="width: 65px;">Pos</th>
-            <th>Name</th>
-          </tr>
-        </thead>
-        <tbody id="squadBody">
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          
-          <tr class="sub-row"><td colspan="3">SUBSTITUTES</td></tr>
-          
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>
-        </tbody>
-      </table>
-    </div>
+<div id="strategyBoard">  
+  <div class="top-row">  
+    <div class="squad-table">  
+      <table>  
+        <thead>  
+          <tr>  
+            <th style="width: 45px;">No</th>  
+            <th style="width: 65px;">Pos</th>  
+            <th>Name</th>  
+          </tr>  
+        </thead>  
+        <tbody id="squadBody">  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
 
-    <div class="pitch-area">
-      <div class="pitch-container" id="pitch1" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <img src="Untitled41_20260122170521.jpg" class="pitch-img">
-        <canvas class="pitch-canvas"></canvas>
-        <div class="player-layer"></div>
-      </div>
-      <div class="pitch-container" id="pitch2" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <img src="Untitled41_20260122170521.jpg" class="pitch-img">
-        <canvas class="pitch-canvas"></canvas>
-        <div class="player-layer"></div>
-      </div>
-    </div>
-  </div>
+          <tr class="sub-row"><td colspan="3">SUBSTITUTES</td></tr>  
 
-  <div class="notes-grid">
-    <div class="note-item"><span>COMPETE - as a team or individual</span><textarea placeholder="Write here..."></textarea></div>
-    <div class="note-item"><span>COMPETE - NOTES:</span><textarea placeholder="Write here..."></textarea></div>
-    <div class="note-item"><span>CONTROL - tempo & possession</span><textarea placeholder="Write here..."></textarea></div>
-    <div class="note-item"><span>CONTROL - NOTES:</span><textarea placeholder="Write here..."></textarea></div>
-    <div class="note-item"><span>CONCEPTS - in & out of possession</span><textarea placeholder="Write here..."></textarea></div>
-    <div class="note-item"><span>CONCEPTS - NOTES:</span><textarea placeholder="Write here..."></textarea></div>
-    <div class="note-item"><span>INDIVIDUAL TARGETS</span><textarea placeholder="Write here..."></textarea></div>
-    <div class="note-item"><span>INDIVIDUAL TARGETS - NOTES:</span><textarea placeholder="Write here..."></textarea></div>
-  </div>
-</div>
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+          <tr draggable="true" ondragstart="drag(event)"><td><input type="text" class="player-no"></td><td><input type="text"></td><td><input type="text"></td></tr>  
+        </tbody>  
+      </table>  
+    </div>  
 
-</body>
-                                                                                                             </html>
-                                                                                                             
+    <div class="pitch-area">  
+      <div class="pitch-container" id="pitch1" ondrop="drop(event)" ondragover="allowDrop(event)">  
+        <img src="Untitled41_20260122170521.jpg" class="pitch-img">  
+        <canvas class="pitch-canvas"></canvas>  
+        <div class="player-layer"></div>  
+      </div>  
+      <div class="pitch-container" id="pitch2" ondrop="drop(event)" ondragover="allowDrop(event)">  
+        <img src="Untitled41_20260122170521.jpg" class="pitch-img">  
+        <canvas class="pitch-canvas"></canvas>  
+        <div class="player-layer"></div>  
+      </div>  
+    </div>  
+  </div>  
+
+  <div class="notes-grid">  
+    <div class="note-item"><span>COMPETE - as a team or individual</span><textarea placeholder="Write here..."></textarea></div>  
+    <div class="note-item"><span>COMPETE - NOTES:</span><textarea placeholder="Write here..."></textarea></div>  
+    <div class="note-item"><span>CONTROL - tempo & possession</span><textarea placeholder="Write here..."></textarea></div>  
+    <div class="note-item"><span>CONTROL - NOTES:</span><textarea placeholder="Write here..."></textarea></div>  
+    <div class="note-item"><span>CONCEPTS - in & out of possession</span><textarea placeholder="Write here..."></textarea></div>  
+    <div class="note-item"><span>CONCEPTS - NOTES:</span><textarea placeholder="Write here..."></textarea></div>  
+    <div class="note-item"><span>INDIVIDUAL TARGETS</span><textarea placeholder="Write here..."></textarea></div>  
+    <div class="note-item"><span>INDIVIDUAL TARGETS - NOTES:</span><textarea placeholder="Write here..."></textarea></div>  
+  </div>  
+</div>  
+
+</body>  
+</html>
