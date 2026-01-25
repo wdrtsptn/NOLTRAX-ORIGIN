@@ -3,10 +3,10 @@ let isDrawing = false;
 let startX, startY;
 let pitchData = { pitch1: { arrows: [], players: [] }, pitch2: { arrows: [], players: [] } };
 
-// --- 1. YOUTUBE API (FIXED FOR DESKTOP) ---
+// --- 1. YOUTUBE API (OPTIMIZED FOR DESKTOP & GITHUB PAGES) ---
 function onYouTubeIframeAPIReady() {
-    // Memberikan origin yang jelas membantu API bekerja di Desktop
-    const origin = window.location.protocol === 'file:' ? '*' : window.location.origin;
+    // Definisi origin secara paksa agar handshake desktop tidak terblokir
+    const origin = window.location.origin || window.location.protocol + '//' + window.location.hostname;
 
     player = new YT.Player('player', {
         height: '360',
@@ -27,7 +27,6 @@ function onYouTubeIframeAPIReady() {
 }
 
 function extractVideoID(url) {
-    // Regex yang lebih akurat untuk berbagai format URL YouTube
     const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
     const match = url.match(regExp);
     return (match && match[7].length == 11) ? match[7] : null;
@@ -39,11 +38,17 @@ function loadVideo() {
     const videoId = extractVideoID(url);
 
     if (videoId) {
+        // Cek apakah player sudah terinisialisasi
         if (player && typeof player.loadVideoById === 'function') {
             player.loadVideoById(videoId);
             console.log("Loading Video ID: " + videoId);
         } else {
-            alert("YouTube Player belum siap. Tunggu sebentar atau refresh halaman.");
+            // Jika API belum siap di desktop, coba inisialisasi ulang cepat
+            console.log("Re-initializing player...");
+            onYouTubeIframeAPIReady();
+            setTimeout(() => {
+                if(player && player.loadVideoById) player.loadVideoById(videoId);
+            }, 1000);
         }
     } else {
         alert("URL YouTube tidak valid!");
@@ -170,4 +175,4 @@ function saveSession() {
     a.href = URL.createObjectURL(blob);
     a.download = `match-${metadata.matchName || 'export'}.json`;
     a.click();
-                            }
+}
