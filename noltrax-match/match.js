@@ -3,27 +3,46 @@ let isDrawing = false;
 let startX, startY;
 let pitchData = { pitch1: { arrows: [], players: [] }, pitch2: { arrows: [], players: [] } };
 
-// --- 1. YOUTUBE API (OPTIMIZED FOR DESKTOP & GITHUB PAGES) ---
+// --- 1. YOUTUBE API (FINAL FIX FOR DESKTOP & GITHUB PAGES) ---
+
+// Memaksa load API YouTube secara asinkron agar terdeteksi browser desktop
+(function loadYouTubeAPI() {
+    if (!window.YT) {
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    }
+})();
+
 function onYouTubeIframeAPIReady() {
-    // Definisi origin secara paksa agar handshake desktop tidak terblokir
-    const origin = window.location.origin || window.location.protocol + '//' + window.location.hostname;
+    console.log("YouTube API Ready - Building Player...");
+    
+    // Origin harus jelas supaya tidak kena blokir CORS di Desktop
+    const currentOrigin = window.location.origin || (window.location.protocol + '//' + window.location.hostname);
 
     player = new YT.Player('player', {
         height: '360',
         width: '100%',
-        videoId: '', 
+        videoId: '', // Kosongkan awal
         playerVars: {
             'autoplay': 0,
             'rel': 0,
             'modestbranding': 1,
             'enablejsapi': 1,
-            'origin': origin
+            'origin': currentOrigin
         },
         events: {
-            'onReady': () => console.log("YouTube API Ready"),
+            'onReady': onPlayerReady,
             'onError': (e) => console.log("YouTube Error: " + e.data)
         }
     });
+}
+
+function onPlayerReady(event) {
+    console.log("YouTube Player is fully initialized");
+    // Di desktop, kita pancing dengan 'cue' (menyiapkan slot video)
+    event.target.cueVideoById(""); 
 }
 
 function extractVideoID(url) {
@@ -38,17 +57,17 @@ function loadVideo() {
     const videoId = extractVideoID(url);
 
     if (videoId) {
-        // Cek apakah player sudah terinisialisasi
+        // Cek apakah objek player sudah ada dan siap
         if (player && typeof player.loadVideoById === 'function') {
             player.loadVideoById(videoId);
             console.log("Loading Video ID: " + videoId);
         } else {
-            // Jika API belum siap di desktop, coba inisialisasi ulang cepat
-            console.log("Re-initializing player...");
+            // Jika belum siap (kasus desktop telat), kita inisialisasi ulang paksa
+            console.log("Player not initialized, trying to recover...");
             onYouTubeIframeAPIReady();
             setTimeout(() => {
                 if(player && player.loadVideoById) player.loadVideoById(videoId);
-            }, 1000);
+            }, 1500);
         }
     } else {
         alert("URL YouTube tidak valid!");
@@ -57,7 +76,10 @@ function loadVideo() {
 
 // --- 2. EVENT LOGGING ---
 function tagEvent(tagName) {
-    if (!player || typeof player.getCurrentTime !== "function") return;
+    if (!player || typeof player.getCurrentTime !== "function") {
+        alert("Tunggu sampai video muncul/load dulu!");
+        return;
+    }
     const currentTime = Math.floor(player.getCurrentTime());
     const logList = document.getElementById('log');
 
@@ -176,3 +198,4 @@ function saveSession() {
     a.download = `match-${metadata.matchName || 'export'}.json`;
     a.click();
 }
+
