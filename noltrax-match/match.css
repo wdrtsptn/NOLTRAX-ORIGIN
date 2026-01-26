@@ -362,7 +362,7 @@ header h1 {
   padding: 10px;
   outline: none;
   font-size: 13px;
-  font-family: inherit; /* FIX FONT */
+  font-family: Roboto; /* FIX FONT */
 }
 
 @media (max-width: 850px) {
