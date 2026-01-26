@@ -9,32 +9,49 @@ let pitchData = {
 };
 
 // ================================
-// YOUTUBE – VERSI AWAAL
+// YOUTUBE – OPSI 1 (USER ACTION)
 // ================================
 
 function onYouTubeIframeAPIReady() {
-  player = new YT.Player('player', {
-    height: '360',
-    width: '100%',
-    videoId: "
-  });
+  console.log("YouTube API ready");
 }
 
 function extractVideoID(url) {
-  try {
-    const u = new URL(url);
-    if (u.hostname.includes("youtu.be")) return
-    u.pathname.slice(1);
-    if (u.hostname.includes("youtube.com")) return
-    u.searchParams.get("v");
-  } catch {}
-  return null;
+  const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]{11}).*/;
+  const match = url.match(regExp);
+  return match ? match[7] : null;
 }
 
 function loadVideo() {
-  const id =
-    extractVideoID(document.getElementById("videoUrl").value);
-  if (id && player.loadVideoById(id);
+  const url = document.getElementById("videoUrl").value.trim();
+  const videoId = extractVideoID(url);
+
+  if (!videoId) {
+    alert("URL YouTube tidak valid");
+    return;
+  }
+
+  // BUAT PLAYER HANYA SAAT USER KLIK
+  if (!player) {
+    player = new YT.Player("player", {
+      height: "360",
+      width: "100%",
+      videoId: videoId,
+      playerVars: {
+        autoplay: 0,
+        rel: 0,
+        modestbranding: 1
+      },
+      events: {
+        onReady: () => {
+          playerReady = true;
+          player.playVideo();
+        }
+      }
+    });
+  } else {
+    player.loadVideoById(videoId);
+  }
 }
 
 // ================================
@@ -192,4 +209,4 @@ function saveSession() {
   a.href = URL.createObjectURL(blob);
   a.download = `match-${metadata.matchName || "export"}.json`;
   a.click();
-}
+                                                   }
