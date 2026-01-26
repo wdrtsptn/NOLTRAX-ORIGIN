@@ -1,41 +1,73 @@
-let player;
+let player = null;
+let playerReady = false;
 let isDrawing = false;
 let startX, startY;
-let pitchData = { pitch1: { arrows: [], players: [] }, pitch2: { arrows: [], players: [] } };
 
-// --- 1. YOUTUBE API (STABLE OLD VERSION) ---
+let pitchData = {
+  pitch1: { arrows: [], players: [] },
+  pitch2: { arrows: [], players: [] }
+};
+
+// ================================
+// YOUTUBE – OPSI 1 (USER ACTION)
+// ================================
 
 function onYouTubeIframeAPIReady() {
-  player = new YT.Player('player', {
-    height: '360',
-    width: '100%',
-    videoId: '',
-    playerVars: {
-      autoplay: 0,
-      rel: 0,
-      modestbranding: 1
-    }
-  });
+  console.log("YouTube API ready");
 }
 
 function extractVideoID(url) {
-  const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+  const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]{11}).*/;
   const match = url.match(regExp);
-  return (match && match[7].length == 11) ? match[7] : null;
+  return match ? match[7] : null;
 }
 
 function loadVideo() {
-  const url = document.getElementById('videoUrl').value.trim();
+  const url = document.getElementById("videoUrl").value.trim();
   const videoId = extractVideoID(url);
-  if (videoId && player) player.loadVideoById(videoId);
+
+  if (!videoId) {
+    alert("URL YouTube tidak valid");
+    return;
+  }
+
+  // BUAT PLAYER HANYA SAAT USER KLIK
+  if (!player) {
+    player = new YT.Player("player", {
+      height: "360",
+      width: "100%",
+      videoId: videoId,
+      playerVars: {
+        autoplay: 0,
+        rel: 0,
+        modestbranding: 1
+      },
+      events: {
+        onReady: () => {
+          playerReady = true;
+          player.playVideo();
+        }
+      }
+    });
+  } else {
+    player.loadVideoById(videoId);
+  }
 }
 
-// --- 2. EVENT LOGGING ---
+// ================================
+// EVENT LOGGING
+// ================================
+
 function tagEvent(tagName) {
-  if (!player) return;
+  if (!player || !playerReady) {
+    alert("Video belum siap");
+    return;
+  }
+
   const currentTime = Math.floor(player.getCurrentTime());
-  const logList = document.getElementById('log');
-  const li = document.createElement('li');
+  const logList = document.getElementById("log");
+
+  const li = document.createElement("li");
   li.innerHTML = `
     <div class="log-header">
       <strong contenteditable="true">${tagName}</strong>
@@ -43,21 +75,27 @@ function tagEvent(tagName) {
     </div>
     <input class="log-note" placeholder="Add note...">
   `;
+
   logList.insertBefore(li, logList.firstChild);
 }
 
 function formatTime(sec) {
   const m = Math.floor(sec / 60);
   const s = sec % 60;
-  return `${m}:${s.toString().padStart(2, '0')}`;
+  return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-// --- 3. DRAG & DROP ---
+// ================================
+// DRAG & DROP
+// ================================
+
 function allowDrop(ev) { ev.preventDefault(); }
+
 function drag(ev) {
-  const noInput = ev.target.querySelector('.player-no');
+  const noInput = ev.target.querySelector(".player-no");
   ev.dataTransfer.setData("text", noInput ? noInput.value : "?");
 }
+
 function drop(ev) {
   ev.preventDefault();
   const val = ev.dataTransfer.getData("text");
@@ -66,10 +104,11 @@ function drop(ev) {
   const y = ((ev.clientY - rect.top) / rect.height) * 100;
   createPlayerToken(ev.currentTarget.id, val, x, y);
 }
+
 function createPlayerToken(pitchId, number, x, y) {
   const container = document.querySelector(`#${pitchId} .player-layer`);
-  const token = document.createElement('div');
-  token.className = 'player-token';
+  const token = document.createElement("div");
+  token.className = "player-token";
   token.innerText = number;
   token.style.left = x + "%";
   token.style.top = y + "%";
@@ -77,30 +116,37 @@ function createPlayerToken(pitchId, number, x, y) {
   container.appendChild(token);
 }
 
-// --- 4. DRAWING ---
-document.querySelectorAll('.pitch-canvas').forEach(canvas => {
-  const ctx = canvas.getContext('2d');
+// ================================
+// DRAWING
+// ================================
+
+document.querySelectorAll(".pitch-canvas").forEach(canvas => {
+  const ctx = canvas.getContext("2d");
+
   const resize = () => {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
     redrawCanvas(canvas.parentElement.id);
   };
-  window.addEventListener('resize', resize);
+
+  window.addEventListener("resize", resize);
   setTimeout(resize, 200);
 
-  canvas.addEventListener('mousedown', e => {
+  canvas.addEventListener("mousedown", e => {
     isDrawing = true;
     const rect = canvas.getBoundingClientRect();
     startX = e.clientX - rect.left;
     startY = e.clientY - rect.top;
   });
-  canvas.addEventListener('mousemove', e => {
+
+  canvas.addEventListener("mousemove", e => {
     if (!isDrawing) return;
     const rect = canvas.getBoundingClientRect();
     redrawCanvas(canvas.parentElement.id);
     drawArrow(ctx, startX, startY, e.clientX - rect.left, e.clientY - rect.top);
   });
-  canvas.addEventListener('mouseup', e => {
+
+  canvas.addEventListener("mouseup", e => {
     if (!isDrawing) return;
     isDrawing = false;
     const rect = canvas.getBoundingClientRect();
@@ -123,21 +169,32 @@ function drawArrow(ctx, fromX, fromY, toX, toY) {
   ctx.stroke();
   ctx.beginPath();
   ctx.moveTo(toX, toY);
-  ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+  ctx.lineTo(
+    toX - headlen * Math.cos(angle - Math.PI / 6),
+    toY - headlen * Math.sin(angle - Math.PI / 6)
+  );
   ctx.moveTo(toX, toY);
-  ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+  ctx.lineTo(
+    toX - headlen * Math.cos(angle + Math.PI / 6),
+    toY - headlen * Math.sin(angle + Math.PI / 6)
+  );
   ctx.stroke();
 }
 
 function redrawCanvas(pitchId) {
   const canvas = document.querySelector(`#${pitchId} .pitch-canvas`);
   if (!canvas) return;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  pitchData[pitchId].arrows.forEach(a => drawArrow(ctx, a.startX, a.startY, a.endX, a.endY));
+  pitchData[pitchId].arrows.forEach(a =>
+    drawArrow(ctx, a.startX, a.startY, a.endX, a.endY)
+  );
 }
 
-// --- 5. SAVE ---
+// ================================
+// SAVE SESSION
+// ================================
+
 function saveSession() {
   const metadata = {
     matchName: document.getElementById("matchName").value,
@@ -145,10 +202,11 @@ function saveSession() {
     homeTeam: document.getElementById("homeTeam").value,
     awayTeam: document.getElementById("awayTeam").value
   };
+
   const session = { metadata, pitchData };
   const blob = new Blob([JSON.stringify(session, null, 2)], { type: "application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = `match-${metadata.matchName || 'export'}.json`;
+  a.download = `match-${metadata.matchName || "export"}.json`;
   a.click();
-    }
+}
