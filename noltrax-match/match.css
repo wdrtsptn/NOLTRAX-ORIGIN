@@ -23,7 +23,7 @@ body {
   width: 100%;
   z-index: 1000; /* Ditinggiin dikit biar aman dari elemen lain */
   backdrop-filter: blur(16px);
-  background: rgba(225, 225, 225, 0.08); /* Dibuat agak gelap biar teks putih kebaca */
+  background: rgba(255, 255, 255, 0.08); /* Dibuat agak gelap biar teks putih kebaca */
   border-bottom: 1px solid rgba(255,255,255,0.15);
 }
 
