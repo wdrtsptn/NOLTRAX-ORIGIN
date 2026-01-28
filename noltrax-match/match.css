@@ -4,24 +4,26 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: #ffffff;
-  padding: 20px;
+  /* FIX: Ditambah padding-top supaya konten nggak ketutup navbar yang posisinya FIXED */
+  padding: 80px 20px 20px 20px; 
   background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.4)), url("20260127_141631.jpg");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  min-height: 100vh;
 }
 
 /* =========================
    TOP NAV (Disesuaikan ke HTML Baru)
 ========================= */
 .navbar {
-  position: fixed; /* Biar navbar melayang saat scroll */
+  position: fixed; /* Tetap melayang */
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 999;
+  z-index: 1000; /* Ditinggiin dikit biar aman dari elemen lain */
   backdrop-filter: blur(16px);
-  background: rgba(225,225,225,0.08);
+  background: rgba(22, 22, 22, 0.8); /* Dibuat agak gelap biar teks putih kebaca */
   border-bottom: 1px solid rgba(255,255,255,0.15);
 }
 
@@ -41,9 +43,9 @@ body {
 }
 
 .nav-logo {
-  height: 32px; /* Ukuran logo disesuaikan */
+  height: 32px;
   width: auto;
-  background: #1e5eff; /* Background biru kotak logo */
+  background: #1e5eff;
   border-radius: 8px;
   padding: 4px;
 }
@@ -88,7 +90,8 @@ header {
 }
 
 header h1 {
-  margin-bottom: 16px; /* FIX: biar ga mepet */
+  margin-bottom: 16px; 
+  font-size: 24px;
 }
 
 #metadata {
@@ -168,7 +171,6 @@ header h1 {
   align-items: center;
 }
 
-/* FIX: WARNA TAG JADI PUTIH */
 .log-header strong {
   color: #ffffff;
   font-size: 13px;
@@ -432,10 +434,12 @@ header h1 {
   padding: 10px;
   outline: none;
   font-size: 13px;
-  font-family: Roboto; /* FIX FONT */
+  font-family: inherit; /* FIX FONT */
 }
 
 @media (max-width: 850px) {
   .notes-grid { grid-template-columns: 1fr; }
   .top-row { flex-direction: column; }
-}
+  body { padding-top: 100px; } /* Jarak lebih besar di mobile */
+  }
+  
