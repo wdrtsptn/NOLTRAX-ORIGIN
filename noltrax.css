@@ -15,66 +15,75 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed; /* BG DIEM */
+  background-attachment: fixed;
 }
 
 /* =========================
-   TOP NAV
+   TOP NAV (Disesuaikan ke HTML Baru)
 ========================= */
-.top-nav {
-  position: sticky;
+.navbar {
+  position: fixed; /* Biar navbar melayang saat scroll */
   top: 0;
+  left: 0;
+  width: 100%;
   z-index: 999;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 28px;
   backdrop-filter: blur(16px);
   background: rgba(0,0,0,0.35);
   border-bottom: 1px solid rgba(255,255,255,0.15);
 }
 
-.nav-left {
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 28px;
+}
+
+.nav-brand {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.logo-box {
-  width: 36px;
-  height: 36px;
-  background: #1e5eff;
+.nav-logo {
+  height: 32px; /* Ukuran logo disesuaikan */
+  width: auto;
+  background: #1e5eff; /* Background biru kotak logo */
   border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 4px;
 }
 
-.logo-box img {
-  width: 22px;
-  height: 22px;
-}
-
-.brand-name {
+.brand-text {
   font-weight: 700;
   letter-spacing: 1px;
   font-size: 14px;
+  color: #ffffff;
+  text-transform: uppercase;
 }
 
-.nav-right {
+.brand-origin {
+  font-weight: 300;
+  opacity: 0.7;
+}
+
+.nav-links {
   display: flex;
+  list-style: none;
   gap: 22px;
 }
 
-.nav-right a {
+.nav-links a {
   text-decoration: none;
   color: white;
   font-size: 13px;
   opacity: 0.75;
   transition: 0.2s;
+  font-weight: 500;
 }
 
-.nav-right a:hover {
+.nav-links a:hover {
   opacity: 1;
   color: #1e5eff;
 }
@@ -86,7 +95,7 @@ body {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding-top: 72px; /* offset navbar */
+  padding-top: 72px; /* Jarak agar tidak tertutup navbar fixed */
 }
 
 .hero-inner {
@@ -138,7 +147,6 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* HOVER */
 .glass-card:hover {
   background: #1e5eff;
   border-color: #1e5eff;
@@ -159,12 +167,49 @@ body {
   margin-bottom: 18px;
 }
 
+/* PRODUCTS SECTION */
+.products {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.product h2 {
+  color: #1e5eff;
+  margin-bottom: 12px;
+}
+
+/* WHY SECTION */
+.why {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.why h3 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.why ul {
+  list-style: none;
+}
+
+.why li {
+  margin-bottom: 10px;
+  opacity: 0.9;
+}
+
 /* FOOTER */
 #footer {
   background: #ffffff;
   color: #000000;
   text-align: center;
-  padding: 28px 16px;
+  padding: 48px 16px;
+  margin-top: 80px;
 }
 
 #footer h2 {
@@ -182,7 +227,7 @@ body {
     font-size: 36px;
   }
 
-  .nav-right {
-    display: none; /* simple mobile first */
+  .nav-links {
+    display: none; /* Sembunyikan link di mobile agar tidak berantakan */
   }
 }
