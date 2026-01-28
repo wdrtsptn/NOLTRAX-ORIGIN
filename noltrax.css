@@ -18,11 +18,75 @@ body {
   background-attachment: fixed; /* BG DIEM */
 }
 
-/* HERO */
+/* =========================
+   TOP NAV
+========================= */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 28px;
+  backdrop-filter: blur(16px);
+  background: rgba(0,0,0,0.35);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-box {
+  width: 36px;
+  height: 36px;
+  background: #1e5eff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-box img {
+  width: 22px;
+  height: 22px;
+}
+
+.brand-name {
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 14px;
+}
+
+.nav-right {
+  display: flex;
+  gap: 22px;
+}
+
+.nav-right a {
+  text-decoration: none;
+  color: white;
+  font-size: 13px;
+  opacity: 0.75;
+  transition: 0.2s;
+}
+
+.nav-right a:hover {
+  opacity: 1;
+  color: #1e5eff;
+}
+
+/* =========================
+   HERO
+========================= */
 .hero {
   min-height: 100vh;
   display: flex;
   align-items: center;
+  padding-top: 72px; /* offset navbar */
 }
 
 .hero-inner {
@@ -56,7 +120,7 @@ body {
   text-decoration: none;
   color: white;
   padding: 32px;
-  border-radius: 12px; /* LEBIH KOTAK */
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(14px);
   border: 1px solid rgba(255,255,255,0.15);
@@ -64,7 +128,7 @@ body {
 }
 
 .glass-card h2 {
-  font-size: 22px; /* TULISAN GEDE */
+  font-size: 22px;
   margin-bottom: 12px;
 }
 
@@ -74,15 +138,11 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* HOVER BIRU */
+/* HOVER */
 .glass-card:hover {
   background: #1e5eff;
   border-color: #1e5eff;
   transform: translateY(-6px);
-}
-
-.glass-card:hover span {
-  color: #ffffff;
 }
 
 /* INTRO */
@@ -97,50 +157,6 @@ body {
   line-height: 1.8;
   opacity: 0.85;
   margin-bottom: 18px;
-}
-
-/* PRODUCTS */
-.products {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 24px 64px;
-}
-
-.product {
-  margin-bottom: 32px;
-}
-
-.product h2 {
-  font-size: 22px;
-  margin-bottom: 8px;
-}
-
-.product p {
-  font-size: 15px;
-  line-height: 1.8;
-  opacity: 0.85;
-}
-
-/* WHY */
-.why {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 24px 80px;
-}
-
-.why h3 {
-  font-size: 20px;
-  margin-bottom: 16px;
-}
-
-.why ul {
-  list-style: none;
-}
-
-.why li {
-  font-size: 14px;
-  line-height: 1.8;
-  opacity: 0.85;
 }
 
 /* FOOTER */
@@ -164,5 +180,9 @@ body {
 @media (max-width: 480px) {
   .hero h1 {
     font-size: 36px;
+  }
+
+  .nav-right {
+    display: none; /* simple mobile first */
   }
 }
