@@ -22,7 +22,74 @@ body {
 /* =========================
    TOP NAV
 ========================= */
-.top-nav {
+.navbar {
+  position: fixed; /* Biar navbar melayang saat scroll */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  backdrop-filter: blur(16px);
+  background: rgba(225,225,225,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 28px;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-logo {
+  height: 32px; /* Ukuran logo disesuaikan */
+  width: auto;
+  background: #1e5eff; /* Background biru kotak logo */
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.brand-text {
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 14px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.brand-origin {
+  font-weight: 300;
+  opacity: 0.7;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 22px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-size: 13px;
+  opacity: 0.75;
+  transition: 0.2s;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  opacity: 1;
+  color: #1e5eff;
+}
+
+/*.top-nav {
   position: sticky;
   top: 0;
   z-index: 999;
