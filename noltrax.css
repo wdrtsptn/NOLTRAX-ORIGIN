@@ -96,7 +96,7 @@ body {
   display: flex;
   align-items: center;    /* Center vertikal */
   justify-content: center; /* Center horizontal */
-  padding-top: 72px;
+  padding-top: 100px;
   text-align: center;      /* Membuat teks di dalamnya center */
 }
 
