@@ -260,7 +260,7 @@ header h1 {
   transition: 0.2s;
 }
 #tags button:hover {
-  background: #1e90ff;
+  background: #1e5eff;
   border-color: white;
 }
 
@@ -379,7 +379,7 @@ header h1 {
   position: absolute;
   width: 28px;
   height: 28px;
-  background: #1e90ff;
+  background: #1e5eff;
   color: white;
   border-radius: 50%;
   display: flex;
