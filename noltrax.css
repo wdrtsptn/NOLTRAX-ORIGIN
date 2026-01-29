@@ -1,27 +1,258 @@
-/* =========================
-   RESET
-========================= */
+/* RESET */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Membuat body setidaknya setinggi layar agar footer bisa dipaksa ke bawah */
+/* BODY */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #ffffff;
+  background:
+    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4)),
+    url("assets/20260122_100603.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* NAVBAR */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(16px);
+  background: rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: auto;
+  padding: 14px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.logo-box {
+  width: 36px;
+  height: 36px;
+  background: #1e5eff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-box img {
+  width: 22px;
+  height: 22px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 22px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.nav-links a:hover {
+  opacity: 1;
+  color: #1e5eff;
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-inner h2 {
+  font-size: 16px;
+  opacity: 0.85;
+  margin-bottom: 16px;
+}
+
+.hero-logo img {
+  width: 96px;
+  margin-bottom: 16px;
+}
+
+.hero-inner h1 {
+  font-size: 52px;
+  margin-bottom: 40px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* GLASS BUTTON */
+.glass-btn {
+  padding: 18px 28px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: white;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.2);
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.glass-btn:hover {
+  background: #1e5eff;
+  transform: translateY(-4px);
+}
+
+/* SECTIONS */
+section {
+  padding: 96px 24px;
+}
+
+.section-head {
+  max-width: 900px;
+  margin: 0 auto 64px;
+  text-align: center;
+}
+
+.section-head h2 {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.section-head p {
+  font-size: 15px;
+  opacity: 0.85;
+  line-height: 1.8;
+}
+
+/* FEATURES */
+.feature-grid {
+  max-width: 1100px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+}
+
+.feature-card {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 16px;
+  padding: 32px;
+  backdrop-filter: blur(14px);
+}
+
+.feature-card h3 {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: 13px;
+  opacity: 0.7;
+  margin-bottom: 12px;
+}
+
+.feature-card p {
+  font-size: 14px;
+  line-height: 1.8;
+  opacity: 0.9;
+}
+
+/* WHY */
+.why-grid {
+  max-width: 1100px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+}
+
+.why-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 28px;
+}
+
+.why-card h4 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.why-card p {
+  font-size: 14px;
+  line-height: 1.7;
+  opacity: 0.85;
+}
+
+/* FOOTER */
+.footer {
+  background: #ffffff;
+  color: #000000;
+  text-align: center;
+  padding: 28px;
+  font-size: 13px;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .hero-inner h1 {
+    font-size: 38px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+}
+
+/* =========================
+   RESET
+========================= *
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Membuat body setidaknya setinggi layar agar footer bisa dipaksa ke bawah *
 html, body {
   height: 100%;
 }
 
 /* =========================
    GLOBAL VAR
-========================= */
+========================= *
 :root {
-  --nav-height: 70px; /* Sedikit lebih tinggi agar lebih lega */
+  --nav-height: 70px; /* Sedikit lebih tinggi agar lebih lega *
 }
 
 /* =========================
    BODY
-========================= */
+========================= *
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   color: #ffffff;
@@ -33,7 +264,7 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   
-  /* Flexbox di body membantu footer tetap di bawah jika konten sedikit */
+  /* Flexbox di body membantu footer tetap di bawah jika konten sedikit *
   display: flex;
   flex-direction: column;
   padding-top: var(--nav-height);
@@ -41,7 +272,7 @@ body {
 
 /* =========================
    TOP NAV
-========================= */
+========================= *
 .navbar {
   position: fixed;
   top: 0;
@@ -50,7 +281,7 @@ body {
   height: var(--nav-height);
   z-index: 999;
   backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.08); /* Gelap transparan agar teks nav putih terlihat jelas */
+  background: rgba(255, 255, 255, 0.08); /* Gelap transparan agar teks nav putih terlihat jelas *
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
@@ -107,14 +338,14 @@ body {
 
 /* =========================
    HERO (Section Utama)
-========================= */
+========================= *
 .hero {
-  /* Memastikan hero punya jarak yang cukup dari navbar */
+  /* Memastikan hero punya jarak yang cukup dari navbar *
   padding: 60px 24px; 
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center; /* Menengahkan teks */
+  text-align: center; /* Menengahkan teks *
 }
 
 .hero-inner {
@@ -122,7 +353,7 @@ body {
   max-width: 1000px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Menengahkan semua elemen di dalamnya (Logo & Teks) */
+  align-items: center; /* Menengahkan semua elemen di dalamnya (Logo & Teks) *
 }
 
 .hero h2 {
@@ -134,7 +365,7 @@ body {
 }
 
 .hero h1 {
-  font-size: clamp(32px, 5vw, 56px); /* Ukuran font adaptif */
+  font-size: clamp(32px, 5vw, 56px); /* Ukuran font adaptif *
   margin-bottom: 24px;
   font-weight: 800;
 }
@@ -148,21 +379,21 @@ body {
 
 /* =========================
    NAV CARDS (Tombol Grid)
-========================= */
+========================= *
 .nav-cards {
   display: grid;
-  /* Menggunakan minmax agar card tidak terlalu lebar di layar kecil tapi tetap rapi */
+  /* Menggunakan minmax agar card tidak terlalu lebar di layar kecil tapi tetap rapi *
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
   gap: 20px;
   width: 100%;
   margin: 0 auto;
-  /* Memberi margin samping agar tidak nempel ke pinggir layar */
+  /* Memberi margin samping agar tidak nempel ke pinggir layar *
   padding: 0 10px; 
 }
 
 /* =========================
    GLASS CARD
-========================= */
+========================= *
 .glass-card {
   text-decoration: none;
   color: white;
@@ -195,9 +426,9 @@ body {
 
 /* =========================
    CONTENT SECTIONS
-========================= */
+========================= *
 .main-content {
-  flex: 1; /* Ini akan mengambil sisa ruang agar footer terdorong ke bawah */
+  flex: 1; /* Ini akan mengambil sisa ruang agar footer terdorong ke bawah *
 }
 
 .intro, .products, .why {
@@ -249,7 +480,7 @@ body {
 
 /* =========================
    FOOTER
-========================= */
+========================= *
 #footer {
   background: #ffffff;
   color: #000000;
@@ -272,13 +503,14 @@ body {
 
 /* =========================
    RESPONSIVE
-========================= */
+========================= *
 @media (max-width: 768px) {
   .nav-links {
-    display: none; /* Kamu bisa ganti ini dengan menu burger nanti */
+    display: none; /* Kamu bisa ganti ini dengan menu burger nanti *
   }
   
   .hero {
     padding: 40px 20px;
   }
 }
+*/
