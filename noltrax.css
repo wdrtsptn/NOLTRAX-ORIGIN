@@ -265,6 +265,7 @@ section {
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 16px;
+  backdrop-filter: blur(14px);
   padding: 28px;
 }
 
