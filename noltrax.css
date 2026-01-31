@@ -157,6 +157,7 @@ body {
 
 .hero-inner h2 {
   font-size: 16px;
+  color: #ffffff;
   opacity: 0.85;
   margin-bottom: 16px;
 }
@@ -168,6 +169,7 @@ body {
 
 .hero-inner h1 {
   font-size: 52px;
+  color: #ffffff;
   margin-bottom: 40px;
 }
 
@@ -211,6 +213,7 @@ body {
 /* Tulisan NOLTRAX MATCH dkk lebih gede */
 .glass-btn h2 {
   font-size: 1.2rem; /* Ukuran lebih besar */
+  color: #ffffff;
   margin-bottom: 4px;
   font-weight: 700;
   text-transform: uppercase;
@@ -219,6 +222,7 @@ body {
 /* Tulisan Get Started lebih kecil */
 .glass-btn span {
   font-size: 0.85rem; /* Ukuran lebih kecil */
+  color: #ffffff;
   opacity: 0.7;
   font-weight: 400;
 }
