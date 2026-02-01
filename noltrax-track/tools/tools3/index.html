@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Noltrax Track – Tools 3</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1 class="main-title">Noltrax Track — Zone Tracker</h1>
+
+<div class="wrap">
+
+  <header>
+    <div class="row">
+      <input type="text" id="matchName" placeholder="Match Name">
+      <input type="date" id="matchDate">
+    </div>
+    <div class="row">
+      <input type="text" id="teamName" placeholder="Team Name">
+      <select id="eventType">
+        <option value="Pass">Pass</option>
+        <option value="Progressive Pass">Progressive Pass</option>
+        <option value="Carry">Carry</option>
+        <option value="Shot">Shot</option>
+      </select>
+    </div>
+  </header>
+
+  <div class="pitch-card">
+    <div class="pitch" id="pitch">
+      <!-- zones injected by JS -->
+    </div>
+  </div>
+
+  <p class="hint">
+    Click zona untuk mencatat event.
+  </p>
+
+  <div class="controls">
+    <button class="primary" id="saveBtn">Save CSV</button>
+    <button id="resetBtn">Reset</button>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-section footer-left">
+    <h3>About</h3>
+    <p>
+      Tools 3 captures spatial tendencies by logging football actions
+      based on pitch zones.
+    </p>
+  </div>
+
+  <div class="footer-section footer-center">
+    <h3>Quick Links</h3>
+    <p><a href="../index.html">Track Home</a></p>
+  </div>
+
+  <div class="footer-section footer-right">
+    <h3>Credit</h3>
+    <p>©2026 <b>NOLTRAX</b></p>
+    <p>Designed by <b>Septian Widiarto</b></p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
