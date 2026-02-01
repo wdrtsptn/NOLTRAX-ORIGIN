@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Noltrax Track – Tools 2</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1 class="main-title">Noltrax Track — Context Events</h1>
+
+<div class="wrap">
+
+  <header>
+    <div class="row">
+      <input type="text" id="matchName" placeholder="Match Name">
+      <input type="date" id="matchDate">
+    </div>
+    <div class="row">
+      <input type="text" id="homeName" placeholder="Home Team">
+      <input type="text" id="awayName" placeholder="Away Team">
+    </div>
+  </header>
+
+  <div class="table-card">
+    <table id="eventTable">
+      <thead>
+        <tr>
+          <th style="text-align:left;">Event</th>
+          <th class="home">Home</th>
+          <th class="away">Away</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Shoot On Target</td><td class="home">0</td><td class="away">0</td></tr>
+        <tr><td>Shoot Off Target</td><td class="home">0</td><td class="away">0</td></tr>
+        <tr><td>Duel Won</td><td class="home">0</td><td class="away">0</td></tr>
+        <tr><td>Duel Lost</td><td class="home">0</td><td class="away">0</td></tr>
+        <tr><td>Clearance Success</td><td class="home">0</td><td class="away">0</td></tr>
+        <tr><td>Clearance Failed</td><td class="home">0</td><td class="away">0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="hint">
+    Hotkeys:
+    <span class="kbd">1–6</span> Home •
+    <span class="kbd">7–0</span> Away
+  </p>
+
+  <div class="controls">
+    <button class="primary" id="saveBtn">Save CSV</button>
+    <button id="resetBtn">Reset</button>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-section footer-left">
+    <h3>About</h3>
+    <p>
+      Noltrax Track Tools 2 focuses on qualitative football events,
+      capturing the context behind every action.
+    </p>
+  </div>
+
+  <div class="footer-section footer-center">
+    <h3>Quick Links</h3>
+    <p><a href="../index.html">Track Home</a></p>
+  </div>
+
+  <div class="footer-section footer-right">
+    <h3>Credit</h3>
+    <p>©2026 <b>NOLTRAX</b></p>
+    <p>Designed by <b>Septian Widiarto</b></p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
