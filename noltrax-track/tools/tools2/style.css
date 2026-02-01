@@ -1,0 +1,124 @@
+:root {
+  --bg:#0b0f14;
+  --card:rgba(255,255,255,0.08);
+  --text:#ffffff;
+  --muted:#9aa4af;
+  --accent:#1e5eff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background:
+    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.35)),
+    url("../../assets/bg.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  color: var(--text);
+  padding: 20px;
+}
+
+.main-title {
+  text-align: center;
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+
+.wrap { max-width: 920px; margin: 0 auto; }
+
+header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+input {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 10px;
+  border-radius: 10px;
+  color: var(--text);
+}
+
+.table-card {
+  background: var(--card);
+  backdrop-filter: blur(14px);
+  border-radius: 14px;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+th {
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+}
+
+td:first-child {
+  font-weight: 600;
+}
+
+td.home, td.away {
+  text-align: center;
+  font-weight: 700;
+}
+
+.hint {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.kbd {
+  background: rgba(255,255,255,0.12);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+.controls {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+button {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.1);
+  color: white;
+  cursor: pointer;
+}
+
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+footer {
+  margin-top: 60px;
+  padding: 30px 60px;
+  display: flex;
+  gap: 20px;
+  background: rgba(0,0,0,0.6);
+}
+
+.footer-section { flex: 1; }
+footer a { color: white; text-decoration: none; }
