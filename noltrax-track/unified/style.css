@@ -1,0 +1,141 @@
+:root{
+  --bg:#0b0f14;
+  --glass:rgba(255,255,255,0.08);
+  --border:rgba(255,255,255,0.15);
+  --text:#ffffff;
+  --accent:#00e5ff;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family:Inter,system-ui;
+  background:radial-gradient(circle at top,#101827,#05070b);
+  color:var(--text);
+}
+
+/* DESKTOP / MOBILE */
+.desktop-only{display:block;}
+.mobile-block{display:none;}
+
+@media(max-width:1024px){
+  .desktop-only{display:none;}
+  .mobile-block{
+    display:flex;
+    height:100vh;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    text-align:center;
+  }
+}
+
+/* TOP */
+.top-actions{
+  padding:16px;
+}
+
+.back-btn{
+  background:var(--glass);
+  border:1px solid var(--border);
+  color:#fff;
+  padding:8px 14px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+/* TITLES */
+.title{
+  text-align:center;
+  margin:10px 0 0;
+}
+.subtitle{
+  text-align:center;
+  color:#9aa4b2;
+  margin-bottom:20px;
+}
+
+/* LAYOUT */
+.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:20px;
+  display:grid;
+  grid-template-columns:280px 1fr 300px;
+  gap:20px;
+}
+
+/* GLASS */
+.glass{
+  background:var(--glass);
+  backdrop-filter:blur(14px);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px;
+}
+
+/* PANEL */
+.panel h3{margin-top:0;}
+.panel label{font-size:13px;color:#9aa4b2;}
+
+.panel input,
+.panel select{
+  width:100%;
+  margin-bottom:10px;
+  padding:8px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:rgba(0,0,0,0.4);
+  color:#fff;
+}
+
+.primary{
+  width:100%;
+  padding:10px;
+  background:var(--accent);
+  border:none;
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+  color:#000;
+}
+
+.hint{
+  margin-top:12px;
+  font-size:12px;
+  color:#9aa4b2;
+}
+
+/* PITCH */
+.pitch{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:repeat(2,1fr);
+  aspect-ratio:3/2;
+  padding:0;
+  overflow:hidden;
+}
+
+.zone{
+  border:1px solid rgba(255,255,255,0.1);
+  cursor:pointer;
+}
+
+.zone:hover{
+  background:rgba(0,229,255,0.15);
+}
+
+/* EVENTS */
+#eventLog{
+  list-style:none;
+  padding:0;
+  max-height:260px;
+  overflow:auto;
+}
+
+#eventLog li{
+  font-size:12px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+  padding:6px 0;
+}
