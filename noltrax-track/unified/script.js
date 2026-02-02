@@ -1,70 +1,70 @@
-const zones = document.querySelectorAll('.zone');
-const logBtn = document.getElementById('logEvent');
-const eventLog = document.getElementById('eventLog');
+const startingXI = document.getElementById("starting-xi");
+const subs = document.getElementById("subs");
+const log = document.getElementById("eventLog");
+const posValue = document.getElementById("posValue");
 
+let selectedPlayer = null;
+let selectedEvent = null;
 let selectedZone = null;
+let possession = 50;
+
+// INIT PLAYERS
+for (let i = 1; i <= 11; i++) {
+  startingXI.innerHTML += `
+    <div class="row">
+      <span>${i}</span><span></span><span></span>
+    </div>
+  `;
+}
+for (let i = 12; i <= 18; i++) {
+  subs.innerHTML += `
+    <div class="row">
+      <span>${i}</span><span></span><span></span>
+    </div>
+  `;
+}
 
 // ZONE CLICK
-zones.forEach(z=>{
-  z.addEventListener('click',()=>{
-    zones.forEach(x=>x.classList.remove('active'));
-    z.classList.add('active');
+document.querySelectorAll(".zone").forEach(z => {
+  z.addEventListener("click", () => {
+    document.querySelectorAll(".zone").forEach(x => x.classList.remove("active"));
+    z.classList.add("active");
     selectedZone = z.dataset.zone;
+    tryLog();
   });
 });
 
-// EVENT LOG
-logBtn.onclick = () => {
-  if(!selectedZone) return alert('Select zone');
+// KEYBOARD INPUT
+document.addEventListener("keydown", e => {
+  if (!isNaN(e.key)) {
+    selectedPlayer = e.key;
+  }
 
-  const player = playerInput.value || 'Unknown';
-  const eventType = eventType.value;
-  const outcome = outcome.value;
+  if (e.key === "p") selectedEvent = "Pass";
+  if (e.key === "s") selectedEvent = "Shot";
 
-  const li = document.createElement('li');
-  li.textContent = `${player} • ${eventType} • ${outcome} • Zone ${selectedZone}`;
-  eventLog.prepend(li);
-};
+  if (e.key === "+") {
+    possession = Math.min(100, possession + 1);
+    posValue.textContent = possession + "%";
+  }
 
-/* POSSESSION */
-let homeTime=0, awayTime=0;
-let active=null, start=null;
+  if (e.key === "-") {
+    possession = Math.max(0, possession - 1);
+    posValue.textContent = possession + "%";
+  }
 
-const homeEl=document.getElementById('homeTime');
-const awayEl=document.getElementById('awayTime');
-const liveEl=document.getElementById('livePct');
-
-document.addEventListener('keydown',e=>{
-  if(e.key==='q') toggle('home');
-  if(e.key==='w') toggle('away');
+  tryLog();
 });
 
-function toggle(team){
-  const now=Date.now();
-  if(active){
-    const diff=now-start;
-    if(active==='home') homeTime+=diff;
-    if(active==='away') awayTime+=diff;
+function tryLog() {
+  if (selectedPlayer && selectedEvent && selectedZone) {
+    const li = document.createElement("li");
+    li.textContent = `#${selectedPlayer} ${selectedEvent} – Zone ${selectedZone}`;
+    log.prepend(li);
+
+    selectedPlayer = null;
+    selectedEvent = null;
+    selectedZone = null;
+    document.querySelectorAll(".zone").forEach(x => x.classList.remove("active"));
   }
-  active=active===team?null:team;
-  start=now;
-}
-
-setInterval(()=>{
-  let h=homeTime, a=awayTime;
-  if(active==='home') h+=Date.now()-start;
-  if(active==='away') a+=Date.now()-start;
-
-  homeEl.textContent=format(h);
-  awayEl.textContent=format(a);
-
-  const total=h+a;
-  if(total>0){
-    liveEl.textContent=`${((h/total)*100).toFixed(1)}% - ${((a/total)*100).toFixed(1)}%`;
-  }
-},300);
-
-function format(ms){
-  const s=Math.floor(ms/1000);
-  return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
 }
