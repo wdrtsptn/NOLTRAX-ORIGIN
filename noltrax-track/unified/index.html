@@ -1,92 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Noltrax Track — Unified Tool</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Noltrax Track – Live</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div class="desktop-only">
-  <div class="top-actions">
-    <button class="back-btn" onclick="window.location.href='../index.html'">
-      ← Back to Noltrax Track
-    </button>
+<!-- BACK BUTTON -->
+<button class="back-btn" onclick="window.location.href='../../index.html'">
+  ← Back to Noltrax Track
+</button>
+
+<!-- MATCH INFO -->
+<section class="match-info glass">
+  <input placeholder="Match Name" />
+  <input type="date" />
+  <input placeholder="Home Team" />
+  <input placeholder="Away Team" />
+  <input placeholder="Team Analyzed" />
+  <input placeholder="Analyst Name" />
+</section>
+
+<!-- PLAYER TABLE -->
+<section class="players glass">
+  <div class="table">
+    <div class="row header">
+      <span>No</span><span>Pos</span><span>Name</span>
+    </div>
+
+    <!-- STARTING XI -->
+    <div id="starting-xi"></div>
+
+    <div class="subs-label">SUBS</div>
+
+    <!-- SUBS -->
+    <div id="subs"></div>
+  </div>
+</section>
+
+<!-- TRACK AREA -->
+<section class="track glass">
+  <div class="zones">
+    <div class="zone" data-zone="1">1</div>
+    <div class="zone" data-zone="2">2</div>
+    <div class="zone" data-zone="3">3</div>
+    <div class="zone" data-zone="4">4</div>
+    <div class="zone" data-zone="5">5</div>
+    <div class="zone" data-zone="6">6</div>
   </div>
 
-  <h1 class="title">Noltrax Track</h1>
-  <p class="subtitle">Unified Match Event Tracker</p>
-
-  <div class="container">
-
-    <!-- LEFT PANEL -->
-    <div class="panel glass">
-      <h3>Event Input</h3>
-
-      <label>Player</label>
-      <input type="text" id="playerInput" placeholder="Player name">
-
-      <label>Event</label>
-      <select id="eventType">
-        <option value="Pass">Pass</option>
-        <option value="Shot">Shot</option>
-        <option value="Duel">Duel</option>
-        <option value="Tackle">Tackle</option>
-        <option value="Interception">Interception</option>
-        <option value="Turnover">Turnover</option>
-      </select>
-
-      <label>Outcome</label>
-      <select id="outcome">
-        <option value="Success">Success</option>
-        <option value="Fail">Fail</option>
-        <option value="Goal">Goal</option>
-        <option value="On Target">On Target</option>
-        <option value="Off Target">Off Target</option>
-      </select>
-
-      <button id="logEvent" class="primary">Log Event</button>
-
-      <div class="hint">
-        <b>Hotkeys</b><br>
-        Q = Toggle Home Possession<br>
-        W = Toggle Away Possession
-      </div>
-    </div>
-
-    <!-- PITCH -->
-    <div class="pitch glass" id="pitch">
-      <div class="zone" data-zone="1"></div>
-      <div class="zone" data-zone="2"></div>
-      <div class="zone" data-zone="3"></div>
-      <div class="zone" data-zone="4"></div>
-      <div class="zone" data-zone="5"></div>
-      <div class="zone" data-zone="6"></div>
-    </div>
-
-    <!-- RIGHT PANEL -->
-    <div class="panel glass">
-      <h3>Live Info</h3>
-
-      <div class="possession">
-        <p>Home Possession: <span id="homeTime">00:00</span></p>
-        <p>Away Possession: <span id="awayTime">00:00</span></p>
-        <p><b>Live %:</b> <span id="livePct">0% - 0%</span></p>
-      </div>
-
-      <h4>Logged Events</h4>
-      <ul id="eventLog"></ul>
-    </div>
-
+  <div class="possession">
+    <span>POSSESSION</span>
+    <strong id="posValue">50%</strong>
   </div>
-</div>
+</section>
 
-<!-- MOBILE BLOCK -->
-<div class="mobile-block">
-  <h2>Desktop Only</h2>
-  <p>Noltrax Track is designed for desktop analysis.</p>
-</div>
+<!-- LIVE LOG -->
+<section class="log glass">
+  <h3>Live Event Log</h3>
+  <ul id="eventLog"></ul>
+</section>
 
 <script src="script.js"></script>
 </body>
