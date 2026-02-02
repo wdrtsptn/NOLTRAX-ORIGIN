@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noltrax Track - Live Match Tracking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Back Button -->
+    <button class="back-button" onclick="window.history.back()">← Back to Noltrax Track Landing</button>
+
+    <!-- SECTION 1: MATCH INFO FORM -->
+    <section id="match-info-section" class="section active">
+        <div class="container">
+            <h1>Match Information</h1>
+            <form id="match-info-form" class="glass-card">
+                <div class="form-group">
+                    <label for="match-name">Match Name *</label>
+                    <input type="text" id="match-name" required placeholder="e.g., Premier League - Arsenal vs Chelsea">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="match-date">Date *</label>
+                        <input type="date" id="match-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="analyst-name">Analyst Name *</label>
+                        <input type="text" id="analyst-name" required placeholder="Your name">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="home-team">Home Team *</label>
+                        <input type="text" id="home-team" required placeholder="Home team">
+                    </div>
+                    <div class="form-group">
+                        <label for="away-team">Away Team *</label>
+                        <input type="text" id="away-team" required placeholder="Away team">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="team-analyzed">Team Analyzed *</label>
+                    <select id="team-analyzed" required>
+                        <option value="">Select team</option>
+                        <option value="home">Home Team</option>
+                        <option value="away">Away Team</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-primary">Continue to Player Registration</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- SECTION 2: PLAYER REGISTRATION -->
+    <section id="player-registration-section" class="section">
+        <div class="container">
+            <h1>Player Registration</h1>
+            <div class="glass-card">
+                <h2>Starting XI</h2>
+                <table class="player-table" id="starting-xi-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Pos</th>
+                            <th>Player Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="1"></td><td><select class="player-position"><option value="GK">GK</option><option value="DF">DF</option><option value="MF">MF</option><option value="FW">FW</option></select></td><td><input type="text" class="player-name" placeholder="Player name"></td></tr>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="2"></td><td><select class="player-position"><option value="GK">GK</option><option value="DF" selected>DF</option><option value="MF">MF</option><option value="FW">FW</option></select></td><td><input type="text" class="player-name" placeholder="Player name"></td></tr>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="3"></td><td><select class="player-position"><option value="GK">GK</option><option value="DF" selected>DF</option><option value="MF">MF</option><option value="FW">FW</option></select></td><td><input type="text" class="player-name" placeholder="Player name"></td></tr>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="4"></td><td><select class="player-position"><option value="GK">GK</option><option value="DF" selected>DF</option><option value="MF">MF</option><option value="FW">FW</option></select></td><td><input type="text" class="player-name" placeholder="Player name"></td></tr>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="5"></td><td><select class="player-position"><option value="GK">GK</option><option value="DF" selected>DF</option><option value="MF">MF</option><option value="FW">FW</option></select></td><td><input type="text" class="player-name" placeholder="Player name"></td></tr>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="6"></td><td><select class="player-position"><option value="GK">GK</option><option value="DF">DF</option><option value="MF" selected>MF</option><option value="FW">FW</option></select></td><td><input type="text" class="player-name" placeholder="Player name"></td></tr>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="7"></td><td><select class="player-position"><option value="GK">GK</option><option value="DF">DF</option><option value="MF" selected>MF</option><option value="FW">FW</option></select></td><td><input type="text" class="player-name" placeholder="Player name"></td></tr>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="8"></td><td><select class="player-position"><option value="GK">GK</option><option value="DF">DF</option><option value="MF" selected>MF</option><option value="FW">FW</option></select></td><td><input type="text" class="player-name" placeholder="Player name"></td></tr>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="9"></td><td><select class="player-position"><option value="GK">GK</option><option value="DF">DF</option><option value="MF">MF</option><option value="FW" selected>FW</option></select></td><td><input type="text" class="player-name" placeholder="Player name"></td></tr>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="10"></td><td><select class="player-position"><option value="GK">GK</option><option value="DF">DF</option><option value="MF" selected>MF</option><option value="FW">FW</option></select></td><td><input type="text" class="player-name" placeholder="Player name"></td></tr>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="11"></td><td><select class="player-position"><option value="GK">GK</option><option value="DF">DF</option><option value="MF">MF</option><option value="FW" selected>FW</option></select></td><td><input type="text" class="player-name" placeholder="Player name"></td></tr>
+                    </tbody>
+                </table>
+
+                <div class="separator">SUBSTITUTES</div>
+
+                <table class="player-table" id="substitutes-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Player Name</th>
+                        </tr>
+                    </thead>
+                    <tbody id="subs-tbody">
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="12"></td><td><input type="text" class="player-name" placeholder="Sub player name"></td></tr>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="13"></td><td><input type="text" class="player-name" placeholder="Sub player name"></td></tr>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="14"></td><td><input type="text" class="player-name" placeholder="Sub player name"></td></tr>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="15"></td><td><input type="text" class="player-name" placeholder="Sub player name"></td></tr>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="16"></td><td><input type="text" class="player-name" placeholder="Sub player name"></td></tr>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="17"></td><td><input type="text" class="player-name" placeholder="Sub player name"></td></tr>
+                        <tr><td><input type="number" class="player-number" min="1" max="99" placeholder="18"></td><td><input type="text" class="player-name" placeholder="Sub player name"></td></tr>
+                    </tbody>
+                </table>
+
+                <button id="start-tracking-btn" class="btn-primary">Start Live Tracking</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: LIVE TRACKING DASHBOARD -->
+    <section id="tracking-section" class="section">
+        <div class="tracking-container">
+            <!-- LEFT: Tactical Field (75%) -->
+            <div class="field-container">
+                <div class="timer-display">
+                    <span id="timer">00:00</span>
+                    <button id="timer-toggle" class="timer-btn">▶ Start (Space)</button>
+                </div>
+                <div class="field-wrapper">
+                    <img src="field.svg" alt="Football Field" class="field-image">
+                    <div class="zones-overlay">
+                        <div class="zone" data-zone="1"></div>
+                        <div class="zone" data-zone="2"></div>
+                        <div class="zone" data-zone="3"></div>
+                        <div class="zone" data-zone="4"></div>
+                        <div class="zone" data-zone="5"></div>
+                        <div class="zone" data-zone="6"></div>
+                        <div class="zone" data-zone="7"></div>
+                        <div class="zone" data-zone="8"></div>
+                        <div class="zone" data-zone="9"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Command Panel (25%) -->
+            <div class="command-panel">
+                <!-- Input Monitor -->
+                <div class="glass-card monitor-card">
+                    <h3>Input Monitor</h3>
+                    <div class="monitor-display">
+                        <div class="monitor-item">
+                            <span class="monitor-label">Player:</span>
+                            <span id="monitor-player" class="monitor-value">-</span>
+                        </div>
+                        <div class="monitor-item">
+                            <span class="monitor-label">Action:</span>
+                            <span id="monitor-action" class="monitor-value">-</span>
+                        </div>
+                        <div class="monitor-item">
+                            <span class="monitor-label">Outcome:</span>
+                            <span id="monitor-outcome" class="monitor-value">-</span>
+                        </div>
+                        <div class="monitor-item">
+                            <span class="monitor-label">Zone:</span>
+                            <span id="monitor-zone" class="monitor-value">Waiting...</span>
+                        </div>
+                    </div>
+                    <input type="number" id="player-input" class="player-input-field" placeholder="Player No" min="1" max="99">
+                    <button id="clear-input-btn" class="btn-secondary">Clear (ESC)</button>
+                </div>
+
+                <!-- Action Selector -->
+                <div class="glass-card action-card">
+                    <h3>Actions</h3>
+                    <div class="action-groups">
+                        <!-- Passing -->
+                        <div class="action-group">
+                            <h4>🟢 Passing</h4>
+                            <button class="action-btn" data-action="Pass" data-shortcut="P">Pass (P)</button>
+                            <button class="action-btn" data-action="Progressive Pass" data-shortcut="G">Prog Pass (G)</button>
+                            <button class="action-btn" data-action="Key Pass" data-shortcut="K">Key Pass (K)</button>
+                            <button class="action-btn" data-action="Through Ball" data-shortcut="T">Through (T)</button>
+                            <button class="action-btn" data-action="Cross" data-shortcut="C">Cross (C)</button>
+                        </div>
+
+                        <!-- Shooting -->
+                        <div class="action-group">
+                            <h4>🔴 Shooting</h4>
+                            <button class="action-btn" data-action="Shot" data-shortcut="S">Shot (S)</button>
+                            <button class="action-btn" data-action="Shot on Target" data-shortcut="O">On Target (O)</button>
+                            <button class="action-btn" data-action="Goal" data-shortcut="L">Goal (L)</button>
+                        </div>
+
+                        <!-- Defensive -->
+                        <div class="action-group">
+                            <h4>🔵 Defensive</h4>
+                            <button class="action-btn" data-action="Tackle" data-shortcut="A">Tackle (A)</button>
+                            <button class="action-btn" data-action="Interception" data-shortcut="I">Intercept (I)</button>
+                            <button class="action-btn" data-action="Block" data-shortcut="B">Block (B)</button>
+                            <button class="action-btn" data-action="Clearance" data-shortcut="R">Clear (R)</button>
+                            <button class="action-btn" data-action="Duel" data-shortcut="D">Duel (D)</button>
+                        </div>
+
+                        <!-- Errors & Discipline -->
+                        <div class="action-group">
+                            <h4>🟡 Errors</h4>
+                            <button class="action-btn no-outcome" data-action="Ball Lost" data-shortcut="X">Lost (X)</button>
+                            <button class="action-btn no-outcome" data-action="Foul" data-shortcut="F">Foul (F)</button>
+                            <button class="action-btn no-outcome" data-action="Yellow Card" data-shortcut="Y">Yellow (Y)</button>
+                            <button class="action-btn no-outcome" data-action="Red Card" data-shortcut="Z">Red (Z)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Outcome Selector -->
+                <div class="glass-card outcome-card" id="outcome-selector" style="display: none;">
+                    <h3>Outcome</h3>
+                    <div id="outcome-buttons"></div>
+                </div>
+
+                <!-- Possession Tracker -->
+                <div class="glass-card possession-card">
+                    <h3>Possession</h3>
+                    <div class="possession-display">
+                        <div class="possession-time">
+                            <span id="possession-time">00:00</span>
+                        </div>
+                        <div class="possession-percentage">
+                            <span id="possession-percent">0%</span>
+                        </div>
+                    </div>
+                    <button id="possession-toggle" class="btn-secondary">Track (Q)</button>
+                </div>
+
+                <!-- Activity Feed -->
+                <div class="glass-card feed-card">
+                    <h3>Recent Events</h3>
+                    <div id="activity-feed" class="activity-feed">
+                        <div class="feed-empty">No events yet</div>
+                    </div>
+                </div>
+
+                <!-- Export Buttons -->
+                <div class="export-buttons">
+                    <button id="export-json" class="btn-export">Export JSON</button>
+                    <button id="export-csv" class="btn-export">Export CSV</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+  </html>
+
