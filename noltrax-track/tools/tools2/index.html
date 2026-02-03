@@ -1,1 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Noltrax Track</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
+<!-- BACK BUTTON -->
+<a href="../../index.html" class="back-btn">← Back</a>
+
+<!-- MATCH INFO -->
+<section class="glass match-info">
+  <input placeholder="Match Name">
+  <input type="date">
+  <input placeholder="Home Team">
+  <input placeholder="Away Team">
+  <input placeholder="Team Analyzed">
+  <input placeholder="Analyst Name">
+</section>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- PITCH -->
+  <div class="pitch glass" id="pitch">
+    <!-- 9 ZONES -->
+    <div class="zone" data-zone="1"></div>
+    <div class="zone" data-zone="2"></div>
+    <div class="zone" data-zone="3"></div>
+    <div class="zone" data-zone="4"></div>
+    <div class="zone" data-zone="5"></div>
+    <div class="zone" data-zone="6"></div>
+    <div class="zone" data-zone="7"></div>
+    <div class="zone" data-zone="8"></div>
+    <div class="zone" data-zone="9"></div>
+  </div>
+
+  <!-- COMMAND CENTER -->
+  <aside class="panel glass">
+    <div class="monitor">
+      <div id="playerDisplay">--</div>
+      <div id="actionDisplay">Waiting</div>
+    </div>
+
+    <div class="feed" id="feed"></div>
+
+    <button id="exportBtn">Export JSON</button>
+  </aside>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
