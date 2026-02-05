@@ -1,69 +1,115 @@
-// === LOAD DATA ===
+// =====================================
+// LOAD DATA FROM NOLTRAX MATCH
+// =====================================
 const raw = localStorage.getItem("noltrax_match_data");
 const data = raw ? JSON.parse(raw) : null;
 
+const insightEl = document.getElementById("autoInsight");
+
 if (!data) {
-  document.getElementById("autoInsight").textContent =
-    "No Noltrax Match data found.";
+  insightEl.textContent =
+    "No Noltrax Match data found. Please save a session in Noltrax Match first.";
 } else {
+  normalizeData();
   renderMatchInfo();
   renderSummary();
   renderActionDistribution();
 }
 
-// === RENDER MATCH INFO ===
-function renderMatchInfo() {
-  const info = data.info;
-  document.getElementById("matchName").textContent = info.matchName || "-";
-  document.getElementById("matchDate").textContent = info.date || "-";
-  document.getElementById("homeTeam").textContent = info.home || "-";
-  document.getElementById("awayTeam").textContent = info.away || "-";
-  document.getElementById("analyzedTeam").textContent = info.analyzedTeam || "-";
-  document.getElementById("analyst").textContent = info.analyst || "-";
+// =====================================
+// NORMALIZE DATA (ANTI ERROR)
+// =====================================
+function normalizeData() {
+  // pastiin struktur aman
+  data.metadata = data.metadata || {};
+  data.events = Array.isArray(data.events) ? data.events : [];
+
+  // normalisasi event
+  data.events = data.events.map(e => ({
+    action: e.action || e.label || "Unknown",
+    time: typeof e.time === "number" ? e.time : null
+  }));
 }
 
-// === SUMMARY ===
+// =====================================
+// RENDER MATCH INFO
+// =====================================
+function renderMatchInfo() {
+  const m = data.metadata;
+
+  document.getElementById("matchName").textContent = m.matchName || "-";
+  document.getElementById("matchDate").textContent = m.matchDate || "-";
+  document.getElementById("homeTeam").textContent = m.homeTeam || "-";
+  document.getElementById("awayTeam").textContent = m.awayTeam || "-";
+  document.getElementById("analyzedTeam").textContent =
+    m.analyzedTeam || m.homeTeam || "-";
+  document.getElementById("analyst").textContent = m.analyst || "-";
+}
+
+// =====================================
+// SUMMARY (AUTO INSIGHT)
+// =====================================
 function renderSummary() {
-  const events = data.events || [];
+  const events = data.events;
+
   document.getElementById("totalEvents").textContent = events.length;
 
-  if (events.length === 0) return;
+  if (events.length === 0) {
+    insightEl.textContent =
+      "No actions recorded. Analytics will appear once events are logged.";
+    return;
+  }
 
   const actionCount = {};
-  const minuteCount = {};
+  const timeBuckets = {};
 
   events.forEach(e => {
     actionCount[e.action] = (actionCount[e.action] || 0) + 1;
-    minuteCount[e.minute] = (minuteCount[e.minute] || 0) + 1;
+
+    if (e.time !== null) {
+      const minute = Math.floor(e.time / 60);
+      timeBuckets[minute] = (timeBuckets[minute] || 0) + 1;
+    }
   });
 
-  const dominant = Object.entries(actionCount).sort((a,b)=>b[1]-a[1])[0];
-  const peak = Object.entries(minuteCount).sort((a,b)=>b[1]-a[1])[0];
+  const dominant = Object.entries(actionCount)
+    .sort((a, b) => b[1] - a[1])[0];
+
+  const peakMinute = Object.entries(timeBuckets)
+    .sort((a, b) => b[1] - a[1])[0];
 
   document.getElementById("dominantAction").textContent = dominant[0];
-  document.getElementById("peakMinute").textContent = peak[0];
+  document.getElementById("peakMinute").textContent =
+    peakMinute ? `${peakMinute[0]}'` : "-";
 
-  document.getElementById("autoInsight").textContent =
-    `Most recorded action was "${dominant[0]}", accounting for ${Math.round(
-      (dominant[1] / events.length) * 100
-    )}% of all events.`;
+  const pct = Math.round((dominant[1] / events.length) * 100);
+
+  insightEl.textContent =
+    `The most frequently logged action was "${dominant[0]}", ` +
+    `representing ${pct}% of all recorded events.`;
 }
 
-// === ACTION DISTRIBUTION ===
+// =====================================
+// ACTION DISTRIBUTION (LABEL AGNOSTIC)
+// =====================================
 function renderActionDistribution() {
   const container = document.getElementById("actionList");
-  const events = data.events || [];
-  const map = {};
+  container.innerHTML = "";
 
-  events.forEach(e => {
+  const map = {};
+  data.events.forEach(e => {
     map[e.action] = (map[e.action] || 0) + 1;
   });
 
-  Object.entries(map).forEach(([label, count]) => {
-    const row = document.createElement("div");
-    row.innerHTML = `<span>${label}</span><strong>${count}</strong>`;
-    container.appendChild(row);
-  });
+  Object.entries(map)
+    .sort((a, b) => b[1] - a[1])
+    .forEach(([label, count]) => {
+      const row = document.createElement("div");
+      row.className = "action-row";
+      row.innerHTML = `
+        <span>${label}</span>
+        <strong>${count}</strong>
+      `;
+      container.appendChild(row);
+    });
 }
-
-// PDF EXPORT akan nyusul
