@@ -221,13 +221,13 @@ const editActionsBtn = document.createElement("button");
 editActionsBtn.innerText = "Edit Actions";
 editActionsBtn.style.cssText = `
   position: absolute;
-  top: -80px;
+  top: -70px;
   right: 10px;
   z-index: 50;
   padding: 10px 16px;
   border-radius: 12px;
   border: none;
-  background: #ff8c00;
+  background: #1e5eff;
   color: white;
   font-weight: bold;
   cursor: pointer;
