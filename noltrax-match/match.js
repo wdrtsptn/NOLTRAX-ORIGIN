@@ -211,61 +211,129 @@ function saveSession() {
   a.click();
                                                    }
 
+
 // ================================
-// EDIT TAG BUTTONS FEATURE
+// EDIT ACTION BUTTONS
 // ================================
 
-function initEditButtons() {
-  const editBtn = document.createElement("button");
-  editBtn.id = "editTagsBtn";
-  editBtn.textContent = "Edit Tags";
-  editBtn.style.cssText = `
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 10px 14px;
+// Tombol "Edit Actions" di atas video
+const editActionsBtn = document.createElement("button");
+editActionsBtn.innerText = "Edit Actions";
+editActionsBtn.style.cssText = `
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 50;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  background: #ff8c00;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+`;
+document.querySelector("#videoPanel").appendChild(editActionsBtn);
+
+// Nama default tombol action
+let actionButtons = ["Build-up", "Pressing", "CO-Press", "Counter", "Progressive", "Mid-OVR", "Back-OVR", "Transition"];
+
+// Load dari localStorage kalau ada
+const savedActions = JSON.parse(localStorage.getItem("actionButtons"));
+if (savedActions) actionButtons = savedActions;
+
+// Apply nama tombol ke UI
+function updateActionButtons() {
+  const btnContainer = document.getElementById("tags");
+  const btns = btnContainer.querySelectorAll("button");
+  btns.forEach((btn, idx) => {
+    btn.innerText = actionButtons[idx] || btn.innerText;
+  });
+}
+updateActionButtons();
+
+// Modal untuk edit semua tombol sekaligus
+editActionsBtn.onclick = () => {
+  // Modal container
+  const modal = document.createElement("div");
+  modal.style.cssText = `
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  `;
+
+  // Modal content
+  const content = document.createElement("div");
+  content.style.cssText = `
+    background: rgba(30,30,30,0.95);
+    padding: 20px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 300px;
+  `;
+
+  content.innerHTML = `<h3 style="color:white;margin-bottom:10px;">Edit Action Buttons</h3>`;
+
+  const inputs = [];
+  actionButtons.forEach((name, idx) => {
+    const input = document.createElement("input");
+    input.value = name;
+    input.style.cssText = `
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    `;
+    content.appendChild(input);
+    inputs.push(input);
+  });
+
+  const saveBtn = document.createElement("button");
+  saveBtn.innerText = "Save";
+  saveBtn.style.cssText = `
+    margin-top: 12px;
+    padding: 10px;
     border-radius: 12px;
     border: none;
-    background: #ff9500;
+    background: #1e5eff;
     color: white;
+    font-weight: bold;
     cursor: pointer;
-    font-weight: 600;
-    z-index: 200;
   `;
-  
-  const videoPanel = document.getElementById("videoPanel");
-  videoPanel.style.position = "relative"; // supaya tombol bisa absolute
-  videoPanel.appendChild(editBtn);
+  content.appendChild(saveBtn);
 
-  editBtn.addEventListener("click", () => {
-    const buttons = document.querySelectorAll("#tags button");
-    buttons.forEach(btn => {
-      const newName = prompt("Edit button name:", btn.textContent);
-      if (newName !== null && newName.trim() !== "") {
-        btn.textContent = newName;
-      }
+  const cancelBtn = document.createElement("button");
+  cancelBtn.innerText = "Cancel";
+  cancelBtn.style.cssText = `
+    margin-top: 8px;
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    background: #888;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  `;
+  content.appendChild(cancelBtn);
+
+  modal.appendChild(content);
+  document.body.appendChild(modal);
+
+  // Save action
+  saveBtn.onclick = () => {
+    inputs.forEach((inp, idx) => {
+      actionButtons[idx] = inp.value || actionButtons[idx];
     });
-    saveTagNames();
-  });
+    updateActionButtons();
+    localStorage.setItem("actionButtons", JSON.stringify(actionButtons));
+    modal.remove();
+  };
 
-  loadTagNames();
-}
-
-function saveTagNames() {
-  const buttons = document.querySelectorAll("#tags button");
-  const tagNames = Array.from(buttons).map(btn => btn.textContent);
-  localStorage.setItem("noltraxTags", JSON.stringify(tagNames));
-}
-
-function loadTagNames() {
-  const saved = localStorage.getItem("noltraxTags");
-  if (!saved) return;
-  const tagNames = JSON.parse(saved);
-  const buttons = document.querySelectorAll("#tags button");
-  buttons.forEach((btn, i) => {
-    if (tagNames[i]) btn.textContent = tagNames[i];
-  });
-}
-
-// INIT
-window.addEventListener("DOMContentLoaded", initEditButtons);
+  cancelBtn.onclick = () => modal.remove();
+};
