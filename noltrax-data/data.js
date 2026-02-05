@@ -1,30 +1,31 @@
 // =====================================
-// LOAD DATA FROM NOLTRAX MATCH
+// LOAD FROM NOLTRAX MATCH (ANTI RESET)
 // =====================================
-const raw = localStorage.getItem("noltrax_match_data");
-const data = raw ? JSON.parse(raw) : null;
+let data =
+  JSON.parse(localStorage.getItem("noltrax_match_data")) ||
+  JSON.parse(sessionStorage.getItem("noltrax_match_data"));
 
 const insightEl = document.getElementById("autoInsight");
 
 if (!data) {
   insightEl.textContent =
-    "No Noltrax Match data found. Please save a session in Noltrax Match first.";
+    "No Noltrax Match data found. Save a session in Noltrax Match first.";
 } else {
   normalizeData();
   renderMatchInfo();
   renderSummary();
   renderActionDistribution();
+  renderTimeline();
+  renderRhythm();
 }
 
 // =====================================
-// NORMALIZE DATA (ANTI ERROR)
+// NORMALIZE
 // =====================================
 function normalizeData() {
-  // pastiin struktur aman
   data.metadata = data.metadata || {};
   data.events = Array.isArray(data.events) ? data.events : [];
 
-  // normalisasi event
   data.events = data.events.map(e => ({
     action: e.action || e.label || "Unknown",
     time: typeof e.time === "number" ? e.time : null
@@ -32,84 +33,105 @@ function normalizeData() {
 }
 
 // =====================================
-// RENDER MATCH INFO
+// MATCH INFO
 // =====================================
 function renderMatchInfo() {
   const m = data.metadata;
-
-  document.getElementById("matchName").textContent = m.matchName || "-";
-  document.getElementById("matchDate").textContent = m.matchDate || "-";
-  document.getElementById("homeTeam").textContent = m.homeTeam || "-";
-  document.getElementById("awayTeam").textContent = m.awayTeam || "-";
-  document.getElementById("analyzedTeam").textContent =
-    m.analyzedTeam || m.homeTeam || "-";
-  document.getElementById("analyst").textContent = m.analyst || "-";
+  matchName.textContent = m.matchName || "-";
+  matchDate.textContent = m.matchDate || "-";
+  homeTeam.textContent = m.homeTeam || "-";
+  awayTeam.textContent = m.awayTeam || "-";
+  analyzedTeam.textContent = m.analyzedTeam || m.homeTeam || "-";
+  analyst.textContent = m.analyst || "-";
 }
 
 // =====================================
-// SUMMARY (AUTO INSIGHT)
+// SUMMARY + AUTO INSIGHT
 // =====================================
 function renderSummary() {
   const events = data.events;
+  totalEvents.textContent = events.length;
 
-  document.getElementById("totalEvents").textContent = events.length;
-
-  if (events.length === 0) {
-    insightEl.textContent =
-      "No actions recorded. Analytics will appear once events are logged.";
+  if (!events.length) {
+    insightEl.textContent = "No events recorded yet.";
     return;
   }
 
-  const actionCount = {};
-  const timeBuckets = {};
+  const actionMap = {};
+  const minuteMap = {};
 
   events.forEach(e => {
-    actionCount[e.action] = (actionCount[e.action] || 0) + 1;
-
+    actionMap[e.action] = (actionMap[e.action] || 0) + 1;
     if (e.time !== null) {
-      const minute = Math.floor(e.time / 60);
-      timeBuckets[minute] = (timeBuckets[minute] || 0) + 1;
+      const m = Math.floor(e.time / 60);
+      minuteMap[m] = (minuteMap[m] || 0) + 1;
     }
   });
 
-  const dominant = Object.entries(actionCount)
-    .sort((a, b) => b[1] - a[1])[0];
+  const dominant = Object.entries(actionMap).sort((a,b)=>b[1]-a[1])[0];
+  const peak = Object.entries(minuteMap).sort((a,b)=>b[1]-a[1])[0];
 
-  const peakMinute = Object.entries(timeBuckets)
-    .sort((a, b) => b[1] - a[1])[0];
-
-  document.getElementById("dominantAction").textContent = dominant[0];
-  document.getElementById("peakMinute").textContent =
-    peakMinute ? `${peakMinute[0]}'` : "-";
-
-  const pct = Math.round((dominant[1] / events.length) * 100);
+  dominantAction.textContent = dominant[0];
+  peakMinute.textContent = peak ? peak[0] + "'" : "-";
 
   insightEl.textContent =
-    `The most frequently logged action was "${dominant[0]}", ` +
-    `representing ${pct}% of all recorded events.`;
+    `Most actions came from "${dominant[0]}", accounting for ${Math.round(dominant[1]/events.length*100)}% of total events.`;
 }
 
 // =====================================
-// ACTION DISTRIBUTION (LABEL AGNOSTIC)
+// ACTION DISTRIBUTION
 // =====================================
 function renderActionDistribution() {
-  const container = document.getElementById("actionList");
-  container.innerHTML = "";
-
+  actionList.innerHTML = "";
   const map = {};
-  data.events.forEach(e => {
-    map[e.action] = (map[e.action] || 0) + 1;
+  data.events.forEach(e => map[e.action] = (map[e.action]||0)+1);
+
+  Object.entries(map).sort((a,b)=>b[1]-a[1]).forEach(([a,c])=>{
+    const div = document.createElement("div");
+    div.innerHTML = `<span>${a}</span><strong>${c}</strong>`;
+    actionList.appendChild(div);
+  });
+}
+
+// =====================================
+// TIMELINE DENSITY (5-MIN BLOCK)
+// =====================================
+function renderTimeline() {
+  timeline.innerHTML = "";
+  const buckets = Array(18).fill(0);
+
+  data.events.forEach(e=>{
+    if(e.time!==null){
+      const idx = Math.min(17, Math.floor(e.time/300));
+      buckets[idx]++;
+    }
   });
 
-  Object.entries(map)
-    .sort((a, b) => b[1] - a[1])
-    .forEach(([label, count]) => {
-      const row = document.createElement("div");
-      row.className = "action-row";
-      row.innerHTML = `
-        <span>${label}</span>
-        <strong>${count}</strong>
-      `;
-      container.appendChild(row);
-    });
+  buckets.forEach((v,i)=>{
+    const d = document.createElement("div");
+    d.textContent = `${i*5}-${i*5+5}`;
+    d.style.opacity = Math.min(1, v/5);
+    timeline.appendChild(d);
+  });
 }
+
+// =====================================
+// ACTION RHYTHM (INTENSITY BAR)
+// =====================================
+function renderRhythm() {
+  rhythm.innerHTML = "";
+  const chunks = Array(10).fill(0);
+
+  data.events.forEach(e=>{
+    if(e.time!==null){
+      const idx = Math.min(9, Math.floor(e.time/540));
+      chunks[idx]++;
+    }
+  });
+
+  chunks.forEach(v=>{
+    const d = document.createElement("div");
+    d.style.opacity = Math.min(1, v/4);
+    rhythm.appendChild(d);
+  });
+  }
