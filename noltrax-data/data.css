@@ -17,14 +17,10 @@ body {
   margin-bottom: 20px;
 }
 
-.top-header h1 {
-  margin: 0;
-}
-
 button {
   padding: 8px 14px;
-  border: none;
   border-radius: 6px;
+  border: none;
   background: #111;
   color: #fff;
   cursor: pointer;
@@ -60,7 +56,6 @@ button {
 .insight {
   margin-top: 10px;
   font-style: italic;
-  color: #333;
 }
 
 .action-list div {
@@ -68,4 +63,34 @@ button {
   justify-content: space-between;
   padding: 6px 0;
   border-bottom: 1px solid #eee;
+}
+
+/* TIMELINE */
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(18, 1fr);
+  gap: 4px;
+}
+
+.timeline div {
+  height: 40px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* RHYTHM */
+.rhythm {
+  display: flex;
+  gap: 6px;
+}
+
+.rhythm div {
+  flex: 1;
+  height: 10px;
+  background: #d1d5db;
+  border-radius: 4px;
 }
