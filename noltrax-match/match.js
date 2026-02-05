@@ -210,3 +210,62 @@ function saveSession() {
   a.download = `match-${metadata.matchName || "export"}.json`;
   a.click();
                                                    }
+
+// ================================
+// EDIT TAG BUTTONS FEATURE
+// ================================
+
+function initEditButtons() {
+  const editBtn = document.createElement("button");
+  editBtn.id = "editTagsBtn";
+  editBtn.textContent = "Edit Tags";
+  editBtn.style.cssText = `
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: none;
+    background: #ff9500;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    z-index: 200;
+  `;
+  
+  const videoPanel = document.getElementById("videoPanel");
+  videoPanel.style.position = "relative"; // supaya tombol bisa absolute
+  videoPanel.appendChild(editBtn);
+
+  editBtn.addEventListener("click", () => {
+    const buttons = document.querySelectorAll("#tags button");
+    buttons.forEach(btn => {
+      const newName = prompt("Edit button name:", btn.textContent);
+      if (newName !== null && newName.trim() !== "") {
+        btn.textContent = newName;
+      }
+    });
+    saveTagNames();
+  });
+
+  loadTagNames();
+}
+
+function saveTagNames() {
+  const buttons = document.querySelectorAll("#tags button");
+  const tagNames = Array.from(buttons).map(btn => btn.textContent);
+  localStorage.setItem("noltraxTags", JSON.stringify(tagNames));
+}
+
+function loadTagNames() {
+  const saved = localStorage.getItem("noltraxTags");
+  if (!saved) return;
+  const tagNames = JSON.parse(saved);
+  const buttons = document.querySelectorAll("#tags button");
+  buttons.forEach((btn, i) => {
+    if (tagNames[i]) btn.textContent = tagNames[i];
+  });
+}
+
+// INIT
+window.addEventListener("DOMContentLoaded", initEditButtons);
