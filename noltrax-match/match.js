@@ -241,12 +241,13 @@ let actionButtons = ["Build-up", "Pressing", "CO-Press", "Counter", "Progressive
 const savedActions = JSON.parse(localStorage.getItem("actionButtons"));
 if (savedActions) actionButtons = savedActions;
 
-// Apply nama tombol ke UI
+// Apply nama tombol ke UI + update event
 function updateActionButtons() {
   const btnContainer = document.getElementById("tags");
   const btns = btnContainer.querySelectorAll("button");
   btns.forEach((btn, idx) => {
     btn.innerText = actionButtons[idx] || btn.innerText;
+    btn.onclick = () => tagEvent(actionButtons[idx] || btn.innerText);
   });
 }
 updateActionButtons();
