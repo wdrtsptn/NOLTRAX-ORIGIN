@@ -3,13 +3,19 @@ let playerReady = false;
 let isDrawing = false;
 let startX, startY;
 
+// ================================
+// DATA STORE (NYAWA NOLTRAX)
+// ================================
+
+let eventTimeline = []; // 🔥 DATA EVENT MENTAH
+
 let pitchData = {
   pitch1: { arrows: [], players: [] },
   pitch2: { arrows: [], players: [] }
 };
 
 // ================================
-// YOUTUBE – OPSI 1 (USER ACTION)
+// YOUTUBE
 // ================================
 
 function onYouTubeIframeAPIReady() {
@@ -31,12 +37,11 @@ function loadVideo() {
     return;
   }
 
-  // BUAT PLAYER HANYA SAAT USER KLIK
   if (!player) {
     player = new YT.Player("player", {
       height: "360",
       width: "100%",
-      videoId: videoId,
+      videoId,
       playerVars: {
         autoplay: 0,
         rel: 0,
@@ -55,7 +60,7 @@ function loadVideo() {
 }
 
 // ================================
-// EVENT LOGGING
+// EVENT LOGGING (UI + DATA)
 // ================================
 
 function tagEvent(tagName) {
@@ -65,8 +70,18 @@ function tagEvent(tagName) {
   }
 
   const currentTime = Math.floor(player.getCurrentTime());
-  const logList = document.getElementById("log");
+  const minute = Math.floor(currentTime / 60);
+  const second = currentTime % 60;
 
+  // 🔥 SIMPAN DATA MENTAH
+  eventTimeline.push({
+    minute,
+    second,
+    actionType: tagName
+  });
+
+  // UI LOG (PUNYA LU)
+  const logList = document.getElementById("log");
   const li = document.createElement("li");
   li.innerHTML = `
     <div class="log-header">
@@ -75,7 +90,6 @@ function tagEvent(tagName) {
     </div>
     <input class="log-note" placeholder="Add note...">
   `;
-
   logList.insertBefore(li, logList.firstChild);
 }
 
@@ -86,7 +100,7 @@ function formatTime(sec) {
 }
 
 // ================================
-// DRAG & DROP
+// DRAG & DROP PLAYER
 // ================================
 
 function allowDrop(ev) { ev.preventDefault(); }
@@ -112,12 +126,15 @@ function createPlayerToken(pitchId, number, x, y) {
   token.innerText = number;
   token.style.left = x + "%";
   token.style.top = y + "%";
-  token.oncontextmenu = e => { e.preventDefault(); token.remove(); };
+  token.oncontextmenu = e => {
+    e.preventDefault();
+    token.remove();
+  };
   container.appendChild(token);
 }
 
 // ================================
-// DRAWING
+// DRAWING ARROWS
 // ================================
 
 document.querySelectorAll(".pitch-canvas").forEach(canvas => {
@@ -151,7 +168,8 @@ document.querySelectorAll(".pitch-canvas").forEach(canvas => {
     isDrawing = false;
     const rect = canvas.getBoundingClientRect();
     pitchData[canvas.parentElement.id].arrows.push({
-      startX, startY,
+      startX,
+      startY,
       endX: e.clientX - rect.left,
       endY: e.clientY - rect.top
     });
@@ -163,10 +181,12 @@ function drawArrow(ctx, fromX, fromY, toX, toY) {
   const angle = Math.atan2(toY - fromY, toX - fromX);
   ctx.strokeStyle = "#1e90ff";
   ctx.lineWidth = 3;
+
   ctx.beginPath();
   ctx.moveTo(fromX, fromY);
   ctx.lineTo(toX, toY);
   ctx.stroke();
+
   ctx.beginPath();
   ctx.moveTo(toX, toY);
   ctx.lineTo(
@@ -192,7 +212,7 @@ function redrawCanvas(pitchId) {
 }
 
 // ================================
-// SAVE SESSION
+// SAVE SESSION (NYAMBUNG KE DATA)
 // ================================
 
 function saveSession() {
@@ -203,20 +223,23 @@ function saveSession() {
     awayTeam: document.getElementById("awayTeam").value
   };
 
-  const session = { metadata, pitchData };
-  const blob = new Blob([JSON.stringify(session, null, 2)], { type: "application/json" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = `match-${metadata.matchName || "export"}.json`;
-  a.click();
-                                                   }
+  const session = {
+    meta: metadata,
+    timeline: eventTimeline,     // 🔥 EVENT LOG
+    pitchData: pitchData,        // 🔥 MATCHDAY PLANNER
+    actionButtons: actionButtons,
+    source: "match",
+    savedAt: new Date().toISOString()
+  };
 
+  localStorage.setItem("noltrax_match_data", JSON.stringify(session));
+  alert("Session saved successfully");
+}
 
 // ================================
 // EDIT ACTION BUTTONS
 // ================================
 
-// Tombol "Edit Actions" di atas video
 const editActionsBtn = document.createElement("button");
 editActionsBtn.innerText = "Edit Actions";
 editActionsBtn.style.cssText = `
@@ -234,17 +257,22 @@ editActionsBtn.style.cssText = `
 `;
 document.querySelector("#videoPanel").appendChild(editActionsBtn);
 
-// Nama default tombol action
-let actionButtons = ["Build-up", "Pressing", "CO-Press", "Counter", "Progressive", "Mid-OVR", "Back-OVR", "Transition"];
+let actionButtons = [
+  "Build-up",
+  "Pressing",
+  "CO-Press",
+  "Counter",
+  "Progressive",
+  "Mid-OVR",
+  "Back-OVR",
+  "Transition"
+];
 
-// Load dari localStorage kalau ada
 const savedActions = JSON.parse(localStorage.getItem("actionButtons"));
 if (savedActions) actionButtons = savedActions;
 
-// Apply nama tombol ke UI + update event
 function updateActionButtons() {
-  const btnContainer = document.getElementById("tags");
-  const btns = btnContainer.querySelectorAll("button");
+  const btns = document.getElementById("tags").querySelectorAll("button");
   btns.forEach((btn, idx) => {
     btn.innerText = actionButtons[idx] || btn.innerText;
     btn.onclick = () => tagEvent(actionButtons[idx] || btn.innerText);
@@ -252,13 +280,11 @@ function updateActionButtons() {
 }
 updateActionButtons();
 
-// Modal untuk edit semua tombol sekaligus
 editActionsBtn.onclick = () => {
-  // Modal container
   const modal = document.createElement("div");
   modal.style.cssText = `
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
+    inset: 0;
     background: rgba(0,0,0,0.7);
     display: flex;
     justify-content: center;
@@ -266,31 +292,24 @@ editActionsBtn.onclick = () => {
     z-index: 1000;
   `;
 
-  // Modal content
   const content = document.createElement("div");
   content.style.cssText = `
     background: rgba(30,30,30,0.95);
     padding: 20px;
     border-radius: 16px;
+    width: 300px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    width: 300px;
+    gap: 10px;
   `;
-
-  content.innerHTML = `<h3 style="color:white;margin-bottom:10px;">Edit Action Buttons</h3>`;
+  content.innerHTML = `<h3 style="color:white;">Edit Action Buttons</h3>`;
 
   const inputs = [];
-  actionButtons.forEach((name, idx) => {
+  actionButtons.forEach(name => {
     const input = document.createElement("input");
     input.value = name;
-    input.style.cssText = `
-      padding: 8px;
-      border-radius: 8px;
-      border: none;
-      outline: none;
-      font-size: 14px;
-    `;
+    input.style.padding = "8px";
+    input.style.borderRadius = "8px";
     content.appendChild(input);
     inputs.push(input);
   });
@@ -298,43 +317,21 @@ editActionsBtn.onclick = () => {
   const saveBtn = document.createElement("button");
   saveBtn.innerText = "Save";
   saveBtn.style.cssText = `
-    margin-top: 12px;
     padding: 10px;
     border-radius: 12px;
-    border: none;
     background: #1e5eff;
     color: white;
     font-weight: bold;
-    cursor: pointer;
   `;
-  content.appendChild(saveBtn);
 
-  const cancelBtn = document.createElement("button");
-  cancelBtn.innerText = "Cancel";
-  cancelBtn.style.cssText = `
-    margin-top: 8px;
-    padding: 10px;
-    border-radius: 12px;
-    border: none;
-    background: #888;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-  `;
-  content.appendChild(cancelBtn);
-
-  modal.appendChild(content);
-  document.body.appendChild(modal);
-
-  // Save action
   saveBtn.onclick = () => {
-    inputs.forEach((inp, idx) => {
-      actionButtons[idx] = inp.value || actionButtons[idx];
-    });
+    inputs.forEach((inp, i) => actionButtons[i] = inp.value);
     updateActionButtons();
     localStorage.setItem("actionButtons", JSON.stringify(actionButtons));
     modal.remove();
   };
 
-  cancelBtn.onclick = () => modal.remove();
+  content.appendChild(saveBtn);
+  modal.appendChild(content);
+  document.body.appendChild(modal);
 };
