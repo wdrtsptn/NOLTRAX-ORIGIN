@@ -1,9 +1,14 @@
+// ======================
+// NOLTRAX DATA – MATCH FULL JS
+// ======================
 let data = null;
 
 const uploadInput = document.getElementById("uploadJSON");
-uploadInput.addEventListener("change", handleUpload);
-
 const insightEl = document.getElementById("autoInsight");
+const exportBtn = document.getElementById("exportPDF");
+
+uploadInput.addEventListener("change", handleUpload);
+exportBtn.addEventListener("click", exportPDF);
 
 // ======================
 // HANDLE FILE UPLOAD
@@ -122,7 +127,7 @@ function renderTimeline() {
   if (events.length===0) return;
 
   const maxTime = Math.max(...events.map(e=>e.time));
-  const bucketCount = 10; // segments
+  const bucketCount = 10;
   const bucketSize = Math.ceil(maxTime/bucketCount);
   const buckets = Array(bucketCount).fill(0);
 
@@ -174,4 +179,48 @@ function renderActionRhythm() {
     const barHeight = (val/maxInt)*height;
     ctx.fillRect(i*barWidth, height-barHeight, barWidth-2, barHeight);
   });
+}
+
+// ======================
+// EXPORT PDF
+// ======================
+async function exportPDF() {
+  if (!data) {
+    alert("No data to export. Upload a JSON file first.");
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF("p", "pt", "a4");
+  const margin = 20;
+  let yPos = margin;
+
+  const sections = [
+    document.querySelector(".match-info"),
+    document.querySelector(".summary"),
+    document.querySelector("#actionList").parentNode,
+    document.getElementById("timelineCanvas"),
+    document.getElementById("rhythmCanvas")
+  ];
+
+  for (const sec of sections) {
+    let canvas;
+    if(sec.tagName==="CANVAS"){
+      canvas = sec;
+    } else {
+      canvas = await html2canvas(sec, { scale: 2 });
     }
+
+    const w = pdf.internal.pageSize.getWidth() - 2*margin;
+    const h = canvas.height * w / canvas.width;
+    if (yPos + h > pdf.internal.pageSize.getHeight()) {
+      pdf.addPage();
+      yPos = margin;
+    }
+
+    pdf.addImage(canvas.toDataURL("image/png"), "PNG", margin, yPos, w, h);
+    yPos += h + 20;
+  }
+
+  pdf.save(`${data.metadata.matchName || "Noltrax_Match"}_Report.pdf`);
+}
