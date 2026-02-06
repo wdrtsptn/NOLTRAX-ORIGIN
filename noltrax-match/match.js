@@ -4,20 +4,22 @@ let isDrawing = false;
 let startX, startY;
 
 // ================================
-// CORE DATA STORE (FINAL)
+// DATA STORE (FINAL – MATCH → DATA READY)
 // ================================
 
-let eventTimeline = []; // raw event log
-
-let squadData = {
-  starters: [],
-  substitutes: []
-};
+let eventTimeline = [];
 
 let pitchData = {
   pitch1: { half: 1, arrows: [], players: [] },
   pitch2: { half: 2, arrows: [], players: [] }
 };
+
+let squadData = {
+  startingXI: [],
+  substitutes: []
+};
+
+const actionButtons = [];
 
 // ================================
 // YOUTUBE
@@ -66,28 +68,22 @@ function loadVideo() {
 // ================================
 
 function tagEvent(tagName) {
-  if (!player || !playerReady) {
-    alert("Video belum siap");
-    return;
-  }
+  if (!player || !playerReady) return;
 
   const currentTime = Math.floor(player.getCurrentTime());
 
   eventTimeline.push({
-    action: tagName,
+    actionType: tagName,
     time: currentTime
   });
 
   const logList = document.getElementById("log");
   const li = document.createElement("li");
   li.innerHTML = `
-    <div class="log-header">
-      <strong>${tagName}</strong>
-      <span>${formatTime(currentTime)}</span>
-    </div>
-    <input class="log-note" placeholder="Add note...">
+    <strong>${tagName}</strong>
+    <span>${formatTime(currentTime)}</span>
   `;
-  logList.insertBefore(li, logList.firstChild);
+  logList.prepend(li);
 }
 
 function formatTime(sec) {
@@ -105,25 +101,27 @@ function allowDrop(ev) {
 }
 
 function drag(ev) {
-  ev.dataTransfer.setData("text", ev.target.value);
+  ev.dataTransfer.setData("text", ev.target.value || "?");
 }
 
 function drop(ev) {
   ev.preventDefault();
   const number = ev.dataTransfer.getData("text");
   const rect = ev.currentTarget.getBoundingClientRect();
+
   const x = ((ev.clientX - rect.left) / rect.width) * 100;
   const y = ((ev.clientY - rect.top) / rect.height) * 100;
+
   createPlayerToken(ev.currentTarget.id, number, x, y);
 }
 
 function createPlayerToken(pitchId, number, x, y) {
-  const container = document.querySelector(`#${pitchId} .player-layer`);
+  const layer = document.querySelector(`#${pitchId} .player-layer`);
   const token = document.createElement("div");
   token.className = "player-token";
   token.innerText = number;
-  token.style.left = x + "%";
-  token.style.top = y + "%";
+  token.style.left = `${x}%`;
+  token.style.top = `${y}%`;
 
   pitchData[pitchId].players.push({ number, x, y });
 
@@ -132,7 +130,7 @@ function createPlayerToken(pitchId, number, x, y) {
     token.remove();
   };
 
-  container.appendChild(token);
+  layer.appendChild(token);
 }
 
 // ================================
@@ -153,55 +151,37 @@ document.querySelectorAll(".pitch-canvas").forEach(canvas => {
 
   canvas.addEventListener("mousedown", e => {
     isDrawing = true;
-    const rect = canvas.getBoundingClientRect();
-    startX = e.clientX - rect.left;
-    startY = e.clientY - rect.top;
-  });
-
-  canvas.addEventListener("mousemove", e => {
-    if (!isDrawing) return;
-    const rect = canvas.getBoundingClientRect();
-    redrawCanvas(canvas.parentElement.id);
-    drawArrow(ctx, startX, startY, e.clientX - rect.left, e.clientY - rect.top);
+    const r = canvas.getBoundingClientRect();
+    startX = e.clientX - r.left;
+    startY = e.clientY - r.top;
   });
 
   canvas.addEventListener("mouseup", e => {
     if (!isDrawing) return;
     isDrawing = false;
-    const rect = canvas.getBoundingClientRect();
+
+    const r = canvas.getBoundingClientRect();
+    const endX = e.clientX - r.left;
+    const endY = e.clientY - r.top;
 
     pitchData[canvas.parentElement.id].arrows.push({
       startX,
       startY,
-      endX: e.clientX - rect.left,
-      endY: e.clientY - rect.top
+      endX,
+      endY
     });
+
+    redrawCanvas(canvas.parentElement.id);
   });
 });
 
-function drawArrow(ctx, fromX, fromY, toX, toY) {
-  const headlen = 10;
-  const angle = Math.atan2(toY - fromY, toX - fromX);
-
-  ctx.strokeStyle = "#1e90ff";
+function drawArrow(ctx, a) {
+  ctx.strokeStyle = "#1e5eff";
   ctx.lineWidth = 3;
 
   ctx.beginPath();
-  ctx.moveTo(fromX, fromY);
-  ctx.lineTo(toX, toY);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(toX, toY);
-  ctx.lineTo(
-    toX - headlen * Math.cos(angle - Math.PI / 6),
-    toY - headlen * Math.sin(angle - Math.PI / 6)
-  );
-  ctx.moveTo(toX, toY);
-  ctx.lineTo(
-    toX - headlen * Math.cos(angle + Math.PI / 6),
-    toY - headlen * Math.sin(angle + Math.PI / 6)
-  );
+  ctx.moveTo(a.startX, a.startY);
+  ctx.lineTo(a.endX, a.endY);
   ctx.stroke();
 }
 
@@ -210,9 +190,7 @@ function redrawCanvas(pitchId) {
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  pitchData[pitchId].arrows.forEach(a =>
-    drawArrow(ctx, a.startX, a.startY, a.endX, a.endY)
-  );
+  pitchData[pitchId].arrows.forEach(a => drawArrow(ctx, a));
 }
 
 // ================================
@@ -220,7 +198,7 @@ function redrawCanvas(pitchId) {
 // ================================
 
 function saveSession() {
-  const meta = {
+  const metadata = {
     matchName: document.getElementById("matchName").value || "",
     matchDate: document.getElementById("matchDate").value || "",
     homeTeam: document.getElementById("homeTeam").value || "",
@@ -229,26 +207,47 @@ function saveSession() {
     analyst: "Noltrax Analyst"
   };
 
+  squadData.startingXI = Array.from(
+    document.querySelectorAll(".starting-xi input")
+  ).map(inp => ({ number: inp.value, name: inp.dataset.name || "" }));
+
+  squadData.substitutes = Array.from(
+    document.querySelectorAll(".subs input")
+  ).map(inp => ({ number: inp.value, name: inp.dataset.name || "" }));
+
+  const strategyBoard = {
+    players: [
+      ...pitchData.pitch1.players.map(p => ({ ...p, half: 1 })),
+      ...pitchData.pitch2.players.map(p => ({ ...p, half: 2 }))
+    ],
+    arrows: [
+      ...pitchData.pitch1.arrows.map(a => ({ ...a, half: 1 })),
+      ...pitchData.pitch2.arrows.map(a => ({ ...a, half: 2 }))
+    ]
+  };
+
+  const events = eventTimeline.map(e => ({
+    action: e.actionType,
+    time: e.time
+  }));
+
   const session = {
-    meta,
+    metadata,
     squad: squadData,
-    strategyBoard: pitchData,
-    summary: {},
-    actionDistribution: {},
-    timelineDensity: {},
-    actionRhythm: {},
-    events: eventTimeline,
+    strategyBoard,
+    events,
+    actionButtons,
     source: "noltrax_match",
     savedAt: new Date().toISOString()
   };
 
-  const blob = new Blob(
-    [JSON.stringify(session, null, 2)],
-    { type: "application/json" }
-  );
+  const blob = new Blob([JSON.stringify(session, null, 2)], {
+    type: "application/json"
+  });
 
   const fileName =
-    (meta.matchName || "noltrax_match").replace(/\s+/g, "_") + ".json";
+    (metadata.matchName || "noltrax_match").replace(/\s+/g, "_") +
+    "_session.json";
 
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
@@ -256,5 +255,5 @@ function saveSession() {
   a.click();
   URL.revokeObjectURL(a.href);
 
-  alert("JSON locked & exported ✔");
-    }
+  alert("JSON MATCH SIAP 🔥");
+}
