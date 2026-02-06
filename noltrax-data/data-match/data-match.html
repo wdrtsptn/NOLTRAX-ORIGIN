@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>NOLTRAX DATA – MATCH</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="data-match.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="top-header">
+    <h1>NOLTRAX DATA – MATCH</h1>
+    <input type="file" id="uploadJSON" accept=".json" />
+    <button id="exportPDF">Export PDF</button>
+  </header>
+
+  <!-- MATCH INFO -->
+  <section class="card match-info">
+    <h2>Match Info</h2>
+    <div class="info-grid">
+      <div><span>Match</span><p id="matchName">-</p></div>
+      <div><span>Date</span><p id="matchDate">-</p></div>
+      <div><span>Home</span><p id="homeTeam">-</p></div>
+      <div><span>Away</span><p id="awayTeam">-</p></div>
+      <div><span>Analyzed Team</span><p id="analyzedTeam">-</p></div>
+      <div><span>Analyst</span><p id="analyst">-</p></div>
+    </div>
+  </section>
+
+  <!-- SUMMARY -->
+  <section class="card summary">
+    <h2>Summary</h2>
+    <ul>
+      <li>Total Events: <strong id="totalEvents">0</strong></li>
+      <li>Dominant Action: <strong id="dominantAction">-</strong></li>
+      <li>Peak Minute: <strong id="peakMinute">-</strong></li>
+    </ul>
+    <p id="autoInsight" class="insight">
+      Upload a Noltrax Match JSON file to analyze.
+    </p>
+  </section>
+
+  <!-- ACTION DISTRIBUTION -->
+  <section class="card">
+    <h2>Action Distribution</h2>
+    <div id="actionList" class="action-list"></div>
+  </section>
+
+  <!-- TIMELINE DENSITY -->
+  <section class="card">
+    <h2>Timeline Density</h2>
+    <canvas id="timelineCanvas" height="120"></canvas>
+  </section>
+
+  <!-- ACTION RHYTHM -->
+  <section class="card">
+    <h2>Action Rhythm</h2>
+    <canvas id="rhythmCanvas" height="120"></canvas>
+  </section>
+
+  <script src="data-match.js"></script>
+</body>
+</html>
