@@ -80,7 +80,7 @@ function tagEvent(tagName) {
     actionType: tagName
   });
 
-  // UI LOG (PUNYA LU)
+  // UI LOG
   const logList = document.getElementById("log");
   const li = document.createElement("li");
   li.innerHTML = `
@@ -212,28 +212,49 @@ function redrawCanvas(pitchId) {
 }
 
 // ================================
-// SAVE SESSION (NYAMBUNG KE DATA)
+// SAVE SESSION → DOWNLOAD JSON
 // ================================
 
 function saveSession() {
   const metadata = {
-    matchName: document.getElementById("matchName").value,
-    matchDate: document.getElementById("matchDate").value,
-    homeTeam: document.getElementById("homeTeam").value,
-    awayTeam: document.getElementById("awayTeam").value
+    matchName: document.getElementById("matchName").value || "",
+    matchDate: document.getElementById("matchDate").value || "",
+    homeTeam: document.getElementById("homeTeam").value || "",
+    awayTeam: document.getElementById("awayTeam").value || "",
+    analyzedTeam: document.getElementById("homeTeam").value || "",
+    analyst: "Noltrax Analyst"
   };
 
+  const events = eventTimeline.map(e => ({
+    action: e.actionType,
+    time: e.minute * 60 + e.second
+  }));
+
   const session = {
-    meta: metadata,
-    timeline: eventTimeline,     // 🔥 EVENT LOG
-    pitchData: pitchData,        // 🔥 MATCHDAY PLANNER
-    actionButtons: actionButtons,
+    metadata,
+    events,
+    pitchData,
+    actionButtons,
     source: "match",
     savedAt: new Date().toISOString()
   };
 
-  localStorage.setItem("noltrax_match_data", JSON.stringify(session));
-  alert("Session saved successfully");
+  const blob = new Blob(
+    [JSON.stringify(session, null, 2)],
+    { type: "application/json" }
+  );
+
+  const fileName =
+    (metadata.matchName || "noltrax_match").replace(/\s+/g, "_") +
+    "_session.json";
+
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = fileName;
+  a.click();
+  URL.revokeObjectURL(a.href);
+
+  alert("Session exported as JSON ✔");
 }
 
 // ================================
