@@ -1,96 +1,189 @@
+/* RESET */
 * {
   box-sizing: border-box;
-  font-family: Inter, system-ui, sans-serif;
-}
-
-body {
   margin: 0;
-  padding: 20px;
-  background: #f4f6f8;
-  color: #111;
+  padding: 0;
 }
 
-.top-header {
+/* BODY */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  color: #ffffff;
+  background:
+    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.35)),
+    url("./assets/20260201_135446.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* =========================
+   TOP NAV (GLASS)
+========================= */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  backdrop-filter: blur(16px);
+  background: rgba(225,225,225,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
 }
 
-button {
-  padding: 8px 14px;
-  border-radius: 6px;
-  border: none;
-  background: #111;
-  color: #fff;
-  cursor: pointer;
-}
-
-.card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 20px;
-}
-
-.match-info .info-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.nav-brand {
+  display: flex;
+  align-items: center;
   gap: 12px;
 }
 
-.info-grid span {
-  font-size: 12px;
-  color: #666;
+.nav-logo {
+  height: 32px;
+  background: #1e5eff;
+  border-radius: 8px;
+  padding: 4px;
 }
 
-.info-grid p {
-  margin: 4px 0 0;
-  font-weight: 600;
+.brand-text {
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 14px;
+  text-transform: uppercase;
 }
 
-.summary ul {
-  padding-left: 16px;
+.brand-origin {
+  font-weight: 300;
+  opacity: 0.7;
 }
 
-.insight {
-  margin-top: 10px;
-  font-style: italic;
-}
-
-.action-list div {
+.nav-links {
+  list-style: none;
   display: flex;
-  justify-content: space-between;
-  padding: 6px 0;
-  border-bottom: 1px solid #eee;
+  gap: 22px;
 }
 
-/* TIMELINE */
-.timeline {
-  display: grid;
-  grid-template-columns: repeat(18, 1fr);
-  gap: 4px;
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-size: 13px;
+  opacity: 0.75;
+  transition: 0.2s;
+  font-weight: 500;
 }
 
-.timeline div {
-  height: 40px;
-  background: #e5e7eb;
-  border-radius: 4px;
-  font-size: 11px;
+.nav-links a:hover {
+  opacity: 1;
+  color: #1e5eff;
+}
+
+/* =========================
+   HERO
+========================= */
+.hero {
+  min-height: 100vh;
+  padding: 96px 24px 64px;
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
 }
 
-/* RHYTHM */
-.rhythm {
-  display: flex;
-  gap: 6px;
+.hero-inner {
+  max-width: 1000px;
+  width: 100%;
 }
 
-.rhythm div {
-  flex: 1;
-  height: 10px;
-  background: #d1d5db;
-  border-radius: 4px;
+.hero h2 {
+  font-size: 16px;
+  opacity: 0.8;
+  margin-bottom: 12px;
+}
+
+.hero h1 {
+  font-size: 46px;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.hero p {
+  font-size: 15px;
+  opacity: 0.8;
+  max-width: 620px;
+  margin: 0 auto 48px;
+  line-height: 1.6;
+}
+
+/* =========================
+   CTA GRID
+========================= */
+.cta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.cta-card {
+  text-decoration: none;
+  color: white;
+  padding: 36px 32px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: all 0.25s ease;
+  text-align: left;
+}
+
+.cta-card h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.cta-card p {
+  font-size: 14px;
+  opacity: 0.8;
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+.cta-card span {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.cta-card:hover {
+  background: #1e5eff;
+  border-color: #1e5eff;
+  transform: translateY(-6px);
+}
+
+/* FOOTER */
+.footer {
+  background: #ffffff;
+  color: #000000;
+  text-align: center;
+  padding: 28px;
+  font-size: 13px;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 34px;
+  }
+
+  .nav-links {
+    display: none;
+  }
 }
