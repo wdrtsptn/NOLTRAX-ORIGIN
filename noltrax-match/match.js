@@ -4,14 +4,19 @@ let isDrawing = false;
 let startX, startY;
 
 // ================================
-// DATA STORE (NYAWA NOLTRAX)
+// CORE DATA STORE (FINAL)
 // ================================
 
-let eventTimeline = []; // 🔥 DATA EVENT MENTAH
+let eventTimeline = []; // raw event log
+
+let squadData = {
+  starters: [],
+  substitutes: []
+};
 
 let pitchData = {
-  pitch1: { arrows: [], players: [] },
-  pitch2: { arrows: [], players: [] }
+  pitch1: { half: 1, arrows: [], players: [] },
+  pitch2: { half: 2, arrows: [], players: [] }
 };
 
 // ================================
@@ -23,7 +28,8 @@ function onYouTubeIframeAPIReady() {
 }
 
 function extractVideoID(url) {
-  const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]{11}).*/;
+  const regExp =
+    /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]{11}).*/;
   const match = url.match(regExp);
   return match ? match[7] : null;
 }
@@ -42,11 +48,7 @@ function loadVideo() {
       height: "360",
       width: "100%",
       videoId,
-      playerVars: {
-        autoplay: 0,
-        rel: 0,
-        modestbranding: 1
-      },
+      playerVars: { autoplay: 0, rel: 0, modestbranding: 1 },
       events: {
         onReady: () => {
           playerReady = true;
@@ -60,7 +62,7 @@ function loadVideo() {
 }
 
 // ================================
-// EVENT LOGGING (UI + DATA)
+// EVENT LOGGING
 // ================================
 
 function tagEvent(tagName) {
@@ -70,22 +72,17 @@ function tagEvent(tagName) {
   }
 
   const currentTime = Math.floor(player.getCurrentTime());
-  const minute = Math.floor(currentTime / 60);
-  const second = currentTime % 60;
 
-  // 🔥 SIMPAN DATA MENTAH
   eventTimeline.push({
-    minute,
-    second,
-    actionType: tagName
+    action: tagName,
+    time: currentTime
   });
 
-  // UI LOG
   const logList = document.getElementById("log");
   const li = document.createElement("li");
   li.innerHTML = `
     <div class="log-header">
-      <strong contenteditable="true">${tagName}</strong>
+      <strong>${tagName}</strong>
       <span>${formatTime(currentTime)}</span>
     </div>
     <input class="log-note" placeholder="Add note...">
@@ -100,23 +97,24 @@ function formatTime(sec) {
 }
 
 // ================================
-// DRAG & DROP PLAYER
+// PLAYER TOKENS
 // ================================
 
-function allowDrop(ev) { ev.preventDefault(); }
+function allowDrop(ev) {
+  ev.preventDefault();
+}
 
 function drag(ev) {
-  const noInput = ev.target.querySelector(".player-no");
-  ev.dataTransfer.setData("text", noInput ? noInput.value : "?");
+  ev.dataTransfer.setData("text", ev.target.value);
 }
 
 function drop(ev) {
   ev.preventDefault();
-  const val = ev.dataTransfer.getData("text");
+  const number = ev.dataTransfer.getData("text");
   const rect = ev.currentTarget.getBoundingClientRect();
   const x = ((ev.clientX - rect.left) / rect.width) * 100;
   const y = ((ev.clientY - rect.top) / rect.height) * 100;
-  createPlayerToken(ev.currentTarget.id, val, x, y);
+  createPlayerToken(ev.currentTarget.id, number, x, y);
 }
 
 function createPlayerToken(pitchId, number, x, y) {
@@ -126,15 +124,19 @@ function createPlayerToken(pitchId, number, x, y) {
   token.innerText = number;
   token.style.left = x + "%";
   token.style.top = y + "%";
+
+  pitchData[pitchId].players.push({ number, x, y });
+
   token.oncontextmenu = e => {
     e.preventDefault();
     token.remove();
   };
+
   container.appendChild(token);
 }
 
 // ================================
-// DRAWING ARROWS
+// STRATEGY BOARD (ARROWS)
 // ================================
 
 document.querySelectorAll(".pitch-canvas").forEach(canvas => {
@@ -167,6 +169,7 @@ document.querySelectorAll(".pitch-canvas").forEach(canvas => {
     if (!isDrawing) return;
     isDrawing = false;
     const rect = canvas.getBoundingClientRect();
+
     pitchData[canvas.parentElement.id].arrows.push({
       startX,
       startY,
@@ -179,6 +182,7 @@ document.querySelectorAll(".pitch-canvas").forEach(canvas => {
 function drawArrow(ctx, fromX, fromY, toX, toY) {
   const headlen = 10;
   const angle = Math.atan2(toY - fromY, toX - fromX);
+
   ctx.strokeStyle = "#1e90ff";
   ctx.lineWidth = 3;
 
@@ -212,11 +216,11 @@ function redrawCanvas(pitchId) {
 }
 
 // ================================
-// SAVE SESSION → DOWNLOAD JSON
+// SAVE SESSION → FINAL JSON
 // ================================
 
 function saveSession() {
-  const metadata = {
+  const meta = {
     matchName: document.getElementById("matchName").value || "",
     matchDate: document.getElementById("matchDate").value || "",
     homeTeam: document.getElementById("homeTeam").value || "",
@@ -225,17 +229,16 @@ function saveSession() {
     analyst: "Noltrax Analyst"
   };
 
-  const events = eventTimeline.map(e => ({
-    action: e.actionType,
-    time: e.minute * 60 + e.second
-  }));
-
   const session = {
-    metadata,
-    events,
-    pitchData,
-    actionButtons,
-    source: "match",
+    meta,
+    squad: squadData,
+    strategyBoard: pitchData,
+    summary: {},
+    actionDistribution: {},
+    timelineDensity: {},
+    actionRhythm: {},
+    events: eventTimeline,
+    source: "noltrax_match",
     savedAt: new Date().toISOString()
   };
 
@@ -245,8 +248,7 @@ function saveSession() {
   );
 
   const fileName =
-    (metadata.matchName || "noltrax_match").replace(/\s+/g, "_") +
-    "_session.json";
+    (meta.matchName || "noltrax_match").replace(/\s+/g, "_") + ".json";
 
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
@@ -254,105 +256,5 @@ function saveSession() {
   a.click();
   URL.revokeObjectURL(a.href);
 
-  alert("Session exported as JSON ✔");
-}
-
-// ================================
-// EDIT ACTION BUTTONS
-// ================================
-
-const editActionsBtn = document.createElement("button");
-editActionsBtn.innerText = "Edit Actions";
-editActionsBtn.style.cssText = `
-  position: absolute;
-  top: -60px;
-  right: 25px;
-  z-index: 50;
-  padding: 10px 16px;
-  border-radius: 12px;
-  border: none;
-  background: #1e5eff;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-`;
-document.querySelector("#videoPanel").appendChild(editActionsBtn);
-
-let actionButtons = [
-  "Build-up",
-  "Pressing",
-  "CO-Press",
-  "Counter",
-  "Progressive",
-  "Mid-OVR",
-  "Back-OVR",
-  "Transition"
-];
-
-const savedActions = JSON.parse(localStorage.getItem("actionButtons"));
-if (savedActions) actionButtons = savedActions;
-
-function updateActionButtons() {
-  const btns = document.getElementById("tags").querySelectorAll("button");
-  btns.forEach((btn, idx) => {
-    btn.innerText = actionButtons[idx] || btn.innerText;
-    btn.onclick = () => tagEvent(actionButtons[idx] || btn.innerText);
-  });
-}
-updateActionButtons();
-
-editActionsBtn.onclick = () => {
-  const modal = document.createElement("div");
-  modal.style.cssText = `
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  `;
-
-  const content = document.createElement("div");
-  content.style.cssText = `
-    background: rgba(30,30,30,0.95);
-    padding: 20px;
-    border-radius: 16px;
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  `;
-  content.innerHTML = `<h3 style="color:white;">Edit Action Buttons</h3>`;
-
-  const inputs = [];
-  actionButtons.forEach(name => {
-    const input = document.createElement("input");
-    input.value = name;
-    input.style.padding = "8px";
-    input.style.borderRadius = "8px";
-    content.appendChild(input);
-    inputs.push(input);
-  });
-
-  const saveBtn = document.createElement("button");
-  saveBtn.innerText = "Save";
-  saveBtn.style.cssText = `
-    padding: 10px;
-    border-radius: 12px;
-    background: #1e5eff;
-    color: white;
-    font-weight: bold;
-  `;
-
-  saveBtn.onclick = () => {
-    inputs.forEach((inp, i) => actionButtons[i] = inp.value);
-    updateActionButtons();
-    localStorage.setItem("actionButtons", JSON.stringify(actionButtons));
-    modal.remove();
-  };
-
-  content.appendChild(saveBtn);
-  modal.appendChild(content);
-  document.body.appendChild(modal);
-};
+  alert("JSON locked & exported ✔");
+    }
