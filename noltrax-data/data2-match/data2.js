@@ -648,4 +648,354 @@ function populatePreview(data, results) {
   // Structural insight
   let structuralText = "";
   if (results.structural.pitch1.shape !== "No data") {
-    structuralText = `The team consistently formed a ${results.structur
+    structuralText = `The team consistently formed a ${results.structural.pitch1.shape} shape`;
+    if (results.structural.pitch1.occupation !== "Balanced occupation") {
+      structuralText += ` with ${results.structural.pitch1.occupation.toLowerCase()}`;
+    }
+    structuralText += ", suggesting a deliberate tactical emphasis in spatial occupation.";
+    
+    if (results.structural.pitch2.shape !== "No data" && 
+        results.structural.pitch2.shape !== results.structural.pitch1.shape) {
+      structuralText += ` A transition to ${results.structural.pitch2.shape} in the second half indicates adaptive tactical flexibility.`;
+    }
+  } else {
+    structuralText = "Insufficient formation data to generate structural insight.";
+  }
+  document.getElementById("structuralInsight").textContent = structuralText;
+
+  // Action summary
+  document.getElementById("totalActions").textContent = results.behavioral.total;
+  document.getElementById("dominantAction").textContent = results.behavioral.dominant.split(" (")[0];
+  document.getElementById("actionVariety").textContent = results.behavioral.variety;
+
+  // Charts
+  createActionChart(results.behavioral.distribution);
+  createTimelineChart(results.temporal.density);
+  createRhythmChart(results.rhythm.intervals);
+
+  // Temporal insight
+  let temporalText = "";
+  if (results.temporal.peakPeriod !== "N/A") {
+    temporalText = `Match activity peaked between minutes ${results.temporal.peakPeriod}, indicating a concentrated period of tactical execution. `;
+    
+    if (results.temporal.peakBin.minute < 20) {
+      temporalText += "This early intensity suggests a proactive game plan focused on establishing dominance from the outset.";
+    } else if (results.temporal.peakBin.minute > 70) {
+      temporalText += "The late surge in activity reflects either increased defensive pressure or an attacking push in the final stages.";
+    } else {
+      temporalText += "This mid-match peak indicates strong control during the central phase of the game.";
+    }
+  } else {
+    temporalText = "Insufficient temporal data for meaningful insight.";
+  }
+  document.getElementById("temporalInsight").textContent = temporalText;
+
+  // Rhythm insight
+  let rhythmText = `The team's action rhythm was characterized as ${results.rhythm.stability.toLowerCase()}`;
+  if (results.rhythm.stability.includes("Stable")) {
+    rhythmText += ", indicating controlled, deliberate execution.";
+  } else if (results.rhythm.stability.includes("Moderate")) {
+    rhythmText += ", suggesting periods of both structured play and reactive adjustments.";
+  } else {
+    rhythmText += ", reflecting a highly reactive approach driven by match circumstances rather than planned tempo.";
+  }
+  document.getElementById("rhythmInsight").textContent = rhythmText;
+
+  // Synthesis
+  document.getElementById("synthesisSummary").textContent = results.synthesis;
+
+  // Coaching questions
+  const questionsHTML = results.coachingQuestions.map(q => `
+    <div class="question-item">
+      <div class="question-category">${q.category}</div>
+      <div class="question-text">${q.text}</div>
+    </div>
+  `).join("");
+  document.getElementById("coachingQuestions").innerHTML = questionsHTML;
+
+  // Confidence
+  document.getElementById("confidenceLevel").textContent = results.confidence.level.toUpperCase();
+  document.getElementById("confidenceBadge").className = `confidence-badge ${results.confidence.level.toLowerCase()}`;
+  document.getElementById("confidenceReason").textContent = results.confidence.reason;
+
+  // Limitations
+  const limitationsHTML = results.confidence.limitations.length > 0
+    ? results.confidence.limitations.map(l => `<li>${l}</li>`).join("")
+    : "<li>No significant limitations identified</li>";
+  document.getElementById("limitationsList").innerHTML = limitationsHTML;
+
+  // Strategy notes
+  if (data.strategyNotes) {
+    const notesHTML = `
+      ${data.strategyNotes.compete ? `<div class="note-section"><h4>Compete</h4><p>${data.strategyNotes.compete}</p></div>` : ""}
+      ${data.strategyNotes.competeNotes ? `<div class="note-section"><h4>Compete Notes</h4><p>${data.strategyNotes.competeNotes}</p></div>` : ""}
+      ${data.strategyNotes.control ? `<div class="note-section"><h4>Control</h4><p>${data.strategyNotes.control}</p></div>` : ""}
+      ${data.strategyNotes.controlNotes ? `<div class="note-section"><h4>Control Notes</h4><p>${data.strategyNotes.controlNotes}</p></div>` : ""}
+      ${data.strategyNotes.concepts ? `<div class="note-section"><h4>Concepts</h4><p>${data.strategyNotes.concepts}</p></div>` : ""}
+      ${data.strategyNotes.conceptsNotes ? `<div class="note-section"><h4>Concepts Notes</h4><p>${data.strategyNotes.conceptsNotes}</p></div>` : ""}
+      ${data.strategyNotes.individualTargets ? `<div class="note-section"><h4>Individual Targets</h4><p>${data.strategyNotes.individualTargets}</p></div>` : ""}
+      ${data.strategyNotes.individualTargetsNotes ? `<div class="note-section"><h4>Individual Targets Notes</h4><p>${data.strategyNotes.individualTargetsNotes}</p></div>` : ""}
+    `;
+    document.getElementById("strategyNotesDisplay").innerHTML = notesHTML || "<p>No analyst notes provided</p>";
+  }
+}
+
+// ================================
+// PITCH VISUALIZATION
+// ================================
+
+function drawPitchVisualization(canvasId, pitchData) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  
+  const ctx = canvas.getContext("2d");
+  const width = canvas.width = 500;
+  const height = canvas.height = 700;
+
+  // Clear
+  ctx.clearRect(0, 0, width, height);
+
+  // Draw pitch outline
+  ctx.strokeStyle = "#d0d0d0";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(50, 50, width - 100, height - 100);
+
+  // Center line
+  ctx.beginPath();
+  ctx.moveTo(50, height / 2);
+  ctx.lineTo(width - 50, height / 2);
+  ctx.stroke();
+
+  // Center circle
+  ctx.beginPath();
+  ctx.arc(width / 2, height / 2, 50, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Draw players
+  if (pitchData.players && pitchData.players.length > 0) {
+    pitchData.players.forEach(player => {
+      const px = 50 + (player.x / 100) * (width - 100);
+      const py = 50 + (player.y / 100) * (height - 100);
+
+      // Player circle
+      ctx.fillStyle = "#1e5eff";
+      ctx.beginPath();
+      ctx.arc(px, py, 15, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Border
+      ctx.strokeStyle = "white";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Number
+      ctx.fillStyle = "white";
+      ctx.font = "bold 12px Arial";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(player.number, px, py);
+    });
+  } else {
+    ctx.fillStyle = "#999";
+    ctx.font = "16px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("No formation data", width / 2, height / 2);
+  }
+
+  // Draw arrows
+  if (pitchData.arrows && pitchData.arrows.length > 0) {
+    pitchData.arrows.forEach(arrow => {
+      drawArrowOnCanvas(ctx, arrow.startX, arrow.startY, arrow.endX, arrow.endY);
+    });
+  }
+}
+
+function drawArrowOnCanvas(ctx, fromX, fromY, toX, toY) {
+  const headlen = 10;
+  const angle = Math.atan2(toY - fromY, toX - fromX);
+  
+  ctx.strokeStyle = "#ff6b6b";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(fromX, fromY);
+  ctx.lineTo(toX, toY);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(toX, toY);
+  ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+  ctx.moveTo(toX, toY);
+  ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+  ctx.stroke();
+}
+
+// ================================
+// CHART GENERATION
+// ================================
+
+function createActionChart(distribution) {
+  const ctx = document.getElementById("actionChart");
+  if (!ctx) return;
+
+  const labels = Object.keys(distribution);
+  const data = Object.values(distribution);
+
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Action Count",
+        data: data,
+        backgroundColor: "#1e5eff",
+        borderColor: "#0044cc",
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { precision: 0 }
+        }
+      }
+    }
+  });
+}
+
+function createTimelineChart(density) {
+  const ctx = document.getElementById("timelineChart");
+  if (!ctx) return;
+
+  const labels = density.map(d => `${d.minute}'`);
+  const data = density.map(d => d.count);
+
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Actions per 5 min",
+        data: data,
+        backgroundColor: "rgba(30, 94, 255, 0.2)",
+        borderColor: "#1e5eff",
+        borderWidth: 3,
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { precision: 0 }
+        }
+      }
+    }
+  });
+}
+
+function createRhythmChart(intervals) {
+  const ctx = document.getElementById("rhythmChart");
+  if (!ctx) return;
+
+  const labels = intervals.map((_, i) => `Event ${i + 1}`);
+
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Interval (seconds)",
+        data: intervals,
+        backgroundColor: "rgba(30, 94, 255, 0.1)",
+        borderColor: "#1e5eff",
+        borderWidth: 2,
+        fill: true,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: "Seconds between actions"
+          }
+        },
+        x: {
+          display: false
+        }
+      }
+    }
+  });
+}
+
+// ================================
+// PDF GENERATION
+// ================================
+
+document.getElementById("downloadPdfBtn").addEventListener("click", async () => {
+  const loadingOverlay = document.getElementById("loadingOverlay");
+  loadingOverlay.style.display = "flex";
+
+  try {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    const pages = document.querySelectorAll(".pdf-page");
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    for (let i = 0; i < pages.length; i++) {
+      if (i > 0) pdf.addPage();
+
+      const canvas = await html2canvas(pages[i], {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: "#ffffff"
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * pageWidth) / canvas.width;
+
+      // If image height exceeds page, scale down
+      if (imgHeight > pageHeight) {
+        const ratio = pageHeight / imgHeight;
+        pdf.addImage(imgData, "PNG", 0, 0, imgWidth * ratio, pageHeight);
+      } else {
+        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+      }
+    }
+
+    const fileName = matchData.meta.matchName
+      ? `${matchData.meta.matchName.replace(/\s/g, "_")}_Analysis.pdf`
+      : "Noltrax_Analysis.pdf";
+
+    pdf.save(fileName);
+
+  } catch (error) {
+    console.error("PDF generation error:", error);
+    alert("❌ Error generating PDF. Please try again.");
+  } finally {
+    loadingOverlay.style.display = "none";
+  }
+});
