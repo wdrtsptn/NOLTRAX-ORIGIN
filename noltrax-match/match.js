@@ -14,6 +14,17 @@ let pitchData = {
   pitch2: { arrows: [], players: [] }
 };
 
+let strategyNotes = {
+  compete: "",
+  competeNotes: "",
+  control: "",
+  controlNotes: "",
+  concepts: "",
+  conceptsNotes: "",
+  individualTargets: "",
+  individualTargetsNotes: ""
+};
+
 // ================================
 // YOUTUBE
 // ================================
@@ -73,11 +84,13 @@ function tagEvent(tagName) {
   const minute = Math.floor(currentTime / 60);
   const second = currentTime % 60;
 
-  // 🔥 SIMPAN DATA MENTAH
+  // 🔥 SIMPAN DATA MENTAH (dengan placeholder note)
+  const eventIndex = eventTimeline.length;
   eventTimeline.push({
     minute,
     second,
-    actionType: tagName
+    actionType: tagName,
+    note: "" // akan diupdate dari input
   });
 
   // UI LOG (PUNYA LU)
@@ -88,9 +101,16 @@ function tagEvent(tagName) {
       <strong contenteditable="true">${tagName}</strong>
       <span>${formatTime(currentTime)}</span>
     </div>
-    <input class="log-note" placeholder="Add note...">
+    <input class="log-note" data-event-index="${eventIndex}" placeholder="Add note...">
   `;
   logList.insertBefore(li, logList.firstChild);
+
+  // 🔥 TRACK NOTE CHANGES
+  const noteInput = li.querySelector(".log-note");
+  noteInput.addEventListener("input", (e) => {
+    const idx = parseInt(e.target.getAttribute("data-event-index"));
+    eventTimeline[idx].note = e.target.value;
+  });
 }
 
 function formatTime(sec) {
@@ -100,7 +120,7 @@ function formatTime(sec) {
 }
 
 // ================================
-// DRAG & DROP PLAYER
+// DRAG & DROP PLAYER (FIXED)
 // ================================
 
 function allowDrop(ev) { ev.preventDefault(); }
@@ -126,10 +146,26 @@ function createPlayerToken(pitchId, number, x, y) {
   token.innerText = number;
   token.style.left = x + "%";
   token.style.top = y + "%";
+  
+  // 🔥 SIMPAN POSISI PLAYER KE DATA
+  pitchData[pitchId].players.push({
+    number: number,
+    x: x,
+    y: y
+  });
+
   token.oncontextmenu = e => {
     e.preventDefault();
+    // 🔥 HAPUS DARI DATA JUGA
+    const playerIndex = pitchData[pitchId].players.findIndex(
+      p => p.number === number && Math.abs(p.x - x) < 1 && Math.abs(p.y - y) < 1
+    );
+    if (playerIndex > -1) {
+      pitchData[pitchId].players.splice(playerIndex, 1);
+    }
     token.remove();
   };
+  
   container.appendChild(token);
 }
 
@@ -212,7 +248,30 @@ function redrawCanvas(pitchId) {
 }
 
 // ================================
-// SAVE SESSION (NYAMBUNG KE DATA)
+// TRACK STRATEGY NOTES
+// ================================
+
+function trackStrategyNotes() {
+  const textareas = document.querySelectorAll(".note-item textarea");
+  const keys = [
+    "compete", "competeNotes",
+    "control", "controlNotes", 
+    "concepts", "conceptsNotes",
+    "individualTargets", "individualTargetsNotes"
+  ];
+  
+  textareas.forEach((textarea, index) => {
+    textarea.addEventListener("input", (e) => {
+      strategyNotes[keys[index]] = e.target.value;
+    });
+  });
+}
+
+// Initialize tracking on page load
+window.addEventListener("DOMContentLoaded", trackStrategyNotes);
+
+// ================================
+// SAVE SESSION (DOWNLOAD JSON)
 // ================================
 
 function saveSession() {
@@ -220,20 +279,72 @@ function saveSession() {
     matchName: document.getElementById("matchName").value,
     matchDate: document.getElementById("matchDate").value,
     homeTeam: document.getElementById("homeTeam").value,
-    awayTeam: document.getElementById("awayTeam").value
+    awayTeam: document.getElementById("awayTeam").value,
+    analyst: document.getElementById("analyst").value,
+    analyzedTeam: document.getElementById("analyzedTeam").value
   };
+
+  // 🔥 AMBIL SQUAD DATA
+  const squadRows = document.querySelectorAll("#squadBody tr:not(.sub-row)");
+  const squad = {
+    starters: [],
+    substitutes: []
+  };
+
+  let isSubSection = false;
+  squadRows.forEach(row => {
+    const inputs = row.querySelectorAll("input");
+    if (inputs.length === 3) {
+      const playerData = {
+        number: inputs[0].value,
+        position: inputs[1].value,
+        name: inputs[2].value
+      };
+      
+      if (!isSubSection && playerData.number) {
+        squad.starters.push(playerData);
+      } else if (isSubSection && playerData.number) {
+        squad.substitutes.push(playerData);
+      }
+    }
+    
+    // Cek apakah row selanjutnya adalah sub section
+    if (row.nextElementSibling && row.nextElementSibling.classList.contains("sub-row")) {
+      isSubSection = true;
+    }
+  });
 
   const session = {
     meta: metadata,
-    timeline: eventTimeline,     // 🔥 EVENT LOG
-    pitchData: pitchData,        // 🔥 MATCHDAY PLANNER
+    squad: squad,
+    timeline: eventTimeline,     // 🔥 EVENT LOG dengan notes
+    pitchData: pitchData,        // 🔥 MATCHDAY PLANNER dengan player positions
+    strategyNotes: strategyNotes, // 🔥 COMPETE, CONTROL, CONCEPTS notes
     actionButtons: actionButtons,
-    source: "match",
+    source: "noltrax-match",
     savedAt: new Date().toISOString()
   };
 
-  localStorage.setItem("noltrax_match_data", JSON.stringify(session));
-  alert("Session saved successfully");
+  // 🔥 DOWNLOAD JSON FILE
+  const jsonStr = JSON.stringify(session, null, 2);
+  const blob = new Blob([jsonStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement("a");
+  a.href = url;
+  
+  // Filename: matchName_date.json atau fallback
+  const fileName = metadata.matchName 
+    ? `${metadata.matchName.replace(/\s/g, "_")}_${metadata.matchDate || "match"}.json`
+    : `noltrax_match_${new Date().getTime()}.json`;
+  
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  
+  alert("✅ Session saved! JSON file downloaded.");
 }
 
 // ================================
