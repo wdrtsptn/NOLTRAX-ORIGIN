@@ -1,641 +1,651 @@
-/* GLOBAL RESET */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
-  color: #ffffff;
-  padding: 80px 20px 20px 20px;
-  background: linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.5)), url("20260128_204214.jpg");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  min-height: 100vh;
-}
-
-/* NAVBAR */
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  backdrop-filter: blur(16px);
-  background: rgba(0, 0, 0, 0.3);
-  border-bottom: 1px solid rgba(255,255,255,0.15);
-}
-
-.nav-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 28px;
-}
-
-.nav-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.nav-logo {
-  height: 32px;
-  width: auto;
-  background: #1e5eff;
-  border-radius: 8px;
-  padding: 4px;
-}
-
-.brand-text {
-  font-weight: 700;
-  letter-spacing: 1px;
-  font-size: 14px;
-  color: #ffffff;
-  text-transform: uppercase;
-}
-
-.brand-origin {
-  font-weight: 300;
-  opacity: 0.7;
-}
-
-.nav-links {
-  display: flex;
-  list-style: none;
-  gap: 22px;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: white;
-  font-size: 13px;
-  opacity: 0.75;
-  transition: 0.2s;
-  font-weight: 500;
-}
-
-.nav-links a:hover {
-  opacity: 1;
-  color: #1e5eff;
-}
-
-/* SECTIONS */
-.section {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-/* UPLOAD SECTION */
-.upload-container {
-  max-width: 700px;
-  margin: 60px auto;
-  text-align: center;
-}
-
-.upload-container h1 {
-  font-size: 36px;
-  margin-bottom: 12px;
-  background: linear-gradient(135deg, #1e5eff, #00d4ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.upload-container > p {
-  font-size: 16px;
-  color: rgba(255,255,255,0.7);
-  margin-bottom: 40px;
-}
-
-.upload-zone {
-  background: rgba(255,255,255,0.05);
-  border: 2px dashed rgba(255,255,255,0.3);
-  border-radius: 20px;
-  padding: 60px 40px;
-  transition: all 0.3s;
-  cursor: pointer;
-}
-
-.upload-zone:hover {
-  background: rgba(255,255,255,0.08);
-  border-color: #1e5eff;
-}
-
-.upload-zone.drag-over {
-  background: rgba(30, 94, 255, 0.1);
-  border-color: #1e5eff;
-  transform: scale(1.02);
-}
-
-.upload-zone svg {
-  color: #1e5eff;
-  margin-bottom: 20px;
-}
-
-.upload-zone h3 {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.upload-zone p {
-  color: rgba(255,255,255,0.5);
-  margin: 10px 0;
-}
-
-.upload-btn {
-  display: inline-block;
-  padding: 12px 32px;
-  background: #1e5eff;
-  color: white;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.upload-btn:hover {
-  background: #0077ee;
-  transform: translateY(-2px);
-}
-
-.file-info {
-  margin-top: 30px;
-  padding: 20px;
-  background: rgba(30, 94, 255, 0.1);
-  border: 1px solid rgba(30, 94, 255, 0.3);
-  border-radius: 16px;
-}
-
-.file-info p {
-  font-size: 15px;
-  margin-bottom: 15px;
-}
-
-.analyze-btn {
-  padding: 14px 40px;
-  background: #1e5eff;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.analyze-btn:hover {
-  background: #0077ee;
-  transform: scale(1.05);
-}
-
-/* PREVIEW SECTION */
-.preview-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.preview-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-  padding: 20px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-}
-
-.preview-header h1 {
-  font-size: 28px;
-}
-
-.header-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.btn-primary, .btn-secondary {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn-primary {
-  background: #1e5eff;
-  color: white;
-}
-
-.btn-primary:hover {
-  background: #0077ee;
-  transform: translateY(-2px);
-}
-
-.btn-secondary {
-  background: rgba(255,255,255,0.1);
-  color: white;
-}
-
-.btn-secondary:hover {
-  background: rgba(255,255,255,0.15);
-}
-
-/* PDF CONTENT */
-.pdf-content {
-  background: white;
-  color: #1a1a1a;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-}
-
-.pdf-page {
-  padding: 60px;
-  min-height: 800px;
-  background: white;
-  page-break-after: always;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.pdf-page:last-child {
-  border-bottom: none;
-}
-
-/* COVER PAGE */
-.page-cover {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #1e5eff 0%, #0044cc 100%);
-  color: white;
-  text-align: center;
-  min-height: 900px;
-}
-
-.cover-content h1 {
-  font-size: 48px;
-  font-weight: 800;
-  margin-bottom: 40px;
-  letter-spacing: 2px;
-}
-
-.cover-meta {
-  margin: 40px 0;
-  font-size: 24px;
-  font-weight: 300;
-}
-
-.cover-meta p {
-  margin: 10px 0;
-}
-
-.cover-footer {
-  margin-top: 60px;
-  font-size: 14px;
-  opacity: 0.9;
-}
-
-.cover-footer p {
-  margin: 8px 0;
-}
-
-/* PAGE STYLING */
-.page-title {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 30px;
-  color: #1e5eff;
-  border-bottom: 3px solid #1e5eff;
-  padding-bottom: 12px;
-}
-
-.info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.info-card {
-  background: #f8f9fa;
-  padding: 24px;
-  border-radius: 12px;
-  border: 1px solid #e0e0e0;
-}
-
-.info-card.full-width {
-  grid-column: 1 / -1;
-}
-
-.info-card h3 {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  color: #1e5eff;
-}
-
-.info-card p {
-  margin: 8px 0;
-  font-size: 15px;
-  line-height: 1.6;
-}
-
-/* PITCH VISUALIZATION */
-.pitch-analysis-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-}
-
-.pitch-viz-container {
-  background: #f8f9fa;
-  padding: 24px;
-  border-radius: 12px;
-  border: 1px solid #e0e0e0;
-}
-
-.pitch-viz-container h3 {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  color: #1e5eff;
-}
-
-.pitch-canvas-preview {
-  width: 100%;
-  height: 400px;
-  background: white;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  margin-bottom: 16px;
-}
-
-.formation-detection {
-  background: white;
-  padding: 16px;
-  border-radius: 8px;
-}
-
-.formation-detection p {
-  margin: 8px 0;
-  font-size: 15px;
-}
-
-.formation-detection strong {
-  color: #1e5eff;
-}
-
-/* INSIGHT BOXES */
-.insight-box {
-  background: #f8f9fa;
-  padding: 30px;
-  border-radius: 12px;
-  border-left: 4px solid #1e5eff;
-  margin: 20px 0;
-}
-
-.insight-box.large {
-  padding: 40px;
-  font-size: 17px;
-}
-
-.insight-text {
-  font-size: 16px;
-  line-height: 1.8;
-  color: #2c3e50;
-  font-weight: 400;
-}
-
-/* SUMMARY STATS */
-.summary-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin-bottom: 40px;
-}
-
-.stat-card {
-  background: linear-gradient(135deg, #1e5eff, #0044cc);
-  color: white;
-  padding: 30px;
-  border-radius: 12px;
-  text-align: center;
-}
-
-.stat-card h3 {
-  font-size: 42px;
-  font-weight: 800;
-  margin-bottom: 8px;
-}
-
-.stat-card p {
-  font-size: 14px;
-  opacity: 0.9;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* CHART CONTAINERS */
-.chart-container {
-  background: #f8f9fa;
-  padding: 30px;
-  border-radius: 12px;
-  border: 1px solid #e0e0e0;
-  margin: 20px 0;
-}
-
-.chart-container h3 {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: #1e5eff;
-}
-
-.chart-container canvas {
-  max-height: 350px;
-}
-
-/* COACHING QUESTIONS */
-.questions-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.question-item {
-  background: #f8f9fa;
-  padding: 24px;
-  border-radius: 12px;
-  border-left: 4px solid #1e5eff;
-}
-
-.question-category {
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #1e5eff;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-}
-
-.question-text {
-  font-size: 16px;
-  line-height: 1.6;
-  color: #2c3e50;
-}
-
-/* CONFIDENCE & LIMITATIONS */
-.confidence-box {
-  background: #f8f9fa;
-  padding: 30px;
-  border-radius: 12px;
-  margin-bottom: 30px;
-  text-align: center;
-}
-
-.confidence-box h3 {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: #1e5eff;
-}
-
-.confidence-badge {
-  display: inline-block;
-  padding: 16px 40px;
-  border-radius: 30px;
-  font-size: 24px;
-  font-weight: 800;
-  margin: 20px 0;
-}
-
-.confidence-badge.high {
-  background: #10b981;
-  color: white;
-}
-
-.confidence-badge.medium {
-  background: #f59e0b;
-  color: white;
-}
-
-.confidence-badge.low {
-  background: #ef4444;
-  color: white;
-}
-
-.confidence-text {
-  margin-top: 16px;
-  font-size: 15px;
-  line-height: 1.6;
-  color: #6b7280;
-}
-
-.limitations-box {
-  background: #fff3cd;
-  padding: 24px;
-  border-radius: 12px;
-  border: 1px solid #ffc107;
-  margin-bottom: 30px;
-}
-
-.limitations-box h3 {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  color: #856404;
-}
-
-.limitations-box ul {
-  list-style-position: inside;
-  color: #856404;
-  font-size: 15px;
-  line-height: 1.8;
-}
-
-.strategy-notes-box {
-  background: #f8f9fa;
-  padding: 24px;
-  border-radius: 12px;
-  border: 1px solid #e0e0e0;
-}
-
-.strategy-notes-box h3 {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  color: #1e5eff;
-}
-
-.note-section {
-  margin: 16px 0;
-  padding: 16px;
-  background: white;
-  border-radius: 8px;
-}
-
-.note-section h4 {
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #1e5eff;
-  margin-bottom: 8px;
-  letter-spacing: 1px;
-}
-
-.note-section p {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #4b5563;
-}
-
-/* LOADING OVERLAY */
-.loading-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.9);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.loading-overlay p {
-  margin-top: 20px;
-  font-size: 18px;
-  color: white;
-}
-
-.loader {
-  border: 4px solid rgba(255,255,255,0.1);
-  border-top: 4px solid #1e5eff;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .info-grid,
-  .pitch-analysis-grid,
-  .summary-stats {
-    grid-template-columns: 1fr;
+// ================================
+// GLOBAL STATE
+// ================================
+
+let matchData = null;
+let analysisResults = null;
+
+// ================================
+// FILE UPLOAD HANDLING
+// ================================
+
+const dropZone = document.getElementById("dropZone");
+const fileInput = document.getElementById("fileInput");
+const fileInfo = document.getElementById("fileInfo");
+const fileName = document.getElementById("fileName");
+const analyzeBtn = document.getElementById("analyzeBtn");
+
+console.log("Upload elements initialized:", {
+  dropZone: !!dropZone,
+  fileInput: !!fileInput,
+  fileInfo: !!fileInfo,
+  fileName: !!fileName,
+  analyzeBtn: !!analyzeBtn
+});
+
+// Drag & Drop
+dropZone.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  dropZone.classList.add("drag-over");
+  console.log("Dragover event");
+});
+
+dropZone.addEventListener("dragleave", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  dropZone.classList.remove("drag-over");
+  console.log("Dragleave event");
+});
+
+dropZone.addEventListener("drop", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  dropZone.classList.remove("drag-over");
+  console.log("Drop event triggered");
+  
+  const files = e.dataTransfer.files;
+  console.log("Files dropped:", files.length);
+  
+  if (files.length > 0) {
+    console.log("Processing file:", files[0].name);
+    handleFile(files[0]);
+  }
+});
+
+// Browse button click handler
+const uploadBtn = document.querySelector(".upload-btn");
+if (uploadBtn) {
+  uploadBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Browse button clicked");
+    fileInput.click();
+  });
+}
+
+// File input change
+fileInput.addEventListener("change", (e) => {
+  console.log("File input change event");
+  console.log("Files selected:", e.target.files.length);
+  
+  if (e.target.files.length > 0) {
+    console.log("Processing selected file:", e.target.files[0].name);
+    handleFile(e.target.files[0]);
+  }
+});
+
+function handleFile(file) {
+  console.log("=== HANDLE FILE CALLED ===");
+  console.log("File object:", file);
+  console.log("File name:", file.name);
+  console.log("File size:", file.size);
+  console.log("File type:", file.type);
+  
+  if (!file) {
+    alert("❌ No file received!");
+    return;
   }
   
-  .pdf-page {
-    padding: 40px 30px;
+  if (!file.name.endsWith(".json")) {
+    alert("❌ Please upload a valid JSON file from Noltrax Match\n\nFile selected: " + file.name);
+    return;
   }
+
+  console.log("File validation passed, reading file...");
+
+  const reader = new FileReader();
   
-  .cover-content h1 {
-    font-size: 32px;
-  }
+  reader.onloadstart = () => {
+    console.log("FileReader started");
+  };
+  
+  reader.onprogress = (e) => {
+    console.log("Reading progress:", e.loaded, "/", e.total);
+  };
+  
+  reader.onload = (e) => {
+    console.log("=== FILE READ COMPLETE ===");
+    console.log("Result length:", e.target.result.length);
+    
+    try {
+      matchData = JSON.parse(e.target.result);
+      console.log("=== JSON PARSED SUCCESSFULLY ===");
+      console.log("Match data:", matchData);
+      
+      // Validate data structure
+      if (!matchData.meta) {
+        throw new Error("Missing metadata in JSON file");
+      }
+      
+      if (!matchData.timeline) {
+        console.warn("No timeline data found, creating empty array");
+        matchData.timeline = [];
+      }
+      
+      if (!matchData.pitchData) {
+        console.warn("No pitch data found, creating empty structure");
+        matchData.pitchData = {
+          pitch1: { arrows: [], players: [] },
+          pitch2: { arrows: [], players: [] }
+        };
+      }
+
+      console.log("Setting file name:", file.name);
+      fileName.textContent = file.name;
+      
+      console.log("Showing file info");
+      fileInfo.style.display = "block";
+      
+      console.log("=== FILE LOADED SUCCESSFULLY ===");
+      alert("✅ File loaded: " + file.name + "\n\nClick 'Generate Analysis' to continue");
+      
+    } catch (error) {
+      console.error("=== JSON PARSE ERROR ===");
+      console.error("Error:", error);
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+      alert("❌ Invalid JSON file: " + error.message + "\n\nPlease check the file format.");
     }
+  };
+  
+  reader.onerror = (error) => {
+    console.error("=== FILEREADER ERROR ===");
+    console.error("Error:", error);
+    alert("❌ Error reading file. Please try again.\n\nError: " + reader.error);
+  };
+  
+  console.log("Starting to read file as text...");
+  reader.readAsText(file);
+  console.log("readAsText called");
+}
+
+// Analyze button
+analyzeBtn.addEventListener("click", () => {
+  if (!matchData) return;
+  
+  // Run analysis
+  analysisResults = analyzeMatch(matchData);
+  
+  // Populate preview
+  populatePreview(matchData, analysisResults);
+  
+  // Show preview section
+  document.getElementById("uploadSection").style.display = "none";
+  document.getElementById("previewSection").style.display = "block";
+  
+  // Scroll to top
+  window.scrollTo(0, 0);
+});
+
+// Back button
+document.getElementById("backBtn").addEventListener("click", () => {
+  document.getElementById("previewSection").style.display = "none";
+  document.getElementById("uploadSection").style.display = "block";
+});
+
+// ================================
+// ANALYSIS ENGINE
+// ================================
+
+function analyzeMatch(data) {
+  const results = {
+    structural: analyzeStructure(data.pitchData),
+    behavioral: analyzeBehavior(data.timeline),
+    temporal: analyzeTemporal(data.timeline),
+    rhythm: analyzeRhythm(data.timeline),
+    confidence: assessConfidence(data)
+  };
+
+  // Generate synthesis
+  results.synthesis = generateSynthesis(results, data);
+  
+  // Generate coaching questions
+  results.coachingQuestions = generateCoachingQuestions(results, data);
+
+  return results;
+}
+
+// ================================
+// STRUCTURAL ANALYSIS
+// ================================
+
+function analyzeStructure(pitchData) {
+  const results = {
+    pitch1: analyzePitch(pitchData.pitch1),
+    pitch2: analyzePitch(pitchData.pitch2)
+  };
+
+  return results;
+}
+
+function analyzePitch(pitch) {
+  if (!pitch.players || pitch.players.length === 0) {
+    return {
+      shape: "No data",
+      occupation: "No data",
+      players: []
+    };
+  }
+
+  const players = pitch.players;
+  
+  // Shape detection based on vertical clustering
+  const shape = detectFormation(players);
+  
+  // Occupation bias (left/right/central)
+  const occupation = analyzeOccupation(players);
+
+  return { shape, occupation, players };
+}
+
+function detectFormation(players) {
+  if (players.length < 10) return "Incomplete lineup";
+
+  // Sort players by Y position (vertical)
+  const sorted = [...players].sort((a, b) => a.y - b.y);
+
+  // Exclude GK (first player)
+  const outfield = sorted.slice(1);
+
+  // Divide pitch into horizontal bands
+  const bands = {
+    defense: outfield.filter(p => p.y < 33),
+    midfield: outfield.filter(p => p.y >= 33 && p.y < 66),
+    attack: outfield.filter(p => p.y >= 66)
+  };
+
+  const def = bands.defense.length;
+  const mid = bands.midfield.length;
+  const att = bands.attack.length;
+
+  // Pattern matching
+  if (def === 4 && mid === 3 && att === 3) return "4-3-3";
+  if (def === 4 && mid === 4 && att === 2) return "4-4-2";
+  if (def === 4 && mid === 2 && att === 4) return "4-2-3-1";
+  if (def === 3 && mid === 5 && att === 2) return "3-5-2";
+  if (def === 3 && mid === 4 && att === 3) return "3-4-3";
+  if (def === 5 && mid === 3 && att === 2) return "5-3-2";
+  
+  return `${def}-${mid}-${att}`;
+}
+
+function analyzeOccupation(players) {
+  if (players.length === 0) return "Balanced";
+
+  const leftZone = players.filter(p => p.x < 33).length;
+  const centerZone = players.filter(p => p.x >= 33 && p.x < 66).length;
+  const rightZone = players.filter(p => p.x >= 66).length;
+
+  const max = Math.max(leftZone, centerZone, rightZone);
+
+  if (leftZone === max && leftZone > centerZone + 2) return "Left-sided emphasis";
+  if (rightZone === max && rightZone > centerZone + 2) return "Right-sided emphasis";
+  if (centerZone === max) return "Central dominance";
+
+  return "Balanced occupation";
+}
+
+// ================================
+// BEHAVIORAL ANALYSIS
+// ================================
+
+function analyzeBehavior(timeline) {
+  if (!timeline || timeline.length === 0) {
+    return {
+      total: 0,
+      dominant: "N/A",
+      distribution: {},
+      variety: 0
+    };
+  }
+
+  const distribution = {};
+  
+  timeline.forEach(event => {
+    const action = event.actionType;
+    distribution[action] = (distribution[action] || 0) + 1;
+  });
+
+  const sorted = Object.entries(distribution).sort((a, b) => b[1] - a[1]);
+  const dominant = sorted[0] ? sorted[0][0] : "N/A";
+  const dominantCount = sorted[0] ? sorted[0][1] : 0;
+  const dominantPercent = ((dominantCount / timeline.length) * 100).toFixed(1);
+
+  return {
+    total: timeline.length,
+    dominant: `${dominant} (${dominantPercent}%)`,
+    distribution,
+    variety: Object.keys(distribution).length
+  };
+}
+
+// ================================
+// TEMPORAL ANALYSIS
+// ================================
+
+function analyzeTemporal(timeline) {
+  if (!timeline || timeline.length === 0) {
+    return {
+      maxMinute: 0,
+      peakPeriod: "N/A",
+      density: [],
+      insight: "Insufficient data for temporal analysis."
+    };
+  }
+
+  // Create 5-minute bins
+  const bins = {};
+  const maxMinute = Math.max(...timeline.map(e => e.minute));
+
+  for (let i = 0; i <= maxMinute; i += 5) {
+    bins[i] = 0;
+  }
+
+  timeline.forEach(event => {
+    const bin = Math.floor(event.minute / 5) * 5;
+    bins[bin] = (bins[bin] || 0) + 1;
+  });
+
+  const densityArray = Object.entries(bins).map(([min, count]) => ({
+    minute: parseInt(min),
+    count
+  }));
+
+  // Find peak period
+  const peakBin = densityArray.reduce((max, curr) => 
+    curr.count > max.count ? curr : max
+  , densityArray[0]);
+
+  const peakPeriod = `${peakBin.minute}-${peakBin.minute + 5} min`;
+
+  return {
+    maxMinute,
+    peakPeriod,
+    density: densityArray,
+    peakBin
+  };
+}
+
+// ================================
+// RHYTHM ANALYSIS
+// ================================
+
+function analyzeRhythm(timeline) {
+  if (!timeline || timeline.length < 2) {
+    return {
+      intervals: [],
+      avgInterval: 0,
+      stability: "N/A"
+    };
+  }
+
+  const sorted = [...timeline].sort((a, b) => 
+    (a.minute * 60 + a.second) - (b.minute * 60 + b.second)
+  );
+
+  const intervals = [];
+  for (let i = 1; i < sorted.length; i++) {
+    const prev = sorted[i - 1].minute * 60 + sorted[i - 1].second;
+    const curr = sorted[i].minute * 60 + sorted[i].second;
+    intervals.push(curr - prev);
+  }
+
+  const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+  
+  // Calculate standard deviation
+  const variance = intervals.reduce((sum, val) => 
+    sum + Math.pow(val - avgInterval, 2), 0
+  ) / intervals.length;
+  const stdDev = Math.sqrt(variance);
+
+  // Coefficient of variation
+  const cv = (stdDev / avgInterval) * 100;
+
+  let stability;
+  if (cv < 30) stability = "Stable rhythm";
+  else if (cv < 60) stability = "Moderate fluctuation";
+  else stability = "Highly irregular rhythm";
+
+  return {
+    intervals,
+    avgInterval: avgInterval.toFixed(1),
+    stability,
+    cv: cv.toFixed(1)
+  };
+}
+
+// ================================
+// CONFIDENCE ASSESSMENT
+// ================================
+
+function assessConfidence(data) {
+  let score = 0;
+  const limitations = [];
+
+  // Data completeness
+  if (data.timeline && data.timeline.length >= 20) score += 30;
+  else {
+    limitations.push("Limited event logging (< 20 actions recorded)");
+    score += 10;
+  }
+
+  if (data.pitchData.pitch1.players.length >= 10) score += 20;
+  else limitations.push("Incomplete formation data for first half");
+
+  if (data.pitchData.pitch2.players.length >= 10) score += 20;
+  else limitations.push("Incomplete formation data for second half");
+
+  if (data.meta.matchName && data.meta.matchDate) score += 10;
+  
+  if (data.strategyNotes && Object.values(data.strategyNotes).some(n => n.length > 10)) {
+    score += 20;
+  } else {
+    limitations.push("Minimal analyst notes provided");
+  }
+
+  let level, reason;
+  
+  if (score >= 75) {
+    level = "High";
+    reason = "Comprehensive data coverage with detailed logging and formation analysis.";
+  } else if (score >= 45) {
+    level = "Medium";
+    reason = "Adequate data for general insights, though some areas lack depth.";
+  } else {
+    level = "Low";
+    reason = "Limited data restricts interpretation accuracy. Additional logging recommended.";
+  }
+
+  return { level, reason, score, limitations };
+}
+
+// ================================
+// AUTO-WORDING SYNTHESIS
+// ================================
+
+function generateSynthesis(results, data) {
+  const structural = results.structural;
+  const behavioral = results.behavioral;
+  const temporal = results.temporal;
+
+  let text = "";
+
+  // Structure
+  if (structural.pitch1.shape !== "No data") {
+    text += `The team deployed a ${structural.pitch1.shape} formation`;
+    
+    if (structural.pitch1.occupation !== "Balanced occupation") {
+      text += ` with ${structural.pitch1.occupation.toLowerCase()}`;
+    }
+    
+    if (structural.pitch2.shape !== "No data" && structural.pitch2.shape !== structural.pitch1.shape) {
+      text += `, transitioning to a ${structural.pitch2.shape} in the second half`;
+    }
+    
+    text += ". ";
+  }
+
+  // Behavior
+  if (behavioral.total > 0) {
+    const dominantAction = behavioral.dominant.split(" (")[0];
+    text += `Behaviorally, the team prioritized ${dominantAction.toLowerCase()} actions (${behavioral.dominant.split("(")[1].replace(")", "")}), `;
+    text += `recording ${behavioral.total} total actions across ${behavioral.variety} distinct categories. `;
+  }
+
+  // Temporal
+  if (temporal.peakPeriod !== "N/A") {
+    text += `Match activity peaked during the ${temporal.peakPeriod} period, indicating heightened intensity during this phase. `;
+  }
+
+  // Rhythm
+  const rhythm = results.rhythm;
+  if (rhythm.stability !== "N/A") {
+    text += `The team's action rhythm exhibited ${rhythm.stability.toLowerCase()}, with an average interval of ${rhythm.avgInterval} seconds between recorded events. `;
+  }
+
+  // Conclusion
+  text += "Collectively, these patterns suggest ";
+  
+  if (behavioral.total > 30 && rhythm.stability.includes("Stable")) {
+    text += "a well-coordinated and consistent approach to the match.";
+  } else if (behavioral.total < 15) {
+    text += "limited on-ball activity or selective event logging.";
+  } else {
+    text += "a dynamic tactical approach with varied action execution.";
+  }
+
+  return text;
+}
+
+// ================================
+// COACHING QUESTIONS GENERATOR
+// ================================
+
+function generateCoachingQuestions(results, data) {
+  const questions = [];
+
+  // Structural
+  if (results.structural.pitch1.shape !== "No data") {
+    if (results.structural.pitch1.occupation.includes("emphasis")) {
+      const side = results.structural.pitch1.occupation.includes("Left") ? "left" : "right";
+      const opposite = side === "left" ? "right" : "left";
+      questions.push({
+        category: "Structural",
+        text: `Why was the ${opposite} flank underutilized despite the formation allowing width on both sides?`
+      });
+    }
+
+    if (results.structural.pitch2.shape !== results.structural.pitch1.shape && 
+        results.structural.pitch2.shape !== "No data") {
+      questions.push({
+        category: "Structural",
+        text: `What triggered the tactical shift from ${results.structural.pitch1.shape} to ${results.structural.pitch2.shape}? Was it reactive or pre-planned?`
+      });
+    }
+  }
+
+  // Behavioral
+  if (results.behavioral.total > 0) {
+    const dominant = results.behavioral.dominant.split(" (")[0];
+    
+    if (dominant.toLowerCase().includes("pressing") || dominant.toLowerCase().includes("press")) {
+      questions.push({
+        category: "Behavioral",
+        text: `Was the pressing intensity sustainable throughout the match, or did it lead to defensive vulnerabilities in later phases?`
+      });
+    }
+
+    if (results.behavioral.variety < 4 && results.behavioral.total > 15) {
+      questions.push({
+        category: "Behavioral",
+        text: `The limited action variety suggests a narrow tactical focus. Was this intentional specialization or reactive simplification?`
+      });
+    }
+  }
+
+  // Temporal
+  if (results.temporal.peakBin) {
+    const peakMin = results.temporal.peakBin.minute;
+    if (peakMin < 15) {
+      questions.push({
+        category: "Temporal",
+        text: `Early match intensity peaked in the opening ${peakMin + 5} minutes. Did this reflect a proactive game plan or opponent vulnerability?`
+      });
+    } else if (peakMin > 75) {
+      questions.push({
+        category: "Temporal",
+        text: `The late surge in activity (${peakMin}+ minutes) suggests either a comeback attempt or defensive pressure. Which scenario occurred?`
+      });
+    }
+  }
+
+  // Rhythm
+  if (results.rhythm.stability.includes("irregular")) {
+    questions.push({
+      category: "Rhythm",
+      text: `The highly irregular action rhythm indicates reactive rather than controlled play. What factors disrupted the team's intended tempo?`
+    });
+  }
+
+  // Reflection
+  questions.push({
+    category: "Reflection",
+    text: `Based on this analysis, which tactical element—structure, behavior, or timing—requires the most immediate adjustment for future matches?`
+  });
+
+  // Limit to 5 questions
+  return questions.slice(0, 5);
+}
+
+// ================================
+// POPULATE PREVIEW
+// ================================
+
+function populatePreview(data, results) {
+  // Cover page
+  document.getElementById("coverTitle").textContent = data.meta.matchName || "MATCH ANALYSIS REPORT";
+  document.getElementById("coverTeams").textContent = `${data.meta.homeTeam || "Home"} vs ${data.meta.awayTeam || "Away"}`;
+  document.getElementById("coverDate").textContent = data.meta.matchDate || "Date not specified";
+  document.getElementById("coverCompetition").textContent = "Competition: TBD"; // Can be added to meta
+  document.getElementById("coverAnalyzedTeam").textContent = data.meta.analyzedTeam || "N/A";
+  document.getElementById("coverAnalyst").textContent = data.meta.analyst || "N/A";
+
+  // Match info
+  let matchDetails = `
+    <p><strong>Match:</strong> ${data.meta.matchName || "N/A"}</p>
+    <p><strong>Date:</strong> ${data.meta.matchDate || "N/A"}</p>
+    <p><strong>Home Team:</strong> ${data.meta.homeTeam || "N/A"}</p>
+    <p><strong>Away Team:</strong> ${data.meta.awayTeam || "N/A"}</p>
+    <p><strong>Analyzed Team:</strong> ${data.meta.analyzedTeam || "N/A"}</p>
+  `;
+  document.getElementById("matchDetails").innerHTML = matchDetails;
+
+  // Squad
+  if (data.squad && data.squad.starters) {
+    const starters = data.squad.starters
+      .filter(p => p.number)
+      .map(p => `<p><strong>${p.number}</strong> - ${p.position} - ${p.name}</p>`)
+      .join("");
+    document.getElementById("startingXI").innerHTML = starters || "<p>No data</p>";
+
+    const subs = data.squad.substitutes
+      .filter(p => p.number)
+      .map(p => `<p><strong>${p.number}</strong> - ${p.position} - ${p.name}</p>`)
+      .join("");
+    document.getElementById("substitutes").innerHTML = subs || "<p>No data</p>";
+  }
+
+  // Draw pitches
+  drawPitchVisualization("pitchCanvas1", results.structural.pitch1);
+  drawPitchVisualization("pitchCanvas2", results.structural.pitch2);
+
+  document.getElementById("shape1").textContent = results.structural.pitch1.shape;
+  document.getElementById("occupation1").textContent = results.structural.pitch1.occupation;
+  document.getElementById("shape2").textContent = results.structural.pitch2.shape;
+  document.getElementById("occupation2").textContent = results.structural.pitch2.occupation;
+
+  // Structural insight
+  let structuralText = "";
+  if (results.structural.pitch1.shape !== "No data") {
+    structuralText = `The team consistently formed a ${results.structur
