@@ -178,13 +178,28 @@ body {
   margin-bottom: 40px;
 }
 
-.upload-zone {
+/*.upload-zone {
   background: rgba(255,255,255,0.05);
   border: 2px dashed rgba(255,255,255,0.3);
   border-radius: 20px;
   padding: 60px 40px;
   transition: all 0.3s;
   cursor: pointer;
+}
+*/
+
+.upload-zone {
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px dashed rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 60px 40px;
+  transition: all 0.3s;
+  cursor: pointer;
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow: 0 20px 50px rgba(0,0,0,0.35);
 }
 
 .upload-zone:hover {
