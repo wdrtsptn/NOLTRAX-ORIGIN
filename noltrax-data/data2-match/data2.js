@@ -207,7 +207,7 @@ function analyzeMatch(data) {
 }
 
 // ================================
-// STRUCTURAL ANALYSIS
+// STRUCTURAL ANALYSIS (FIXED - HORIZONTAL)
 // ================================
 
 function analyzeStructure(pitchData) {
@@ -230,10 +230,10 @@ function analyzePitch(pitch) {
 
   const players = pitch.players;
   
-  // Shape detection based on vertical clustering
+  // Shape detection based on HORIZONTAL clustering (X axis = left to right)
   const shape = detectFormation(players);
   
-  // Occupation bias (left/right/central)
+  // Occupation bias (top/bottom/central)
   const occupation = analyzeOccupation(players);
 
   return { shape, occupation, players };
@@ -242,17 +242,17 @@ function analyzePitch(pitch) {
 function detectFormation(players) {
   if (players.length < 10) return "Incomplete lineup";
 
-  // Sort players by Y position (vertical)
-  const sorted = [...players].sort((a, b) => a.y - b.y);
+  // Sort players by X position (HORIZONTAL - left to right)
+  const sorted = [...players].sort((a, b) => a.x - b.x);
 
-  // Exclude GK (first player)
+  // Exclude GK (first player from left)
   const outfield = sorted.slice(1);
 
-  // Divide pitch into horizontal bands
+  // Divide pitch into VERTICAL bands (left to right)
   const bands = {
-    defense: outfield.filter(p => p.y < 33),
-    midfield: outfield.filter(p => p.y >= 33 && p.y < 66),
-    attack: outfield.filter(p => p.y >= 66)
+    defense: outfield.filter(p => p.x < 33),      // Left third
+    midfield: outfield.filter(p => p.x >= 33 && p.x < 66), // Middle third
+    attack: outfield.filter(p => p.x >= 66)       // Right third
   };
 
   const def = bands.defense.length;
@@ -266,6 +266,8 @@ function detectFormation(players) {
   if (def === 3 && mid === 5 && att === 2) return "3-5-2";
   if (def === 3 && mid === 4 && att === 3) return "3-4-3";
   if (def === 5 && mid === 3 && att === 2) return "5-3-2";
+  if (def === 2 && mid === 4 && att === 4) return "2-4-4";
+  if (def === 3 && mid === 3 && att === 4) return "3-3-4";
   
   return `${def}-${mid}-${att}`;
 }
@@ -273,14 +275,15 @@ function detectFormation(players) {
 function analyzeOccupation(players) {
   if (players.length === 0) return "Balanced";
 
-  const leftZone = players.filter(p => p.x < 33).length;
-  const centerZone = players.filter(p => p.x >= 33 && p.x < 66).length;
-  const rightZone = players.filter(p => p.x >= 66).length;
+  // For HORIZONTAL pitch: Y axis = top to bottom
+  const topZone = players.filter(p => p.y < 33).length;
+  const centerZone = players.filter(p => p.y >= 33 && p.y < 66).length;
+  const bottomZone = players.filter(p => p.y >= 66).length;
 
-  const max = Math.max(leftZone, centerZone, rightZone);
+  const max = Math.max(topZone, centerZone, bottomZone);
 
-  if (leftZone === max && leftZone > centerZone + 2) return "Left-sided emphasis";
-  if (rightZone === max && rightZone > centerZone + 2) return "Right-sided emphasis";
+  if (topZone === max && topZone > centerZone + 2) return "Upper-sided emphasis";
+  if (bottomZone === max && bottomZone > centerZone + 2) return "Lower-sided emphasis";
   if (centerZone === max) return "Central dominance";
 
   return "Balanced occupation";
@@ -528,11 +531,11 @@ function generateCoachingQuestions(results, data) {
   // Structural
   if (results.structural.pitch1.shape !== "No data") {
     if (results.structural.pitch1.occupation.includes("emphasis")) {
-      const side = results.structural.pitch1.occupation.includes("Left") ? "left" : "right";
-      const opposite = side === "left" ? "right" : "left";
+      const side = results.structural.pitch1.occupation.includes("Upper") ? "upper" : "lower";
+      const opposite = side === "upper" ? "lower" : "upper";
       questions.push({
         category: "Structural",
-        text: `Why was the ${opposite} flank underutilized despite the formation allowing width on both sides?`
+        text: `Why was the ${opposite} zone underutilized despite the formation allowing width on both sides?`
       });
     }
 
