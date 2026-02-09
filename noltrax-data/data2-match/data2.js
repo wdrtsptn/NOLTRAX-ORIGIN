@@ -607,7 +607,7 @@ function populatePreview(data, results) {
   document.getElementById("coverTitle").textContent = data.meta.matchName || "MATCH ANALYSIS REPORT";
   document.getElementById("coverTeams").textContent = `${data.meta.homeTeam || "Home"} vs ${data.meta.awayTeam || "Away"}`;
   document.getElementById("coverDate").textContent = data.meta.matchDate || "Date not specified";
-  document.getElementById("coverCompetition").textContent = "Competition: TBD"; // Can be added to meta
+  document.getElementById("coverCompetition").textContent = "Competition: TBD";
   document.getElementById("coverAnalyzedTeam").textContent = data.meta.analyzedTeam || "N/A";
   document.getElementById("coverAnalyst").textContent = data.meta.analyst || "N/A";
 
@@ -741,7 +741,7 @@ function populatePreview(data, results) {
 }
 
 // ================================
-// PITCH VISUALIZATION
+// PITCH VISUALIZATION (HORIZONTAL)
 // ================================
 
 function drawPitchVisualization(canvasId, pitchData) {
@@ -749,48 +749,98 @@ function drawPitchVisualization(canvasId, pitchData) {
   if (!canvas) return;
   
   const ctx = canvas.getContext("2d");
-  const width = canvas.width = 500;
-  const height = canvas.height = 700;
+  const width = canvas.width = 700;
+  const height = canvas.height = 450;
 
-  // Clear
   ctx.clearRect(0, 0, width, height);
 
-  // Draw pitch outline
+  const padding = 40;
+  const pitchWidth = width - (padding * 2);
+  const pitchHeight = height - (padding * 2);
+
+  // Pitch outline
   ctx.strokeStyle = "#d0d0d0";
   ctx.lineWidth = 2;
-  ctx.strokeRect(50, 50, width - 100, height - 100);
+  ctx.strokeRect(padding, padding, pitchWidth, pitchHeight);
 
-  // Center line
+  // Center line (vertical)
   ctx.beginPath();
-  ctx.moveTo(50, height / 2);
-  ctx.lineTo(width - 50, height / 2);
+  ctx.moveTo(width / 2, padding);
+  ctx.lineTo(width / 2, height - padding);
   ctx.stroke();
 
   // Center circle
   ctx.beginPath();
-  ctx.arc(width / 2, height / 2, 50, 0, Math.PI * 2);
+  ctx.arc(width / 2, height / 2, 40, 0, Math.PI * 2);
   ctx.stroke();
+
+  // Center spot
+  ctx.beginPath();
+  ctx.arc(width / 2, height / 2, 3, 0, Math.PI * 2);
+  ctx.fillStyle = "#d0d0d0";
+  ctx.fill();
+
+  // Left penalty area
+  const penaltyWidth = pitchWidth * 0.18;
+  const penaltyHeight = pitchHeight * 0.4;
+  ctx.strokeRect(
+    padding, 
+    padding + (pitchHeight - penaltyHeight) / 2, 
+    penaltyWidth, 
+    penaltyHeight
+  );
+
+  // Right penalty area
+  ctx.strokeRect(
+    width - padding - penaltyWidth, 
+    padding + (pitchHeight - penaltyHeight) / 2, 
+    penaltyWidth, 
+    penaltyHeight
+  );
+
+  // Left goal area
+  const goalWidth = pitchWidth * 0.06;
+  const goalHeight = pitchHeight * 0.2;
+  ctx.strokeRect(
+    padding, 
+    padding + (pitchHeight - goalHeight) / 2, 
+    goalWidth, 
+    goalHeight
+  );
+
+  // Right goal area
+  ctx.strokeRect(
+    width - padding - goalWidth, 
+    padding + (pitchHeight - goalHeight) / 2, 
+    goalWidth, 
+    goalHeight
+  );
+
+  // Penalty spots
+  ctx.beginPath();
+  ctx.arc(padding + penaltyWidth * 0.6, height / 2, 3, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(width - padding - penaltyWidth * 0.6, height / 2, 3, 0, Math.PI * 2);
+  ctx.fill();
 
   // Draw players
   if (pitchData.players && pitchData.players.length > 0) {
     pitchData.players.forEach(player => {
-      const px = 50 + (player.x / 100) * (width - 100);
-      const py = 50 + (player.y / 100) * (height - 100);
+      const px = padding + (player.x / 100) * pitchWidth;
+      const py = padding + (player.y / 100) * pitchHeight;
 
-      // Player circle
       ctx.fillStyle = "#1e5eff";
       ctx.beginPath();
-      ctx.arc(px, py, 15, 0, Math.PI * 2);
+      ctx.arc(px, py, 14, 0, Math.PI * 2);
       ctx.fill();
 
-      // Border
       ctx.strokeStyle = "white";
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Number
       ctx.fillStyle = "white";
-      ctx.font = "bold 12px Arial";
+      ctx.font = "bold 11px Arial";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(player.number, px, py);
@@ -977,7 +1027,6 @@ document.getElementById("downloadPdfBtn").addEventListener("click", async () => 
       const imgWidth = pageWidth;
       const imgHeight = (canvas.height * pageWidth) / canvas.width;
 
-      // If image height exceeds page, scale down
       if (imgHeight > pageHeight) {
         const ratio = pageHeight / imgHeight;
         pdf.addImage(imgData, "PNG", 0, 0, imgWidth * ratio, pageHeight);
