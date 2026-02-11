@@ -1,67 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Noltrax Track – Live</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noltrax Track – Live Stats Tracker</title>
+  <link rel="stylesheet" href="track.css">
 </head>
 <body>
 
-<!-- BACK BUTTON -->
-<button class="back-btn" onclick="window.location.href='../../index.html'">
-  ← Back to Noltrax Track
-</button>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <img src="assets/20260128_164322.png" alt="Logo" class="nav-logo">
+        <span class="brand-text">NOLTRAX <span class="brand-origin">TRACK</span></span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../match/match.html">Match</a></li>
+        <li><a href="../data/data.html">Data</a></li>
+      </ul>
+    </div>
+  </nav>
 
-<!-- MATCH INFO -->
-<section class="match-info glass">
-  <input placeholder="Match Name" />
-  <input type="date" />
-  <input placeholder="Home Team" />
-  <input placeholder="Away Team" />
-  <input placeholder="Team Analyzed" />
-  <input placeholder="Analyst Name" />
-</section>
+  <!-- HEADER -->
+  <header>
+    <h1>⚡ Live Stats Tracker</h1>
+    <div id="metadata">
+      <input type="text" id="matchName" placeholder="Match Name (e.g., Liverpool vs Man City)">
+      <input type="date" id="matchDate">
+      <input type="text" id="homeTeam" placeholder="Home Team">
+      <input type="text" id="awayTeam" placeholder="Away Team">
+      <button id="startBtn">🎬 Start Tracking</button>
+      <button id="endBtn" disabled>⏹ End Match</button>
+      <button id="exportBtn" disabled>💾 Export JSON</button>
+    </div>
+  </header>
 
-<!-- PLAYER TABLE -->
-<section class="players glass">
-  <div class="table">
-    <div class="row header">
-      <span>No</span><span>Pos</span><span>Name</span>
+  <!-- MAIN CONTAINER -->
+  <div id="container">
+    
+    <!-- STATS PANEL -->
+    <div id="statsPanel">
+      <h3>📊 Live Stats</h3>
+      <div id="timer">00:00</div>
+      
+      <div class="stats-grid">
+        <div class="team-stats">
+          <h4 id="homeTeamName">Home</h4>
+          <div class="stat-row">
+            <span>Passes</span>
+            <strong id="homePasses">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Shots</span>
+            <strong id="homeShots">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Goals</span>
+            <strong id="homeGoals">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Tackles</span>
+            <strong id="homeTackles">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Interceptions</span>
+            <strong id="homeInterceptions">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Corners</span>
+            <strong id="homeCorners">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Fouls</span>
+            <strong id="homeFouls">0</strong>
+          </div>
+        </div>
+
+        <div class="team-stats">
+          <h4 id="awayTeamName">Away</h4>
+          <div class="stat-row">
+            <span>Passes</span>
+            <strong id="awayPasses">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Shots</span>
+            <strong id="awayShots">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Goals</span>
+            <strong id="awayGoals">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Tackles</span>
+            <strong id="awayTackles">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Interceptions</span>
+            <strong id="awayInterceptions">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Corners</span>
+            <strong id="awayCorners">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Fouls</span>
+            <strong id="awayFouls">0</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="possession-bar">
+        <div class="possession-label">
+          <span id="homePossession">50%</span>
+          <span>POSSESSION</span>
+          <span id="awayPossession">50%</span>
+        </div>
+        <div class="possession-visual">
+          <div id="homePossessionBar" style="width: 50%"></div>
+        </div>
+      </div>
     </div>
 
-    <!-- STARTING XI -->
-    <div id="starting-xi"></div>
+    <!-- EVENT LOG -->
+    <div id="logPanel">
+      <h3>📝 Event Log</h3>
+      <div id="status">Press SPACE to start tracking</div>
+      <ul id="log"></ul>
+    </div>
 
-    <div class="subs-label">SUBS</div>
+    <!-- KEYBOARD GUIDE -->
+    <div id="keyboardGuide">
+      <h3>⌨️ Keyboard Shortcuts</h3>
+      
+      <div class="key-section">
+        <h4>HOME TEAM</h4>
+        <div class="key-grid">
+          <div class="key-item"><kbd>P</kbd> Pass</div>
+          <div class="key-item"><kbd>S</kbd> Shot</div>
+          <div class="key-item"><kbd>G</kbd> Goal</div>
+          <div class="key-item"><kbd>T</kbd> Tackle</div>
+          <div class="key-item"><kbd>I</kbd> Interception</div>
+          <div class="key-item"><kbd>C</kbd> Corner</div>
+          <div class="key-item"><kbd>F</kbd> Foul</div>
+          <div class="key-item"><kbd>D</kbd> Dribble</div>
+          <div class="key-item"><kbd>K</kbd> Key Pass</div>
+          <div class="key-item"><kbd>L</kbd> Long Ball</div>
+          <div class="key-item"><kbd>X</kbd> Cross</div>
+          <div class="key-item"><kbd>O</kbd> Offside</div>
+        </div>
+      </div>
 
-    <!-- SUBS -->
-    <div id="subs"></div>
+      <div class="key-section">
+        <h4>AWAY TEAM</h4>
+        <p style="font-size: 11px; opacity: 0.7; margin-bottom: 8px;">Hold SHIFT + key</p>
+        <div class="key-grid">
+          <div class="key-item"><kbd>⇧P</kbd> Pass</div>
+          <div class="key-item"><kbd>⇧S</kbd> Shot</div>
+          <div class="key-item"><kbd>⇧G</kbd> Goal</div>
+          <div class="key-item"><kbd>⇧T</kbd> Tackle</div>
+          <div class="key-item"><kbd>⇧I</kbd> Interception</div>
+          <div class="key-item"><kbd>⇧C</kbd> Corner</div>
+          <div class="key-item"><kbd>⇧F</kbd> Foul</div>
+          <div class="key-item"><kbd>⇧D</kbd> Dribble</div>
+        </div>
+      </div>
+
+      <div class="key-section">
+        <h4>CONTROLS</h4>
+        <div class="key-grid">
+          <div class="key-item"><kbd>SPACE</kbd> Start/Pause</div>
+          <div class="key-item"><kbd>Q</kbd> Undo</div>
+          <div class="key-item"><kbd>W</kbd> End Match</div>
+          <div class="key-item"><kbd>E</kbd> Export</div>
+        </div>
+      </div>
+    </div>
+
   </div>
-</section>
 
-<!-- TRACK AREA -->
-<section class="track glass">
-  <div class="zones">
-    <div class="zone" data-zone="1">1</div>
-    <div class="zone" data-zone="2">2</div>
-    <div class="zone" data-zone="3">3</div>
-    <div class="zone" data-zone="4">4</div>
-    <div class="zone" data-zone="5">5</div>
-    <div class="zone" data-zone="6">6</div>
-  </div>
-
-  <div class="possession">
-    <span>POSSESSION</span>
-    <strong id="posValue">50%</strong>
-  </div>
-</section>
-
-<!-- LIVE LOG -->
-<section class="log glass">
-  <h3>Live Event Log</h3>
-  <ul id="eventLog"></ul>
-</section>
-
-<script src="script.js"></script>
+  <script src="track.js"></script>
 </body>
-</html>
+  </html>
