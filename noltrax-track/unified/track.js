@@ -102,7 +102,7 @@ function startTracking() {
   startBtn.style.background = "#f59e0b";
   endBtn.disabled = false;
   
-  statusDiv.textContent = "🟢 Tracking Active - Press keys to log events";
+  statusDiv.textContent = "Tracking Active - Press keys to log events";
   statusDiv.classList.add("tracking");
 
   // Start timer
@@ -131,7 +131,7 @@ function endMatch() {
   endBtn.disabled = true;
   exportBtn.disabled = false;
   
-  statusDiv.textContent = "✅ Match Ended - Ready to export";
+  statusDiv.textContent = "Match Ended - Ready to export";
   statusDiv.classList.remove("tracking");
 }
 
@@ -429,7 +429,7 @@ function exportJSON() {
   a.click();
   URL.revokeObjectURL(url);
   
-  alert("✅ Stats exported successfully!");
+  alert("Stats exported successfully!");
 }
 
 // ================================
