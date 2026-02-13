@@ -129,22 +129,22 @@ header h1 {
 }
 
 #startBtn {
-  background: #10b981;
+  background: #1e5eff;
   color: white;
 }
 
 #startBtn:hover {
-  background: #059669;
+  background: #0077ee;
   transform: scale(1.02);
 }
 
 #endBtn {
-  background: #ef4444;
+  background: #1e5eff;
   color: white;
 }
 
 #endBtn:hover {
-  background: #dc2626;
+  background: #0077ee;
 }
 
 #endBtn:disabled {
@@ -198,12 +198,12 @@ header h1 {
   text-align: center;
   font-size: 32px;
   font-weight: 800;
-  color: #1e5eff;
+  color: #ffffff;
   padding: 16px;
-  background: rgba(30, 94, 255, 0.1);
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 12px;
   margin-bottom: 20px;
-  border: 1px solid rgba(30, 94, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .stats-grid {
@@ -224,11 +224,11 @@ header h1 {
 }
 
 .home-stats h4 {
-  border-left: 3px solid #1e5eff;
+  border-left: 3px solid #ffffff;
 }
 
 .away-stats h4 {
-  border-left: 3px solid #f59e0b;
+  border-left: 3px solid #ffffff;
 }
 
 .stat-row {
@@ -249,7 +249,7 @@ header h1 {
 
 .stat-row strong {
   font-size: 14px;
-  color: #1e5eff;
+  color: #ffffff;
   font-weight: 700;
 }
 
@@ -284,7 +284,7 @@ header h1 {
 
 #homePossessionBar {
   height: 100%;
-  background: linear-gradient(90deg, #1e5eff, #00d4ff);
+  background:#1e5eff);
   transition: width 0.3s;
   border-radius: 20px;
 }
@@ -315,13 +315,13 @@ header h1 {
   margin-bottom: 16px;
   font-size: 13px;
   font-weight: 600;
-  color: #1e5eff;
+  color: #ffffff;
 }
 
 #status.tracking {
   background: rgba(16, 185, 129, 0.1);
   border-color: rgba(16, 185, 129, 0.3);
-  color: #10b981;
+  color: #ffffff;
 }
 
 #log {
@@ -360,11 +360,11 @@ header h1 {
 }
 
 #log li.home {
-  border-left: 3px solid #1e5eff;
+  border-left: 3px solid #ffffff;
 }
 
 #log li.away {
-  border-left: 3px solid #f59e0b;
+  border-left: 3px solid #ffffff;
 }
 
 /* KEYBOARD GUIDE */
