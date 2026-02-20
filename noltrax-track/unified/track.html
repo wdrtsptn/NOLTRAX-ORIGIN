@@ -12,7 +12,7 @@
   <nav class="navbar">
     <div class="nav-container">
       <div class="nav-brand">
-        <img src="../assets/20260128_164322.png" alt="Logo" class="nav-logo">
+        <img src="assets/20260128_164322.png" alt="Logo" class="nav-logo">
         <span class="brand-text">NOLTRAX <span class="brand-origin">TRACK</span></span>
       </div>
       <ul class="nav-links">
@@ -25,14 +25,15 @@
 
   <!-- HEADER -->
   <header>
+    <h1>⚡ Live Stats Tracker</h1>
     <div id="metadata">
-      <input type="text" id="matchName" placeholder="Match Name (e.g., Liverpool vs Man City)">
+      <input type="text" id="matchName" placeholder="Match Name">
       <input type="date" id="matchDate">
       <input type="text" id="homeTeam" placeholder="Home Team">
       <input type="text" id="awayTeam" placeholder="Away Team">
-      <button id="startBtn">Start Tracking</button>
-      <button id="endBtn" disabled>End Match</button>
-      <button id="exportBtn" disabled>Export JSON</button>
+      <button id="startBtn">🎬 Start Tracking</button>
+      <button id="endBtn" disabled>⏹ End Match</button>
+      <button id="exportBtn" disabled>💾 Export JSON</button>
     </div>
   </header>
 
@@ -41,12 +42,16 @@
     
     <!-- STATS PANEL -->
     <div id="statsPanel">
-      <h3>Live Stats</h3>
+      <h3>📊 Live Stats</h3>
       <div id="timer">00:00</div>
       
       <div class="stats-grid">
-        <div class="team-stats">
+        <div class="team-stats home-stats">
           <h4 id="homeTeamName">Home</h4>
+          <div class="stat-row">
+            <span>Possession</span>
+            <strong id="homePossessionCount">0</strong>
+          </div>
           <div class="stat-row">
             <span>Passes</span>
             <strong id="homePasses">0</strong>
@@ -75,10 +80,34 @@
             <span>Fouls</span>
             <strong id="homeFouls">0</strong>
           </div>
+          <div class="stat-row">
+            <span>Dribbles</span>
+            <strong id="homeDribbles">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Key Passes</span>
+            <strong id="homeKeyPasses">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Long Balls</span>
+            <strong id="homeLongBalls">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Crosses</span>
+            <strong id="homeCrosses">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Offsides</span>
+            <strong id="homeOffsides">0</strong>
+          </div>
         </div>
 
-        <div class="team-stats">
+        <div class="team-stats away-stats">
           <h4 id="awayTeamName">Away</h4>
+          <div class="stat-row">
+            <span>Possession</span>
+            <strong id="awayPossessionCount">0</strong>
+          </div>
           <div class="stat-row">
             <span>Passes</span>
             <strong id="awayPasses">0</strong>
@@ -107,6 +136,26 @@
             <span>Fouls</span>
             <strong id="awayFouls">0</strong>
           </div>
+          <div class="stat-row">
+            <span>Dribbles</span>
+            <strong id="awayDribbles">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Key Passes</span>
+            <strong id="awayKeyPasses">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Long Balls</span>
+            <strong id="awayLongBalls">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Crosses</span>
+            <strong id="awayCrosses">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Offsides</span>
+            <strong id="awayOffsides">0</strong>
+          </div>
         </div>
       </div>
 
@@ -124,61 +173,74 @@
 
     <!-- EVENT LOG -->
     <div id="logPanel">
-      <h3>Event Log</h3>
+      <h3>📝 Event Log</h3>
       <div id="status">Press SPACE to start tracking</div>
       <ul id="log"></ul>
     </div>
 
-    <!-- KEYBOARD GUIDE -->
-    <div id="keyboardGuide">
-      <h3>Keyboard Shortcuts</h3>
-      
-      <div class="key-section">
-        <h4>HOME TEAM</h4>
-        <div class="key-grid">
-          <div class="key-item"><kbd>P</kbd> Pass</div>
-          <div class="key-item"><kbd>S</kbd> Shot</div>
-          <div class="key-item"><kbd>G</kbd> Goal</div>
-          <div class="key-item"><kbd>T</kbd> Tackle</div>
-          <div class="key-item"><kbd>I</kbd> Interception</div>
-          <div class="key-item"><kbd>C</kbd> Corner</div>
-          <div class="key-item"><kbd>F</kbd> Foul</div>
-          <div class="key-item"><kbd>D</kbd> Dribble</div>
-          <div class="key-item"><kbd>K</kbd> Key Pass</div>
-          <div class="key-item"><kbd>L</kbd> Long Ball</div>
-          <div class="key-item"><kbd>X</kbd> Cross</div>
-          <div class="key-item"><kbd>O</kbd> Offside</div>
-        </div>
-      </div>
+  </div>
 
-      <div class="key-section">
-        <h4>AWAY TEAM</h4>
-        <p style="font-size: 11px; opacity: 0.7; margin-bottom: 8px;">Hold SHIFT + key</p>
-        <div class="key-grid">
-          <div class="key-item"><kbd>⇧P</kbd> Pass</div>
-          <div class="key-item"><kbd>⇧S</kbd> Shot</div>
-          <div class="key-item"><kbd>⇧G</kbd> Goal</div>
-          <div class="key-item"><kbd>⇧T</kbd> Tackle</div>
-          <div class="key-item"><kbd>⇧I</kbd> Interception</div>
-          <div class="key-item"><kbd>⇧C</kbd> Corner</div>
-          <div class="key-item"><kbd>⇧F</kbd> Foul</div>
-          <div class="key-item"><kbd>⇧D</kbd> Dribble</div>
+  <!-- KEYBOARD GUIDE (COLLAPSIBLE) -->
+  <div id="keyboardSection">
+    <button id="toggleKeyboard" class="toggle-btn">⌨️ Show Keyboard Shortcuts</button>
+    
+    <div id="keyboardGuide" style="display: none;">
+      <div class="keyboard-grid">
+        
+        <div class="key-section">
+          <h4>HOME TEAM</h4>
+          <div class="key-grid">
+            <div class="key-item"><kbd>B</kbd> Possession</div>
+            <div class="key-item"><kbd>P</kbd> Pass</div>
+            <div class="key-item"><kbd>S</kbd> Shot</div>
+            <div class="key-item"><kbd>G</kbd> Goal</div>
+            <div class="key-item"><kbd>T</kbd> Tackle</div>
+            <div class="key-item"><kbd>I</kbd> Interception</div>
+            <div class="key-item"><kbd>C</kbd> Corner</div>
+            <div class="key-item"><kbd>F</kbd> Foul</div>
+            <div class="key-item"><kbd>D</kbd> Dribble</div>
+            <div class="key-item"><kbd>K</kbd> Key Pass</div>
+            <div class="key-item"><kbd>L</kbd> Long Ball</div>
+            <div class="key-item"><kbd>X</kbd> Cross</div>
+            <div class="key-item"><kbd>O</kbd> Offside</div>
+          </div>
         </div>
-      </div>
 
-      <div class="key-section">
-        <h4>CONTROLS</h4>
-        <div class="key-grid">
-          <div class="key-item"><kbd>SPACE</kbd> Start/Pause</div>
-          <div class="key-item"><kbd>Q</kbd> Undo</div>
-          <div class="key-item"><kbd>W</kbd> End Match</div>
-          <div class="key-item"><kbd>E</kbd> Export</div>
+        <div class="key-section">
+          <h4>AWAY TEAM</h4>
+          <p style="font-size: 11px; opacity: 0.7; margin-bottom: 8px;">Hold SHIFT + key</p>
+          <div class="key-grid">
+            <div class="key-item"><kbd>⇧B</kbd> Possession</div>
+            <div class="key-item"><kbd>⇧P</kbd> Pass</div>
+            <div class="key-item"><kbd>⇧S</kbd> Shot</div>
+            <div class="key-item"><kbd>⇧G</kbd> Goal</div>
+            <div class="key-item"><kbd>⇧T</kbd> Tackle</div>
+            <div class="key-item"><kbd>⇧I</kbd> Interception</div>
+            <div class="key-item"><kbd>⇧C</kbd> Corner</div>
+            <div class="key-item"><kbd>⇧F</kbd> Foul</div>
+            <div class="key-item"><kbd>⇧D</kbd> Dribble</div>
+            <div class="key-item"><kbd>⇧K</kbd> Key Pass</div>
+            <div class="key-item"><kbd>⇧L</kbd> Long Ball</div>
+            <div class="key-item"><kbd>⇧X</kbd> Cross</div>
+            <div class="key-item"><kbd>⇧O</kbd> Offside</div>
+          </div>
         </div>
+
+        <div class="key-section">
+          <h4>CONTROLS</h4>
+          <div class="key-grid">
+            <div class="key-item"><kbd>SPACE</kbd> Start/Pause</div>
+            <div class="key-item"><kbd>Q</kbd> Undo Last</div>
+            <div class="key-item"><kbd>W</kbd> End Match</div>
+            <div class="key-item"><kbd>E</kbd> Export JSON</div>
+            <div class="key-item"><kbd>R</kbd> Reset All</div>
+          </div>
+        </div>
+
       </div>
     </div>
-
   </div>
 
   <script src="track.js"></script>
 </body>
-  </html>
+</html>
