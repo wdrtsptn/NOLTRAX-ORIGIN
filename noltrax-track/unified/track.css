@@ -4,8 +4,8 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: #ffffff;
-  padding: 80px 20px 20px 20px; 
-  background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.4)), url("../assets/20260201_135446.jpg");
+  padding: 80px 20px 40px 20px; 
+  background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.4)), url("assets/20260207_172512.jpg");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -129,22 +129,22 @@ header h1 {
 }
 
 #startBtn {
-  background: #1e5eff;
+  background: #10b981;
   color: white;
 }
 
 #startBtn:hover {
-  background: #0077ee;
+  background: #059669;
   transform: scale(1.02);
 }
 
 #endBtn {
-  background: #1e5eff;
+  background: #ef4444;
   color: white;
 }
 
 #endBtn:hover {
-  background: #0077ee;
+  background: #dc2626;
 }
 
 #endBtn:disabled {
@@ -171,9 +171,9 @@ header h1 {
 /* CONTAINER */
 #container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto 24px auto;
   display: grid;
-  grid-template-columns: 1fr 1.2fr 1fr;
+  grid-template-columns: 1fr 1.5fr;
   gap: 24px;
 }
 
@@ -198,12 +198,12 @@ header h1 {
   text-align: center;
   font-size: 32px;
   font-weight: 800;
-  color: #ffffff;
+  color: #1e5eff;
   padding: 16px;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(30, 94, 255, 0.1);
   border-radius: 12px;
   margin-bottom: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(30, 94, 255, 0.3);
 }
 
 .stats-grid {
@@ -224,11 +224,11 @@ header h1 {
 }
 
 .home-stats h4 {
-  border-left: 3px solid #ffffff;
+  border-left: 3px solid #1e5eff;
 }
 
 .away-stats h4 {
-  border-left: 3px solid #ffffff;
+  border-left: 3px solid #f59e0b;
 }
 
 .stat-row {
@@ -249,7 +249,7 @@ header h1 {
 
 .stat-row strong {
   font-size: 14px;
-  color: #ffffff;
+  color: #1e5eff;
   font-weight: 700;
 }
 
@@ -284,7 +284,7 @@ header h1 {
 
 #homePossessionBar {
   height: 100%;
-  background:#1e5eff);
+  background: linear-gradient(90deg, #1e5eff, #00d4ff);
   transition: width 0.3s;
   border-radius: 20px;
 }
@@ -315,13 +315,13 @@ header h1 {
   margin-bottom: 16px;
   font-size: 13px;
   font-weight: 600;
-  color: #ffffff;
+  color: #1e5eff;
 }
 
 #status.tracking {
   background: rgba(16, 185, 129, 0.1);
   border-color: rgba(16, 185, 129, 0.3);
-  color: #ffffff;
+  color: #10b981;
 }
 
 #log {
@@ -360,38 +360,57 @@ header h1 {
 }
 
 #log li.home {
-  border-left: 3px solid #ffffff;
+  border-left: 3px solid #1e5eff;
 }
 
 #log li.away {
-  border-left: 3px solid #ffffff;
+  border-left: 3px solid #f59e0b;
 }
 
-/* KEYBOARD GUIDE */
+/* KEYBOARD SECTION (COLLAPSIBLE) */
+#keyboardSection {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.toggle-btn {
+  width: 100%;
+  padding: 16px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 18px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-bottom: 24px;
+}
+
+.toggle-btn:hover {
+  background: rgba(255,255,255,0.12);
+}
+
 #keyboardGuide {
   padding: 18px;
   border-radius: 18px;
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(14px);
   border: 1px solid rgba(255,255,255,0.15);
-  max-height: 750px;
-  overflow-y: auto;
+  margin-bottom: 24px;
 }
 
-#keyboardGuide h3 {
-  font-size: 16px;
-  margin-bottom: 16px;
-  font-weight: 700;
-}
-
-.key-section {
-  margin-bottom: 20px;
+.keyboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
 }
 
 .key-section h4 {
   font-size: 12px;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   color: #1e5eff;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -430,21 +449,17 @@ header h1 {
 /* RESPONSIVE */
 @media (max-width: 1100px) {
   #container {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
   
-  #keyboardGuide {
-    grid-column: 1 / -1;
+  .keyboard-grid {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 850px) {
   body { 
     padding-top: 100px; 
-  }
-  
-  #container {
-    grid-template-columns: 1fr;
   }
   
   .stats-grid {
@@ -454,4 +469,4 @@ header h1 {
   .key-grid {
     grid-template-columns: 1fr;
   }
-  }
+}
