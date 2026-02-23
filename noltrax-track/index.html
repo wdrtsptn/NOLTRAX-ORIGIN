@@ -1,6 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noltrax Track – Live Stats Tracker</title>
+  <link rel="stylesheet" href="track.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <img src="./assets/20260128_164322.png" alt="Logo" class="nav-logo"> <span class="brand-text">NOLTRAX <span class="brand-origin">TRACK</span></span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="navbar/howtrack/index.html">How It Works</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+  <!-- TOP NAV -->
+  <header class="top-nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="logo-box">
+          <img src="assets/20260128_075331.png" alt="Noltrax Logo">
+        </div>
+        <span>NOLTRAX TRACK</span>
+      </div>
+
+      <nav class="nav-links">
+        <a href="../index.html">Origin</a>
+        <a href="../noltrax-match/index.html">Match</a>
+        <a href="https://github.com/wdrtsptn" target="_blank">GitHub</a>
+      </nav>
+    </div>
+  </header>
+  
+  <!-- NAVBAR --
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <img src="assets/20260128_164322.png" alt="Logo" class="nav-logo">
+        <span class="brand-text">NOLTRAX <span class="brand-origin">TRACK</span></span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../match/match.html">Match</a></li>
+        <li><a href="../data/data.html">Data</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header>
+    <h1>⚡ Live Stats Tracker</h1>
+    <div id="metadata">
+      <input type="text" id="matchName" placeholder="Match Name">
+      <input type="date" id="matchDate">
+      <input type="text" id="homeTeam" placeholder="Home Team">
+      <input type="text" id="awayTeam" placeholder="Away Team">
+      <button id="startBtn">🎬 Start Tracking</button>
+      <button id="endBtn" disabled>⏹ End Match</button>
+      <button id="exportBtn" disabled>💾 Export JSON</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <div id="container">
+    
+    <!-- EVENT LOG (KIRI - KECIL) -->
+    <div id="logPanel">
+      <h3>📝 Event Log</h3>
+      <div id="status">Press SPACE to start</div>
+      <ul id="log"></ul>
+    </div>
+
+    <!-- STATS PANEL (KANAN - LEBAR) -->
+    <div id="statsPanel">
+      <h3>📊 Live Stats</h3>
+      <div id="timer">00:00</div>
+      
+      <!-- POSSESSION STOPWATCH -->
+      <div class="possession-stopwatch">
+        <div class="stopwatch-row">
+          <div class="stopwatch-label">Home Possession</div>
+          <div class="stopwatch-time" id="homeTime">00:00</div>
+        </div>
+        <div class="stopwatch-row">
+          <div class="stopwatch-label">Away Possession</div>
+          <div class="stopwatch-time" id="awayTime">00:00</div>
+        </div>
+        <div class="live-possession" id="livePossession">0% - 0%</div>
+        <div class="final-possession" id="finalPossession"></div>
+        <div class="possession-hint">Press Q to toggle possession</div>
+      </div>
+      
+      <div class="stats-grid">
+        <div class="team-stats home-stats">
+          <h4 id="homeTeamName">Home</h4>
+          <div class="stat-row">
+            <span>Passes</span>
+            <strong id="homePasses">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Shots</span>
+            <strong id="homeShots">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Goals</span>
+            <strong id="homeGoals">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Tackles</span>
+            <strong id="homeTackles">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Interceptions</span>
+            <strong id="homeInterceptions">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Corners</span>
+            <strong id="homeCorners">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Fouls</span>
+            <strong id="homeFouls">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Dribbles</span>
+            <strong id="homeDribbles">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Key Passes</span>
+            <strong id="homeKeyPasses">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Long Balls</span>
+            <strong id="homeLongBalls">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Crosses</span>
+            <strong id="homeCrosses">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Offsides</span>
+            <strong id="homeOffsides">0</strong>
+          </div>
+        </div>
+
+        <div class="team-stats away-stats">
+          <h4 id="awayTeamName">Away</h4>
+          <div class="stat-row">
+            <span>Passes</span>
+            <strong id="awayPasses">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Shots</span>
+            <strong id="awayShots">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Goals</span>
+            <strong id="awayGoals">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Tackles</span>
+            <strong id="awayTackles">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Interceptions</span>
+            <strong id="awayInterceptions">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Corners</span>
+            <strong id="awayCorners">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Fouls</span>
+            <strong id="awayFouls">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Dribbles</span>
+            <strong id="awayDribbles">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Key Passes</span>
+            <strong id="awayKeyPasses">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Long Balls</span>
+            <strong id="awayLongBalls">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Crosses</span>
+            <strong id="awayCrosses">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Offsides</span>
+            <strong id="awayOffsides">0</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- KEYBOARD GUIDE (COLLAPSIBLE) -->
+  <div id="keyboardSection">
+    <button id="toggleKeyboard" class="toggle-btn">⌨️ Show Keyboard Shortcuts</button>
+    
+    <div id="keyboardGuide" style="display: none;">
+      <div class="keyboard-grid">
+        
+        <div class="key-section">
+          <h4>HOME TEAM</h4>
+          <div class="key-grid">
+            <div class="key-item"><kbd>P</kbd> Pass</div>
+            <div class="key-item"><kbd>S</kbd> Shot</div>
+            <div class="key-item"><kbd>G</kbd> Goal</div>
+            <div class="key-item"><kbd>T</kbd> Tackle</div>
+            <div class="key-item"><kbd>I</kbd> Interception</div>
+            <div class="key-item"><kbd>C</kbd> Corner</div>
+            <div class="key-item"><kbd>F</kbd> Foul</div>
+            <div class="key-item"><kbd>D</kbd> Dribble</div>
+            <div class="key-item"><kbd>K</kbd> Key Pass</div>
+            <div class="key-item"><kbd>L</kbd> Long Ball</div>
+            <div class="key-item"><kbd>X</kbd> Cross</div>
+            <div class="key-item"><kbd>O</kbd> Offside</div>
+          </div>
+        </div>
+
+        <div class="key-section">
+          <h4>AWAY TEAM</h4>
+          <p style="font-size: 11px; opacity: 0.7; margin-bottom: 8px;">Hold SHIFT + key</p>
+          <div class="key-grid">
+            <div class="key-item"><kbd>⇧P</kbd> Pass</div>
+            <div class="key-item"><kbd>⇧S</kbd> Shot</div>
+            <div class="key-item"><kbd>⇧G</kbd> Goal</div>
+            <div class="key-item"><kbd>⇧T</kbd> Tackle</div>
+            <div class="key-item"><kbd>⇧I</kbd> Interception</div>
+            <div class="key-item"><kbd>⇧C</kbd> Corner</div>
+            <div class="key-item"><kbd>⇧F</kbd> Foul</div>
+            <div class="key-item"><kbd>⇧D</kbd> Dribble</div>
+            <div class="key-item"><kbd>⇧K</kbd> Key Pass</div>
+            <div class="key-item"><kbd>⇧L</kbd> Long Ball</div>
+            <div class="key-item"><kbd>⇧X</kbd> Cross</div>
+            <div class="key-item"><kbd>⇧O</kbd> Offside</div>
+          </div>
+        </div>
+
+        <div class="key-section">
+          <h4>CONTROLS</h4>
+          <div class="key-grid">
+            <div class="key-item"><kbd>SPACE</kbd> Start/Pause Timer</div>
+            <div class="key-item"><kbd>Q</kbd> Toggle Possession</div>
+            <div class="key-item"><kbd>Q</kbd> x2 Stop Possession</div>
+            <div class="key-item"><kbd>Z</kbd> Undo Last</div>
+            <div class="key-item"><kbd>W</kbd> End Match</div>
+            <div class="key-item"><kbd>E</kbd> Export JSON</div>
+            <div class="key-item"><kbd>R</kbd> Reset All</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="track.js"></script>
+</body>
+</html>
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8" />
   <title>NOLTRAX TRACK</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +285,7 @@
 
 <body>
 
-   <!-- TOP NAV -->
+   <!-- TOP NAV --
 <nav class="navbar">
   <div class="nav-container">
     <div class="nav-brand">
@@ -42,7 +318,7 @@
     </div>
   </header>
 
-  <!-- HERO -->
+  <!-- HERO --
   <section class="hero">
     <div class="hero-inner">
       <h2>Welcome to</h2>
@@ -85,7 +361,7 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- FOOTER --
 <footer class="footer">
   <p>© 2026 Noltrax Origin. All rights reserved.</p>
 </footer>
