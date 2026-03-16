@@ -26,7 +26,6 @@ const RESULT_COLORS = {
 let state = {
   session: {
     matchName:    "",
-    competition:  "",
     home:         "",
     away:         "",
     analystName:  "",
@@ -51,6 +50,7 @@ function showPage(id, btn) {
 
 // ─── SETUP ────────────────────────────────────────────────────────────────────
 function initRosters() {
+  // 11 starting players
   ["home", "away"].forEach(team => {
     const tbody = document.getElementById(team + "Roster");
     tbody.innerHTML = "";
@@ -59,10 +59,11 @@ function initRosters() {
     }
   });
 
+  // 7 substitutes
   ["home", "away"].forEach(team => {
     const tbody = document.getElementById(team + "SubRoster");
     tbody.innerHTML = "";
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 7; i++) {
       tbody.appendChild(makePlayerRow(team, true));
     }
   });
@@ -76,14 +77,8 @@ function makePlayerRow(team, isSub) {
     <td><input type="number" min="1" max="99" placeholder="" /></td>
     <td><input type="text" placeholder="" style="text-transform:uppercase;" /></td>
     <td><input type="text" placeholder="" /></td>
-    <td><button class="del-btn" onclick="this.closest('tr').remove()">✕</button></td>
   `;
   return tr;
-}
-
-function addPlayer(team) {
-  const tbody = document.getElementById(team + "SubRoster");
-  tbody.appendChild(makePlayerRow(team, true));
 }
 
 function getRoster(team) {
@@ -111,7 +106,6 @@ function getRoster(team) {
 function startSession() {
   state.session = {
     matchName:    document.getElementById("matchName").value.trim()    || "",
-    competition:  document.getElementById("competition").value.trim()  || "",
     home:         document.getElementById("homeTeam").value.trim()     || "Home",
     away:         document.getElementById("awayTeam").value.trim()     || "Away",
     analystName:  document.getElementById("analystName").value.trim()  || "",
@@ -121,9 +115,6 @@ function startSession() {
 
   state.roster.home = getRoster("home");
   state.roster.away = getRoster("away");
-
-  document.getElementById("homeTitleLabel").textContent = state.session.home + " — Roster";
-  document.getElementById("awayTitleLabel").textContent = state.session.away + " — Roster";
 
   buildTagPanel();
   renderPlayerGrid();
@@ -641,10 +632,3 @@ initRosters();
 
 ---
 
-Struktur folder:
-```
-noltrax-track/
-├── track.html
-├── track.css
-├── track.js
-└── 20260128_204214.jpg
