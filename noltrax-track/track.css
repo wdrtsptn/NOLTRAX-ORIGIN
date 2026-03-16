@@ -8,13 +8,13 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: #ffffff;
-  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.55)),
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4)),
               url("20260128_204214.jpg");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   min-height: 100vh;
-  padding-top: 80px;
+  padding: 80px 20px 20px 20px;
 }
 
 /* ── NAVBAR ── */
@@ -26,12 +26,12 @@ body {
   z-index: 1000;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  background: rgba(255,255,255,0.07);
-  border-bottom: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
 }
 
 .nav-container {
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 14px 28px;
   display: flex;
@@ -42,12 +42,12 @@ body {
 .nav-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .nav-logo {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   background: #1e5eff;
   border-radius: 8px;
   display: flex;
@@ -59,15 +59,16 @@ body {
 }
 
 .brand-text {
-  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
+  font-size: 14px;
+  color: #ffffff;
   text-transform: uppercase;
 }
 
 .brand-sub {
   font-weight: 300;
-  opacity: 0.5;
+  opacity: 0.7;
   margin-left: 4px;
 }
 
@@ -102,12 +103,12 @@ body {
   color: white;
 }
 
-/* ── PAGE LAYOUT ── */
+/* ── PAGE ── */
 .page {
   display: none;
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 32px 24px;
+  padding: 24px 0;
 }
 
 .page.active {
@@ -116,11 +117,11 @@ body {
 
 /* ── GLASS CARD ── */
 .card {
-  background: rgba(255,255,255,0.07);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.13);
-  border-radius: 16px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 18px;
   padding: 20px;
 }
 
@@ -129,7 +130,7 @@ body {
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  opacity: 0.45;
+  opacity: 0.5;
   margin-bottom: 16px;
 }
 
@@ -151,76 +152,116 @@ body {
 }
 
 /* ── SETUP PAGE ── */
-.setup-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
 .setup-meta {
-  grid-column: 1 / -1;
+  margin-bottom: 20px;
 }
 
 .meta-fields {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
 }
 
-.meta-fields input {
+.meta-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   flex: 1 1 160px;
+}
+
+.meta-field label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  opacity: 0.45;
+}
+
+.meta-field input {
   padding: 10px 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.07);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.08);
   color: white;
   font-size: 13px;
   outline: none;
   font-family: inherit;
 }
 
-.meta-fields input::placeholder {
-  opacity: 0.4;
+.meta-field input::placeholder {
+  opacity: 0.35;
 }
 
-.meta-fields input:focus {
+.meta-field input:focus {
   border-color: #1e5eff;
+}
+
+/* ── ROSTER GRID ── */
+.roster-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
 }
 
 .roster-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 4px;
 }
 
 .roster-table th {
   text-align: left;
-  font-size: 10px;
-  letter-spacing: 1.5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  opacity: 0.45;
-  padding: 0 0 10px 0;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #ffffff;
 }
 
+.col-no   { width: 52px; }
+.col-pos  { width: 64px; }
+.col-name { }
+.col-del  { width: 36px; }
+
 .roster-table td {
-  padding: 4px 4px 4px 0;
+  padding: 3px 3px;
 }
 
 .roster-table input {
   width: 100%;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white;
   padding: 8px 10px;
   border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.06);
-  color: white;
-  font-size: 12px;
   outline: none;
+  font-size: 12px;
   font-family: inherit;
 }
 
 .roster-table input:focus {
   border-color: #1e5eff;
+}
+
+.roster-table input::placeholder {
+  opacity: 0.3;
+}
+
+/* ── SUBSTITUTES DIVIDER ── */
+.sub-divider {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: white;
+  margin: 10px 0 4px 0;
 }
 
 .add-row-btn {
@@ -249,7 +290,9 @@ body {
   color: rgba(255,255,255,0.4);
   cursor: pointer;
   font-size: 12px;
+  font-family: inherit;
   transition: 0.2s;
+  width: 100%;
 }
 
 .del-btn:hover {
@@ -260,21 +303,22 @@ body {
 .start-btn {
   width: 100%;
   padding: 14px;
-  border-radius: 12px;
+  border-radius: 14px;
   border: none;
   background: #1e5eff;
   color: white;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.3s;
   font-family: inherit;
 }
 
 .start-btn:hover {
-  background: #0d4de0;
+  background: #0077ee;
+  transform: scale(1.01);
 }
 
 /* ── TAGGING PAGE ── */
@@ -321,9 +365,9 @@ body {
 .video-input-row input {
   flex: 1;
   padding: 9px 13px;
-  border-radius: 9px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.07);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.08);
   color: white;
   font-size: 12px;
   outline: none;
@@ -336,7 +380,7 @@ body {
 
 .load-btn {
   padding: 9px 16px;
-  border-radius: 9px;
+  border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.15);
   background: rgba(255,255,255,0.08);
   color: white;
@@ -424,9 +468,9 @@ body {
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
-  border-radius: 10px;
+  border-radius: 12px;
   background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
   font-size: 12px;
 }
 
@@ -442,7 +486,7 @@ body {
   font-weight: 700;
   letter-spacing: 1px;
   padding: 2px 8px;
-  border-radius: 5px;
+  border-radius: 20px;
 }
 
 .log-event {
@@ -459,17 +503,18 @@ body {
   font-size: 10px;
   font-weight: 700;
   padding: 2px 8px;
-  border-radius: 5px;
+  border-radius: 20px;
 }
 
 .log-del {
   padding: 2px 7px;
-  border-radius: 5px;
+  border-radius: 6px;
   border: none;
   background: rgba(255,255,255,0.05);
   color: rgba(255,255,255,0.3);
   cursor: pointer;
   font-size: 11px;
+  font-family: inherit;
   transition: 0.2s;
 }
 
@@ -482,7 +527,7 @@ body {
 .tag-panel {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .step-row {
@@ -510,8 +555,8 @@ body {
 
 .cat-btn {
   padding: 10px 4px;
-  border-radius: 9px;
-  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
   background: rgba(255,255,255,0.05);
   color: rgba(255,255,255,0.7);
   font-size: 11px;
@@ -524,7 +569,7 @@ body {
 }
 
 .cat-btn:hover {
-  border-color: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.1);
   color: white;
 }
 
@@ -541,8 +586,8 @@ body {
 
 .ev-btn {
   padding: 9px 6px;
-  border-radius: 9px;
-  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
   background: rgba(255,255,255,0.05);
   color: rgba(255,255,255,0.7);
   font-size: 11px;
@@ -553,8 +598,8 @@ body {
 }
 
 .ev-btn:hover {
-  background: rgba(255,255,255,0.1);
-  color: white;
+  background: #1e5eff;
+  border-color: white;
 }
 
 .ev-btn.selected {
@@ -571,8 +616,8 @@ body {
 
 .res-btn {
   padding: 9px 4px;
-  border-radius: 9px;
-  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
   background: rgba(255,255,255,0.05);
   color: rgba(255,255,255,0.6);
   font-size: 11px;
@@ -582,7 +627,10 @@ body {
   font-family: inherit;
 }
 
-.res-btn:hover { color: white; }
+.res-btn:hover {
+  color: white;
+  border-color: rgba(255,255,255,0.4);
+}
 
 .res-btn.selected {
   color: white;
@@ -593,7 +641,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  max-height: 90px;
+  max-height: 100px;
   overflow-y: auto;
 }
 
@@ -605,8 +653,8 @@ body {
 
 .pl-btn {
   padding: 6px 10px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
   background: rgba(255,255,255,0.05);
   color: rgba(255,255,255,0.65);
   font-size: 11px;
@@ -617,7 +665,8 @@ body {
 }
 
 .pl-btn:hover {
-  border-color: rgba(255,255,255,0.3);
+  background: #1e5eff;
+  border-color: white;
   color: white;
 }
 
@@ -632,11 +681,11 @@ body {
   position: relative;
   width: 100%;
   aspect-ratio: 105 / 68;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   cursor: crosshair;
   background: rgba(30,94,60,0.4);
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.15);
 }
 
 #pitchCanvas {
@@ -656,16 +705,16 @@ body {
 /* ── NOTES + SUBMIT ── */
 .notes-input {
   width: 100%;
-  padding: 9px 12px;
-  border-radius: 9px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.06);
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.08);
   color: white;
   font-size: 12px;
   outline: none;
   font-family: inherit;
   resize: none;
-  height: 56px;
+  height: 60px;
 }
 
 .notes-input:focus { border-color: #1e5eff; }
@@ -673,17 +722,17 @@ body {
 
 .submit-btn {
   width: 100%;
-  padding: 12px;
-  border-radius: 10px;
+  padding: 12px 24px;
+  border-radius: 14px;
   border: none;
   background: #1e5eff;
   color: white;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.3s;
   font-family: inherit;
   opacity: 0.35;
   pointer-events: none;
@@ -695,7 +744,8 @@ body {
 }
 
 .submit-btn.ready:hover {
-  background: #0d4de0;
+  background: #0077ee;
+  transform: scale(1.02);
 }
 
 /* ── ANALYSIS PAGE ── */
@@ -715,7 +765,7 @@ body {
 .filter-btn {
   padding: 6px 12px;
   border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.15);
   background: rgba(255,255,255,0.05);
   color: rgba(255,255,255,0.55);
   font-size: 11px;
@@ -727,7 +777,7 @@ body {
 
 .filter-btn:hover {
   color: white;
-  border-color: rgba(255,255,255,0.3);
+  border-color: rgba(255,255,255,0.4);
 }
 
 .filter-btn.active {
@@ -740,10 +790,10 @@ body {
   position: relative;
   width: 100%;
   aspect-ratio: 105 / 68;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   background: rgba(20,60,35,0.5);
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.15);
 }
 
 #heatmapCanvas {
@@ -778,7 +828,7 @@ body {
 .stat-card {
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 14px;
 }
 
@@ -870,8 +920,8 @@ body {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  .tag-layout          { grid-template-columns: 1fr; }
-  .setup-grid          { grid-template-columns: 1fr; }
-  .analysis-layout     { grid-template-columns: 1fr; }
-  body                 { padding-top: 100px; }
+  .tag-layout       { grid-template-columns: 1fr; }
+  .roster-grid      { grid-template-columns: 1fr; }
+  .analysis-layout  { grid-template-columns: 1fr; }
+  body              { padding-top: 100px; }
 }
