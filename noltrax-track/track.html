@@ -25,49 +25,79 @@
 
 <!-- SETUP PAGE -->
 <div id="page-setup" class="page active">
-  <div class="setup-grid">
 
-    <div class="card setup-meta">
-      <div class="card-title">Session Info</div>
-      <div class="meta-fields">
-        <input id="homeTeam" placeholder="Home Team" />
-        <input id="awayTeam" placeholder="Away Team" />
-        <input id="competition" placeholder="Competition" />
+  <div class="card setup-meta">
+    <div class="card-title">Session Info</div>
+    <div class="meta-fields">
+      <div class="meta-field">
+        <label>Home Team</label>
+        <input id="homeTeam" placeholder="e.g. Persija Jakarta" />
+      </div>
+      <div class="meta-field">
+        <label>Away Team</label>
+        <input id="awayTeam" placeholder="e.g. Arema FC" />
+      </div>
+      <div class="meta-field">
+        <label>Competition</label>
+        <input id="competition" placeholder="e.g. Liga 1" />
+      </div>
+      <div class="meta-field">
+        <label>Date</label>
         <input id="matchDate" type="date" />
       </div>
+      <div class="meta-field">
+        <label>Venue</label>
+        <input id="venue" placeholder="e.g. GBK Stadium" />
+      </div>
     </div>
+  </div>
 
+  <div class="roster-grid">
+
+    <!-- HOME -->
     <div class="card">
-      <div class="card-title">Home Roster</div>
+      <div class="card-title" id="homeTitleLabel">Home Roster</div>
       <table class="roster-table">
         <thead>
           <tr>
-            <th style="width:50px">#</th>
-            <th>Name</th>
-            <th style="width:32px"></th>
+            <th class="col-no">NO</th>
+            <th class="col-pos">POS</th>
+            <th class="col-name">NAME</th>
+            <th class="col-del"></th>
           </tr>
         </thead>
         <tbody id="homeRoster"></tbody>
       </table>
+      <div class="sub-divider">SUBSTITUTES</div>
+      <table class="roster-table">
+        <tbody id="homeSubRoster"></tbody>
+      </table>
       <button class="add-row-btn" onclick="addPlayer('home')">+ Add Player</button>
     </div>
 
+    <!-- AWAY -->
     <div class="card">
-      <div class="card-title">Away Roster</div>
+      <div class="card-title" id="awayTitleLabel">Away Roster</div>
       <table class="roster-table">
         <thead>
           <tr>
-            <th style="width:50px">#</th>
-            <th>Name</th>
-            <th style="width:32px"></th>
+            <th class="col-no">NO</th>
+            <th class="col-pos">POS</th>
+            <th class="col-name">NAME</th>
+            <th class="col-del"></th>
           </tr>
         </thead>
         <tbody id="awayRoster"></tbody>
+      </table>
+      <div class="sub-divider">SUBSTITUTES</div>
+      <table class="roster-table">
+        <tbody id="awaySubRoster"></tbody>
       </table>
       <button class="add-row-btn" onclick="addPlayer('away')">+ Add Player</button>
     </div>
 
   </div>
+
   <button class="start-btn" onclick="startSession()">Start Tagging Session →</button>
 </div>
 
@@ -75,7 +105,6 @@
 <div id="page-tagging" class="page">
   <div class="tag-layout">
 
-    <!-- Left: video + log -->
     <div>
       <div class="card" style="margin-bottom:16px">
         <div class="card-title">Video Source</div>
@@ -108,7 +137,6 @@
       </div>
     </div>
 
-    <!-- Right: tag panel -->
     <div class="tag-panel">
 
       <div class="step-row">
@@ -205,9 +233,7 @@
   </div>
 </div>
 
-<!-- TOAST -->
 <div id="toast"></div>
-
 <script src="track.js"></script>
 </body>
 </html>
