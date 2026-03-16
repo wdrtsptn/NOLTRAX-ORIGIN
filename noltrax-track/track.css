@@ -33,10 +33,10 @@ body {
 .nav-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 14px 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 14px 28px;
 }
 
 .nav-brand {
@@ -122,7 +122,7 @@ body {
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(255,255,255,0.15);
   border-radius: 18px;
-  padding: 20px;
+  padding: 18px;
 }
 
 .card-title {
@@ -151,52 +151,59 @@ body {
   letter-spacing: 1px;
 }
 
-/* ── SETUP PAGE ── */
+/* ── SETUP — SESSION INFO ── */
 .setup-meta {
   margin-bottom: 20px;
 }
 
-.meta-fields {
+.meta-row {
   display: flex;
-  flex-wrap: wrap;
   gap: 12px;
+  margin-bottom: 12px;
 }
 
-.meta-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1 1 160px;
+.meta-row:last-child {
+  margin-bottom: 0;
 }
 
-.meta-field label {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  opacity: 0.45;
-}
-
-.meta-field input {
+.meta-row input,
+.meta-row select {
+  flex: 1;
   padding: 10px 14px;
   border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.08);
+  border: none;
+  background: rgba(255,255,255,0.15);
   color: white;
   font-size: 13px;
   outline: none;
   font-family: inherit;
 }
 
-.meta-field input::placeholder {
-  opacity: 0.35;
+.meta-row input::placeholder {
+  color: rgba(255,255,255,0.5);
 }
 
-.meta-field input:focus {
-  border-color: #1e5eff;
+.meta-row select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='rgba(255,255,255,0.5)' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-color: rgba(255,255,255,0.15);
+  cursor: pointer;
 }
 
-/* ── ROSTER GRID ── */
+.meta-row select option {
+  background: #1a2340;
+  color: white;
+}
+
+.meta-row input:focus,
+.meta-row select:focus {
+  background: rgba(255,255,255,0.2);
+}
+
+/* ── SETUP — ROSTER ── */
 .roster-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -206,19 +213,28 @@ body {
 
 .roster-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 4px;
 }
 
-.roster-table th {
+.roster-table thead th {
   text-align: left;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
   padding: 10px 12px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.12);
   border: 1px solid rgba(255,255,255,0.1);
   color: #ffffff;
+}
+
+.roster-table thead th:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+.roster-table thead th:last-child {
+  border-radius: 0 6px 6px 0;
 }
 
 .col-no   { width: 52px; }
@@ -227,7 +243,7 @@ body {
 .col-del  { width: 36px; }
 
 .roster-table td {
-  padding: 3px 3px;
+  padding: 2px 2px;
 }
 
 .roster-table input {
@@ -235,8 +251,8 @@ body {
   background: transparent;
   border: 1px solid rgba(255,255,255,0.1);
   color: white;
-  padding: 8px 10px;
-  border-radius: 8px;
+  padding: 8px;
+  border-radius: 6px;
   outline: none;
   font-size: 12px;
   font-family: inherit;
@@ -252,7 +268,7 @@ body {
 
 /* ── SUBSTITUTES DIVIDER ── */
 .sub-divider {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.12);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 8px;
   padding: 10px 12px;
@@ -261,7 +277,7 @@ body {
   letter-spacing: 1px;
   text-transform: uppercase;
   color: white;
-  margin: 10px 0 4px 0;
+  margin: 8px 0 4px 0;
 }
 
 .add-row-btn {
@@ -302,7 +318,7 @@ body {
 
 .start-btn {
   width: 100%;
-  padding: 14px;
+  padding: 12px 24px;
   border-radius: 14px;
   border: none;
   background: #1e5eff;
@@ -318,7 +334,7 @@ body {
 
 .start-btn:hover {
   background: #0077ee;
-  transform: scale(1.01);
+  transform: scale(1.02);
 }
 
 /* ── TAGGING PAGE ── */
@@ -364,10 +380,10 @@ body {
 
 .video-input-row input {
   flex: 1;
-  padding: 9px 13px;
+  padding: 10px 14px;
   border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.08);
+  border: none;
+  background: rgba(255,255,255,0.1);
   color: white;
   font-size: 12px;
   outline: none;
@@ -375,14 +391,14 @@ body {
 }
 
 .video-input-row input:focus {
-  border-color: #1e5eff;
+  background: rgba(255,255,255,0.15);
 }
 
 .load-btn {
-  padding: 9px 16px;
+  padding: 10px 16px;
   border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.08);
+  border: none;
+  background: rgba(255,255,255,0.15);
   color: white;
   font-size: 12px;
   font-weight: 600;
@@ -392,7 +408,7 @@ body {
 }
 
 .load-btn:hover {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.25);
 }
 
 #videoWrapper {
@@ -707,7 +723,7 @@ body {
   width: 100%;
   padding: 10px 14px;
   border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: none;
   background: rgba(255,255,255,0.08);
   color: white;
   font-size: 12px;
@@ -717,7 +733,6 @@ body {
   height: 60px;
 }
 
-.notes-input:focus { border-color: #1e5eff; }
 .notes-input::placeholder { opacity: 0.35; }
 
 .submit-btn {
@@ -920,8 +935,8 @@ body {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  .tag-layout       { grid-template-columns: 1fr; }
-  .roster-grid      { grid-template-columns: 1fr; }
-  .analysis-layout  { grid-template-columns: 1fr; }
-  body              { padding-top: 100px; }
+  .tag-layout      { grid-template-columns: 1fr; }
+  .roster-grid     { grid-template-columns: 1fr; }
+  .analysis-layout { grid-template-columns: 1fr; }
+  body             { padding-top: 100px; }
 }
