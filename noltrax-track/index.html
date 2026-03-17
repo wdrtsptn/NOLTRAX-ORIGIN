@@ -87,7 +87,6 @@
 
     <div>
       <div class="card" style="margin-bottom:16px">
-        <div class="card-title">Video Source</div>
         <div class="video-source-row">
           <button class="source-btn active" id="srcLocal" onclick="setSource('local')">Local File</button>
           <button class="source-btn" id="srcYT" onclick="setSource('youtube')">YouTube</button>
@@ -128,12 +127,10 @@
       </div>
 
       <div class="card">
-        <div class="section-label">Category</div>
         <div class="cat-grid" id="catGrid"></div>
       </div>
 
       <div class="card">
-        <div class="section-label">Event</div>
         <div class="event-grid" id="evGrid">
           <div class="empty-state" style="grid-column:1/-1; padding:12px 0; font-size:11px">
             Select category first
@@ -142,12 +139,11 @@
       </div>
 
       <div class="card">
-        <div class="section-label">Result</div>
         <div class="result-grid" id="resGrid"></div>
       </div>
 
       <div class="card">
-        <div class="section-label">Player</div>
+        <!--<div class="section-label">Player</div>-->
         <div class="player-scroll" id="playerGrid">
           <div class="empty-state" style="padding:8px 0; font-size:11px; width:100%">
             No roster loaded
