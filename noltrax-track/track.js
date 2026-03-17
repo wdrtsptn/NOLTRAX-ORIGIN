@@ -119,13 +119,11 @@ function startSession() {
   buildTagPanel();
   renderPlayerGrid();
 
-  // Switch page dulu sebelum drawPitch supaya element visible
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
   document.getElementById("page-tagging").classList.add("active");
   document.querySelectorAll(".nav-tab")[1].classList.add("active");
 
-  // drawPitch setelah page visible
   setTimeout(() => {
     drawPitch();
     initPitchListener();
@@ -181,7 +179,6 @@ function selectCategory(cat, btn, color) {
   });
 
   updateSteps();
-  checkReady();
 }
 
 function selectEvent(ev, btn) {
@@ -189,7 +186,6 @@ function selectEvent(ev, btn) {
   document.querySelectorAll(".ev-btn").forEach(b => b.classList.remove("selected"));
   btn.classList.add("selected");
   updateSteps();
-  checkReady();
 }
 
 function selectResult(res, btn) {
@@ -204,7 +200,6 @@ function selectResult(res, btn) {
   btn.style.background  = RESULT_COLORS[res];
   btn.style.borderColor = RESULT_COLORS[res];
   updateSteps();
-  checkReady();
 }
 
 function renderPlayerGrid() {
@@ -241,7 +236,6 @@ function selectPlayer(player, btn) {
   document.querySelectorAll(".pl-btn").forEach(b => b.classList.remove("selected"));
   btn.classList.add("selected");
   updateSteps();
-  checkReady();
 }
 
 // ─── STEPS INDICATOR ─────────────────────────────────────────────────────────
@@ -256,12 +250,18 @@ function updateSteps() {
     if (i < done - 1)        dot.classList.add("done");
     else if (i === done - 1) dot.classList.add("active");
   });
-}
 
-function checkReady() {
-  const t     = state.tag;
-  const ready = t.category && t.event && t.result && t.player;
-  document.getElementById("submitBtn").classList.toggle("ready", !!ready);
+  // Update pitch hint
+  const hint = document.getElementById("pitchHint");
+  const t2   = state.tag;
+  const ready = t2.category && t2.event && t2.result && t2.player;
+  if (hint) {
+    hint.textContent = ready
+      ? "✓ Click pitch to tag event"
+      : "Complete all steps above first";
+    hint.style.color = ready ? "#2eb87a" : "";
+    hint.style.opacity = ready ? "0.8" : "0.35";
+  }
 }
 
 // ─── PITCH MAP ────────────────────────────────────────────────────────────────
@@ -271,6 +271,15 @@ function initPitchListener() {
 
   const wrap = document.getElementById("pitchWrap");
   wrap.addEventListener("click", function (e) {
+    const t     = state.tag;
+    const ready = t.category && t.event && t.result && t.player;
+
+    // Only accept click if all fields filled
+    if (!ready) {
+      toast("Complete category, event, result & player first");
+      return;
+    }
+
     const rect      = this.getBoundingClientRect();
     const x         = ((e.clientX - rect.left)  / rect.width)  * 100;
     const y         = ((e.clientY - rect.top)   / rect.height) * 100;
@@ -280,8 +289,9 @@ function initPitchListener() {
     const ctx    = canvas.getContext("2d");
     renderPitchLines(ctx, canvas.width, canvas.height);
     drawMarker(ctx, e.clientX - rect.left, e.clientY - rect.top);
-    updateSteps();
-    checkReady();
+
+    // Auto submit
+    submitEvent();
   });
 }
 
@@ -292,11 +302,6 @@ function drawPitch() {
   canvas.height = wrap.offsetHeight;
   const ctx     = canvas.getContext("2d");
   renderPitchLines(ctx, canvas.width, canvas.height);
-  if (state.tag.coord) {
-    const px = state.tag.coord.x / 100 * canvas.width;
-    const py = state.tag.coord.y / 100 * canvas.height;
-    drawMarker(ctx, px, py);
-  }
 }
 
 function renderPitchLines(ctx, W, H) {
@@ -361,7 +366,7 @@ function getTimestamp() {
 
 function submitEvent() {
   const t = state.tag;
-  if (!t.category || !t.event || !t.result || !t.player) return;
+  if (!t.category || !t.event || !t.result || !t.player || !t.coord) return;
 
   const ev = {
     id:        Date.now(),
@@ -371,14 +376,14 @@ function submitEvent() {
     category:  t.category,
     event:     t.event,
     result:    t.result,
-    coord:     t.coord || null,
+    coord:     t.coord,
     notes:     document.getElementById("notesInput").value.trim(),
   };
 
   state.events.unshift(ev);
   renderLog();
   resetTag();
-  toast("Event tagged");
+  toast("✓ Tagged");
 }
 
 function resetTag() {
@@ -396,7 +401,6 @@ function resetTag() {
       Select category first
     </div>`;
   document.getElementById("notesInput").value = "";
-  document.getElementById("submitBtn").classList.remove("ready");
 
   drawPitch();
   updateSteps();
