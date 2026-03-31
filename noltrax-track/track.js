@@ -37,6 +37,7 @@ let state = {
   tag:           { category: null, event: null, result: null, player: null, coord: null },
   videoSource:   "local",
   heatmapFilter: "all",
+  heatmapTeam:   null,
   selectedTeam:  null,
 };
 
@@ -209,7 +210,6 @@ function renderPlayerGrid() {
   const grid = document.getElementById("playerGrid");
   grid.innerHTML = "";
 
-  // Step 1: tampilkan tombol tim
   const teams = [
     { key: "home", label: state.session.home },
     { key: "away", label: state.session.away },
@@ -223,13 +223,10 @@ function renderPlayerGrid() {
     grid.appendChild(btn);
   });
 
-  // Step 2: tampilkan pemain jika tim sudah dipilih
   if (state.selectedTeam) {
     const players = state.roster[state.selectedTeam];
-
     if (!players.length) return;
 
-    // Divider
     const div         = document.createElement("div");
     div.style.cssText = "width:100%; height:1px; background:rgba(255,255,255,0.08); margin:6px 0;";
     grid.appendChild(div);
@@ -246,9 +243,7 @@ function renderPlayerGrid() {
 }
 
 function selectTeam(teamKey) {
-  // Toggle — kalau pencet tim yang sama, tutup
   state.selectedTeam = state.selectedTeam === teamKey ? null : teamKey;
-  // Reset player selection kalau ganti tim
   if (state.tag.player && state.tag.player.team !== teamKey) {
     state.tag.player = null;
     updateSteps();
@@ -258,7 +253,6 @@ function selectTeam(teamKey) {
 
 function selectPlayer(player, btn) {
   state.tag.player = player;
-  // Re-render grid supaya selected state update
   renderPlayerGrid();
   updateSteps();
 }
@@ -328,21 +322,17 @@ function renderPitchLines(ctx, W, H) {
   ctx.strokeStyle = "rgba(255,255,255,0.3)";
   ctx.lineWidth   = 1;
 
-  // Outline
   ctx.strokeRect(4, 4, W - 8, H - 8);
 
-  // Halfway line
   ctx.beginPath();
   ctx.moveTo(W / 2, 4);
   ctx.lineTo(W / 2, H - 4);
   ctx.stroke();
 
-  // Center circle
   ctx.beginPath();
   ctx.arc(W / 2, H / 2, W * 0.08, 0, Math.PI * 2);
   ctx.stroke();
 
-  // Center dot
   ctx.fillStyle = "rgba(255,255,255,0.4)";
   ctx.beginPath();
   ctx.arc(W / 2, H / 2, 2, 0, Math.PI * 2);
@@ -354,12 +344,8 @@ function renderPitchLines(ctx, W, H) {
   const gaH = H * 0.22;
 
   ctx.strokeStyle = "rgba(255,255,255,0.3)";
-
-  // Kiri
   ctx.strokeRect(4, (H - paH) / 2, paW, paH);
   ctx.strokeRect(4, (H - gaH) / 2, gaW, gaH);
-
-  // Kanan
   ctx.strokeRect(W - 4 - paW, (H - paH) / 2, paW, paH);
   ctx.strokeRect(W - 4 - gaW, (H - gaH) / 2, gaW, gaH);
 }
@@ -528,18 +514,69 @@ function renderAnalysis() {
 
 function renderHeatmapFilters() {
   const wrap = document.getElementById("heatmapFilters");
-  wrap.innerHTML = `
-    <button class="filter-btn ${state.heatmapFilter === "all" ? "active" : ""}"
-      onclick="setHeatmapFilter('all', this)">All</button>`;
+  wrap.innerHTML = "";
 
-  [...state.roster.home, ...state.roster.away].forEach(p => {
-    const key       = `${p.team}-${p.number}`;
-    const btn       = document.createElement("button");
-    btn.className   = `filter-btn ${state.heatmapFilter === key ? "active" : ""}`;
-    btn.textContent = `#${p.number} ${p.name}`;
-    btn.onclick     = function () { setHeatmapFilter(key, this); };
-    wrap.appendChild(btn);
+  // All button
+  const allBtn       = document.createElement("button");
+  allBtn.className   = "filter-btn" + (state.heatmapFilter === "all" && !state.heatmapTeam ? " active" : "");
+  allBtn.textContent = "All";
+  allBtn.onclick     = () => {
+    state.heatmapFilter = "all";
+    state.heatmapTeam   = null;
+    renderHeatmapFilters();
+    renderHeatmap();
+  };
+  wrap.appendChild(allBtn);
+
+  // Team buttons
+  const teams = [
+    { key: "home", label: state.session.home || "Home" },
+    { key: "away", label: state.session.away || "Away" },
+  ];
+
+  teams.forEach(({ key, label }) => {
+    const teamBtn       = document.createElement("button");
+    teamBtn.className   = "filter-btn" + (state.heatmapTeam === key ? " active" : "");
+    teamBtn.textContent = label;
+    teamBtn.onclick     = () => {
+      if (state.heatmapTeam === key) {
+        // Toggle off — kembali ke All
+        state.heatmapTeam   = null;
+        state.heatmapFilter = "all";
+      } else {
+        state.heatmapTeam   = key;
+        state.heatmapFilter = "team-" + key;
+      }
+      renderHeatmapFilters();
+      renderHeatmap();
+    };
+    wrap.appendChild(teamBtn);
   });
+
+  // Jika ada tim yang dipilih, tampilkan pemain tim itu
+  if (state.heatmapTeam) {
+    const players = state.roster[state.heatmapTeam] || [];
+
+    if (players.length) {
+      // Divider
+      const div         = document.createElement("div");
+      div.style.cssText = "width:100%; height:1px; background:rgba(255,255,255,0.08); margin:6px 0;";
+      wrap.appendChild(div);
+
+      players.forEach(p => {
+        const key       = `${p.team}-${p.number}`;
+        const btn       = document.createElement("button");
+        btn.className   = "filter-btn" + (state.heatmapFilter === key ? " active" : "");
+        btn.textContent = `#${p.number} ${p.name}`;
+        btn.onclick     = () => {
+          state.heatmapFilter = key;
+          renderHeatmapFilters();
+          renderHeatmap();
+        };
+        wrap.appendChild(btn);
+      });
+    }
+  }
 }
 
 function setHeatmapFilter(key, btn) {
@@ -559,7 +596,14 @@ function renderHeatmap() {
   renderHeatmapPitch(ctx, canvas.width, canvas.height);
 
   let evs = state.events.filter(e => e.coord);
-  if (state.heatmapFilter !== "all") {
+
+  if (state.heatmapFilter === "all") {
+    // semua event
+  } else if (state.heatmapFilter.startsWith("team-")) {
+    const teamKey = state.heatmapFilter.replace("team-", "");
+    evs = evs.filter(e => e.team === teamKey);
+  } else {
+    // individual player: format "team-number"
     const [team, num] = state.heatmapFilter.split("-");
     evs = evs.filter(e => e.team === team && String(e.player.number) === num);
   }
