@@ -37,6 +37,7 @@ let state = {
   tag:           { category: null, event: null, result: null, player: null, coord: null },
   videoSource:   "local",
   heatmapFilter: "all",
+  selectedTeam:  null,
 };
 
 let pitchListenerAdded = false;
@@ -115,6 +116,7 @@ function startSession() {
 
   state.roster.home = getRoster("home");
   state.roster.away = getRoster("away");
+  state.selectedTeam = null;
 
   buildTagPanel();
   renderPlayerGrid();
@@ -202,39 +204,62 @@ function selectResult(res, btn) {
   updateSteps();
 }
 
+// ─── PLAYER GRID — 2 STEP ────────────────────────────────────────────────────
 function renderPlayerGrid() {
   const grid = document.getElementById("playerGrid");
   grid.innerHTML = "";
 
-  if (!state.roster.home.length && !state.roster.away.length) {
-    grid.innerHTML = `<div class="empty-state" style="padding:8px 0; font-size:11px; width:100%">No players in roster</div>`;
-    return;
-  }
+  // Step 1: tampilkan tombol tim
+  const teams = [
+    { key: "home", label: state.session.home },
+    { key: "away", label: state.session.away },
+  ];
 
-  const addSection = (players, label) => {
+  teams.forEach(({ key, label }) => {
+    const btn       = document.createElement("button");
+    btn.className   = "pl-btn team-btn" + (state.selectedTeam === key ? " selected" : "");
+    btn.textContent = label;
+    btn.onclick     = () => selectTeam(key);
+    grid.appendChild(btn);
+  });
+
+  // Step 2: tampilkan pemain jika tim sudah dipilih
+  if (state.selectedTeam) {
+    const players = state.roster[state.selectedTeam];
+
     if (!players.length) return;
-    const lbl         = document.createElement("div");
-    lbl.style.cssText = "width:100%; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:#ffffff; opacity:0.5; padding:4px 0 2px;";
-    lbl.textContent   = label;
-    grid.appendChild(lbl);
+
+    // Divider
+    const div         = document.createElement("div");
+    div.style.cssText = "width:100%; height:1px; background:rgba(255,255,255,0.08); margin:6px 0;";
+    grid.appendChild(div);
+
     players.forEach(p => {
       const btn       = document.createElement("button");
-      btn.className   = "pl-btn";
+      btn.className   = "pl-btn" + (state.tag.player?.number === p.number && state.tag.player?.team === p.team ? " selected" : "");
       btn.textContent = `#${p.number} ${p.name}`;
       if (p.sub) btn.style.opacity = "0.65";
       btn.onclick     = () => selectPlayer(p, btn);
       grid.appendChild(btn);
     });
-  };
+  }
+}
 
-  addSection(state.roster.home, state.session.home);
-  addSection(state.roster.away, state.session.away);
+function selectTeam(teamKey) {
+  // Toggle — kalau pencet tim yang sama, tutup
+  state.selectedTeam = state.selectedTeam === teamKey ? null : teamKey;
+  // Reset player selection kalau ganti tim
+  if (state.tag.player && state.tag.player.team !== teamKey) {
+    state.tag.player = null;
+    updateSteps();
+  }
+  renderPlayerGrid();
 }
 
 function selectPlayer(player, btn) {
   state.tag.player = player;
-  document.querySelectorAll(".pl-btn").forEach(b => b.classList.remove("selected"));
-  btn.classList.add("selected");
+  // Re-render grid supaya selected state update
+  renderPlayerGrid();
   updateSteps();
 }
 
@@ -306,7 +331,7 @@ function renderPitchLines(ctx, W, H) {
   // Outline
   ctx.strokeRect(4, 4, W - 8, H - 8);
 
-  // Halfway line — vertikal di tengah (horizontal pitch)
+  // Halfway line
   ctx.beginPath();
   ctx.moveTo(W / 2, 4);
   ctx.lineTo(W / 2, H - 4);
@@ -323,7 +348,6 @@ function renderPitchLines(ctx, W, H) {
   ctx.arc(W / 2, H / 2, 2, 0, Math.PI * 2);
   ctx.fill();
 
-  // Penalty areas kiri dan kanan
   const paW = W * 0.16;
   const paH = H * 0.5;
   const gaW = W * 0.05;
@@ -391,9 +415,10 @@ function submitEvent() {
 }
 
 function resetTag() {
-  state.tag = { category: null, event: null, result: null, player: null, coord: null };
+  state.tag          = { category: null, event: null, result: null, player: null, coord: null };
+  state.selectedTeam = null;
 
-  document.querySelectorAll(".cat-btn, .ev-btn, .res-btn, .pl-btn").forEach(b => {
+  document.querySelectorAll(".cat-btn, .ev-btn, .res-btn").forEach(b => {
     b.classList.remove("selected");
     b.style.background  = "";
     b.style.borderColor = "";
@@ -406,6 +431,7 @@ function resetTag() {
     </div>`;
   document.getElementById("notesInput").value = "";
 
+  renderPlayerGrid();
   drawPitch();
   updateSteps();
 }
@@ -560,31 +586,24 @@ function renderHeatmapPitch(ctx, W, H) {
   ctx.strokeStyle = "rgba(255,255,255,0.2)";
   ctx.lineWidth   = 1;
 
-  // Outline
   ctx.strokeRect(4, 4, W - 8, H - 8);
 
-  // Halfway line
   ctx.beginPath();
   ctx.moveTo(W / 2, 4);
   ctx.lineTo(W / 2, H - 4);
   ctx.stroke();
 
-  // Center circle
   ctx.beginPath();
   ctx.arc(W / 2, H / 2, W * 0.08, 0, Math.PI * 2);
   ctx.stroke();
 
-  // Penalty areas kiri dan kanan
   const paW = W * 0.16;
   const paH = H * 0.5;
   const gaW = W * 0.05;
   const gaH = H * 0.22;
 
-  // Kiri
   ctx.strokeRect(4, (H - paH) / 2, paW, paH);
   ctx.strokeRect(4, (H - gaH) / 2, gaW, gaH);
-
-  // Kanan
   ctx.strokeRect(W - 4 - paW, (H - paH) / 2, paW, paH);
   ctx.strokeRect(W - 4 - gaW, (H - gaH) / 2, gaW, gaH);
 }
